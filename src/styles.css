@@ -125,17 +125,6 @@ section {
   color: var(--white-muted);
 }
 
-/* Séparateur pointillé — signature « parcours » */
-.dotted {
-  border: none;
-  height: 0;
-  border-top: 1.5px dashed var(--ink-faint);
-}
-
-.on-ocean .dotted {
-  border-top-color: var(--white-faint);
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -165,38 +154,6 @@ section {
 
 .btn--light:hover {
   background: var(--white);
-}
-
-.btn--ocean {
-  background: var(--ocean);
-  color: var(--white);
-  border: 1px solid var(--ocean);
-}
-
-.btn--ocean:hover {
-  background: var(--ocean-deep);
-  border-color: var(--ocean-deep);
-}
-
-.btn--ghost-light {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--white);
-  border: 1px solid var(--white-faint);
-  backdrop-filter: blur(6px);
-}
-
-.btn--ghost-light:hover {
-  border-color: var(--white);
-}
-
-.btn--ghost-ink {
-  background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--ink-faint);
-}
-
-.btn--ghost-ink:hover {
-  border-color: var(--ink);
 }
 
 /* --- Navigation ----------------------------------------------------------- */
@@ -422,7 +379,7 @@ section {
 }
 
 .section-head .mixed {
-  font-size: clamp(32px, 4.4vw, 60px);
+  font-size: clamp(30px, 4vw, 54px);
 }
 
 /* --- Manifeste ------------------------------------------------------------- */
@@ -449,7 +406,7 @@ section {
   gap: 24px;
   margin-top: clamp(48px, 7vw, 88px);
   padding-top: 28px;
-  border-top: 1.5px dashed var(--ink-faint);
+  border-top: 1px solid var(--ink-faint);
 }
 
 .manifesto__cell dt {
@@ -529,7 +486,7 @@ section {
 .exp__tag::before {
   content: '';
   width: 28px;
-  border-top: 1.5px dashed var(--ink-faint);
+  border-top: 1px solid var(--ink-faint);
 }
 
 .exp__title {
@@ -550,12 +507,12 @@ section {
   justify-content: space-between;
   gap: 16px;
   padding-block: 11px;
-  border-bottom: 1.5px dashed var(--ink-faint);
+  border-bottom: 1px solid var(--ink-faint);
   font-size: 14.5px;
 }
 
 .exp__list li:first-child {
-  border-top: 1.5px dashed var(--ink-faint);
+  border-top: 1px solid var(--ink-faint);
 }
 
 .exp__list li span:last-child {
@@ -723,11 +680,11 @@ section {
   align-items: baseline;
   gap: 16px;
   padding-block: 13px;
-  border-bottom: 1.5px dashed var(--ink-faint);
+  border-bottom: 1px solid var(--ink-faint);
 }
 
 .specs li:first-child {
-  border-top: 1.5px dashed var(--ink-faint);
+  border-top: 1px solid var(--ink-faint);
 }
 
 .specs__key {
@@ -744,68 +701,84 @@ section {
   font-size: 23px;
 }
 
-/* --- Galerie ---------------------------------------------------------------- */
+/* --- Bandeau citation (respiration pleine largeur) ----------------------- */
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(14px, 1.8vw, 24px);
-}
-
-.gallery figure {
-  overflow: hidden;
-  border-radius: var(--r-card);
+.band {
   position: relative;
+  overflow: hidden;
 }
 
-.gallery img {
+.band img {
   width: 100%;
-  height: 100%;
+  height: clamp(380px, 58vh, 560px);
   object-fit: cover;
-  transition: transform 1200ms var(--ease);
 }
 
-.gallery figure:hover img {
-  transform: scale(1.035);
-}
-
-.gallery figcaption {
+.band::before {
+  content: '';
   position: absolute;
-  left: 16px;
-  bottom: 14px;
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--white);
-  text-shadow: 0 1px 10px rgba(12, 43, 69, 0.7);
+  inset: 0;
+  background: rgba(12, 43, 69, 0.38);
 }
 
-.gallery__a { grid-column: 1 / span 5; height: clamp(300px, 52vh, 540px); }
-.gallery__b { grid-column: 6 / span 7; height: clamp(300px, 52vh, 540px); }
-.gallery__c { grid-column: 1 / span 7; height: clamp(260px, 42vh, 440px); }
-.gallery__d { grid-column: 8 / span 5; height: clamp(260px, 42vh, 440px); }
+.band__quote {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding-inline: var(--gutter);
+  color: var(--white);
+}
 
-/* --- Tarifs ----------------------------------------------------------------- */
+.band__quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(22px, 2.8vw, 34px);
+  line-height: 1.45;
+  max-width: 26em;
+  text-shadow: 0 1px 20px rgba(12, 43, 69, 0.5);
+}
+
+.band__quote footer {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+}
+
+/* --- Tarifs (éditorial, sans cartes) -------------------------------------- */
 
 .offers {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(16px, 2.4vw, 32px);
+  border-top: 1px solid var(--ink-faint);
 }
 
 .offer {
-  background: var(--white);
-  border: 1px solid var(--ink-faint);
-  border-radius: var(--r-card);
-  padding: clamp(28px, 3.6vw, 48px);
+  padding: clamp(32px, 4vw, 56px) 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.offer:last-child {
+  border-left: 1px solid var(--ink-faint);
+  padding-left: clamp(28px, 4vw, 64px);
+}
+
+.offer:first-child {
+  padding-right: clamp(28px, 4vw, 64px);
 }
 
 .offer__name {
-  font-size: clamp(24px, 2.4vw, 34px);
+  font-size: clamp(24px, 2.4vw, 32px);
 }
 
 .offer__price {
@@ -817,7 +790,7 @@ section {
 .offer__amount {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 46px;
+  font-size: clamp(38px, 3.4vw, 48px);
   color: var(--ocean);
 }
 
@@ -829,39 +802,10 @@ section {
   color: var(--ink-muted);
 }
 
-.offer__includes {
-  list-style: none;
-  flex: 1;
-}
-
-.offer__includes li {
-  padding-block: 10px;
-  border-bottom: 1.5px dashed var(--ink-faint);
-  font-size: 14.5px;
+.offer__desc {
   color: var(--ink-muted);
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-}
-
-.offer__includes li:first-child {
-  border-top: 1.5px dashed var(--ink-faint);
-}
-
-.offer__includes li::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ocean);
-  opacity: 0.55;
-  flex-shrink: 0;
-  transform: translateY(-2px);
-}
-
-.offer__note {
-  font-size: 12.5px;
-  color: var(--ink-muted);
+  max-width: 44ch;
+  font-size: 15px;
 }
 
 /* --- Réservation ------------------------------------------------------------ */
@@ -1029,7 +973,7 @@ section {
 .footer__legal {
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1.5px dashed var(--white-faint);
+  border-top: 1px solid var(--white-faint);
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -1197,12 +1141,14 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .gallery__a,
-  .gallery__b,
-  .gallery__c,
-  .gallery__d {
-    grid-column: 1 / -1;
-    height: clamp(220px, 40vh, 380px);
+  .offer:last-child {
+    border-left: none;
+    border-top: 1px solid var(--ink-faint);
+    padding-left: 0;
+  }
+
+  .offer:first-child {
+    padding-right: 0;
   }
 
   .form {

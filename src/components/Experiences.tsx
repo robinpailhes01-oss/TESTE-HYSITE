@@ -56,8 +56,8 @@ export default function Experiences() {
         <motion.article className="exp exp--reverse" {...two}>
           <div className="exp__media">
             <img
-              src="/images/soir.jpg"
-              alt="Bateau au soleil couchant devant les montagnes"
+              src="/images/nuit-bateau.jpg"
+              alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
               loading="lazy"
             />
           </div>

@@ -4,7 +4,7 @@ import Manifesto from './components/Manifesto'
 import Experiences from './components/Experiences'
 import Route from './components/Route'
 import Yacht from './components/Yacht'
-import Gallery from './components/Gallery'
+import Band from './components/Band'
 import Offers from './components/Offers'
 import Booking from './components/Booking'
 import Footer from './components/Footer'
@@ -19,7 +19,7 @@ export default function App() {
         <Experiences />
         <Route />
         <Yacht />
-        <Gallery />
+        <Band />
         <Offers />
         <Booking />
       </main>

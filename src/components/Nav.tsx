@@ -4,7 +4,6 @@ const LINKS = [
   { href: '#experiences', label: 'Expériences' },
   { href: '#abord', label: 'À bord' },
   { href: '#yacht', label: 'Le yacht' },
-  { href: '#galerie', label: 'Galerie' },
   { href: '#tarifs', label: 'Tarifs' },
 ]
 
@@ -44,9 +43,6 @@ export default function Nav() {
         </a>
 
         <div className="nav__actions">
-          <a href="#tarifs" className="btn btn--ghost-light">
-            Tarifs
-          </a>
           <a href="#reservation" className="btn btn--light">
             Réserver
           </a>

@@ -4,32 +4,18 @@ import { useReveal } from '../motion'
 /* Tarifs indicatifs — à ajuster avant mise en ligne. */
 const OFFERS = [
   {
-    name: 'Sortie en mer',
-    it: 'en mer',
     plain: 'Sortie',
+    it: 'en mer',
     amount: '890 €',
     unit: 'la journée',
-    includes: [
-      'Yacht privatisé, skipper inclus',
-      'Carburant & mouillage compris',
-      'Apéritif au soleil couchant',
-      'Jusqu’à 8 invités',
-    ],
-    note: 'Demi-journée disponible sur demande.',
+    desc: 'Yacht privatisé avec skipper, carburant et mouillage compris, apéritif au soleil couchant. Jusqu’à 8 invités, demi-journée possible.',
   },
   {
-    name: 'Nuit insolite à quai',
     plain: 'Nuit insolite',
     it: 'à quai',
     amount: '490 €',
     unit: 'la nuit',
-    includes: [
-      'Le yacht pour vous seuls, de 18 h à 10 h',
-      'Champagne de bienvenue',
-      'Petit-déjeuner servi à bord',
-      'Linge de maison & cabine préparée',
-    ],
-    note: 'Idéal anniversaires, demandes & escapades.',
+    desc: 'Le yacht pour vous seuls de 18 h à 10 h — champagne de bienvenue, cabine préparée, petit-déjeuner servi à bord au réveil.',
   },
 ]
 
@@ -49,7 +35,7 @@ export default function Offers() {
 
         <motion.div className="offers" {...grid}>
           {OFFERS.map((o) => (
-            <article className="offer" key={o.name}>
+            <article className="offer" key={o.plain}>
               <h3 className="mixed offer__name">
                 {o.plain} <span className="it">{o.it}</span>
               </h3>
@@ -58,13 +44,8 @@ export default function Offers() {
                 <span className="offer__amount">{o.amount}</span>
                 <span className="offer__unit">{o.unit}</span>
               </p>
-              <ul className="offer__includes">
-                {o.includes.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-              <p className="offer__note">{o.note}</p>
-              <a href="#reservation" className="btn btn--ocean">
+              <p className="offer__desc">{o.desc}</p>
+              <a href="#reservation" className="link-arrow">
                 Vérifier une date
               </a>
             </article>
