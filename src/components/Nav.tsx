@@ -9,17 +9,29 @@ const LINKS = [
 
 export default function Nav() {
   const [solid, setSolid] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 40)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setSolid(y > 40)
+      /* La nav s'efface quand on descend, revient dès qu'on remonte */
+      setHidden(y > lastY && y > 160)
+      lastY = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
-    <header className={`nav ${solid || open ? 'nav--solid' : ''} ${open ? 'nav--open' : ''}`}>
+    <header
+      className={`nav ${solid || open ? 'nav--solid' : ''} ${
+        hidden && !open ? 'nav--hidden' : ''
+      } ${open ? 'nav--open' : ''}`}
+    >
       <div className="container nav__inner">
         <nav aria-label="Navigation principale">
           <ul className="nav__links">

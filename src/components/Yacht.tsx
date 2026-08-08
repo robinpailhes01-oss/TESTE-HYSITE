@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
+import RevealImage from './RevealImage'
 
 /* Caractéristiques à ajuster avec les vraies données du bateau. */
 const SPECS = [
@@ -11,19 +12,16 @@ const SPECS = [
 ]
 
 export default function Yacht() {
-  const media = useReveal()
   const body = useReveal(0.12)
 
   return (
     <section className="section" id="yacht">
       <div className="container yacht">
-        <motion.div className="yacht__media" {...media}>
-          <img
-            src="/images/calme-bateau.jpg"
-            alt="Le yacht Harmonie à l’ancre sur une mer calme, un invité à la proue"
-            loading="lazy"
-          />
-        </motion.div>
+        <RevealImage
+          className="yacht__media"
+          src="/images/calme-bateau.jpg"
+          alt="Le yacht Harmonie à l’ancre sur une mer calme, un invité à la proue"
+        />
         <motion.div className="yacht__body" {...body}>
           <p className="kicker">Le yacht</p>
           <h2 className="mixed yacht__title">

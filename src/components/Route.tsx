@@ -1,6 +1,19 @@
 import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import type { Variants } from 'motion/react'
 import { ease, useReveal } from '../motion'
+
+/* Les waypoints s'égrènent un à un le long du parcours */
+const listVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.3, ease } },
+}
+
+const stepVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
+}
 
 type Step = { time: string; label: string; it?: string; note: string }
 
@@ -63,13 +76,13 @@ export default function Route() {
               <motion.ol
                 key={mode}
                 className="route__steps"
-                initial={reduced ? undefined : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduced ? undefined : { opacity: 0, y: -10 }}
-                transition={{ duration: 0.45, ease }}
+                variants={listVariants}
+                initial={reduced ? false : 'hidden'}
+                animate="show"
+                exit={reduced ? undefined : 'exit'}
               >
                 {steps.map((s) => (
-                  <li className="route__step" key={s.label + s.time}>
+                  <motion.li className="route__step" variants={stepVariants} key={s.label + s.time}>
                     <span className="route__time">{s.time}</span>
                     <p className="route__label">
                       {s.label}
@@ -81,7 +94,7 @@ export default function Route() {
                       ) : null}
                     </p>
                     <p className="route__note">{s.note}</p>
-                  </li>
+                  </motion.li>
                 ))}
               </motion.ol>
             </AnimatePresence>

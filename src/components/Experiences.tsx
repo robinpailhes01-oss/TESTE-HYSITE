@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
+import RevealImage from './RevealImage'
 
 function preselect(experience: string) {
   window.dispatchEvent(new CustomEvent('preselect-experience', { detail: experience }))
@@ -21,13 +22,11 @@ export default function Experiences() {
         </motion.div>
 
         <motion.article className="exp" {...one}>
-          <div className="exp__media">
-            <img
-              src="/images/sortie-bateau.jpg"
-              alt="Le yacht Harmonie au mouillage sur une eau turquoise, plateforme de baignade dépliée"
-              loading="lazy"
-            />
-          </div>
+          <RevealImage
+            className="exp__media"
+            src="/images/sortie-bateau.jpg"
+            alt="Le yacht Harmonie au mouillage sur une eau turquoise, plateforme de baignade dépliée"
+          />
           <div className="exp__body">
             <span className="exp__tag">01 — Le jour</span>
             <h3 className="mixed exp__title">
@@ -62,13 +61,11 @@ export default function Experiences() {
         </motion.article>
 
         <motion.article className="exp exp--reverse" {...two}>
-          <div className="exp__media">
-            <img
-              src="/images/nuit-bateau.jpg"
-              alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
-              loading="lazy"
-            />
-          </div>
+          <RevealImage
+            className="exp__media"
+            src="/images/nuit-bateau.jpg"
+            alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
+          />
           <div className="exp__body">
             <span className="exp__tag">02 — La nuit</span>
             <h3 className="mixed exp__title">

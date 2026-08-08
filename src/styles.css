@@ -142,6 +142,10 @@ section {
     transform var(--t-micro) ease-out;
 }
 
+.btn:hover {
+  transform: translateY(-1px);
+}
+
 .btn:active {
   transform: scale(0.98);
 }
@@ -164,7 +168,14 @@ section {
   top: 0;
   z-index: 40;
   color: var(--white);
-  transition: background var(--t-std) var(--ease), box-shadow var(--t-std) var(--ease);
+  transition:
+    background var(--t-std) var(--ease),
+    box-shadow var(--t-std) var(--ease),
+    transform 600ms var(--ease);
+}
+
+.nav--hidden {
+  transform: translateY(-100%);
 }
 
 .nav--solid {
@@ -311,7 +322,29 @@ section {
   font-size: clamp(40px, 6.8vw, 92px);
   max-width: 13em;
   text-wrap: balance;
-  text-shadow: 0 2px 30px rgba(12, 43, 69, 0.45);
+  /* Pas de text-shadow ici : elle serait rognée par les masques de mots */
+}
+
+/* Révélation mot à mot : chaque mot monte hors de son masque */
+.hero__title .mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-block: 0.14em;
+  margin-block: -0.14em;
+}
+
+.hero__title .word {
+  display: inline-block;
+  will-change: transform;
+}
+
+.hero__title .word.it {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 1.06em;
 }
 
 .hero__title .line {
@@ -462,11 +495,6 @@ section {
   width: 100%;
   height: clamp(340px, 56vh, 600px);
   object-fit: cover;
-  transition: transform 1200ms var(--ease);
-}
-
-.exp__media:hover img {
-  transform: scale(1.03);
 }
 
 .exp__body {

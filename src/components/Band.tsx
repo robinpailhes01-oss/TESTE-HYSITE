@@ -1,8 +1,8 @@
 import { motion } from 'motion/react'
-import { useReveal } from '../motion'
+import { useFocusReveal } from '../motion'
 
 export default function Band() {
-  const reveal = useReveal(0.1)
+  const reveal = useFocusReveal(0.1)
 
   return (
     <section className="band" aria-label="Citation">

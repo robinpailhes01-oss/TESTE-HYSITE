@@ -1,5 +1,6 @@
-import { motion, useReducedMotion } from 'motion/react'
-import { ease, staggerContainer, staggerItem } from '../motion'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { ease, wordContainer, wordUp } from '../motion'
 
 function PinIcon() {
   return (
@@ -19,30 +20,46 @@ function CalendarIcon() {
   )
 }
 
+/* Titre découpé en mots pour la révélation masquée */
+const WORDS: { text: string; it?: boolean }[] = [
+  { text: 'Créateur' },
+  { text: 'de' },
+  { text: 'moments', it: true },
+  { text: 'authentiques', it: true },
+  { text: 'sur' },
+  { text: 'l’eau' },
+]
+
 export default function Hero() {
   const reduced = useReducedMotion()
+  const ref = useRef<HTMLElement>(null)
+
+  /* Parallaxe : la photo défile plus lentement que la page */
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  const mediaY = useTransform(scrollYProgress, [0, 1], ['0%', reduced ? '0%' : '14%'])
 
   return (
-    <section className="hero">
+    <section className="hero" ref={ref}>
       <div className="hero__media">
         <motion.img
           src="/images/hero-bateau.jpg"
           alt="Le yacht Harmonie à l’ancre au soleil couchant, reflets dorés sur une mer calme"
-          initial={reduced ? undefined : { scale: 1.07, opacity: 0 }}
+          style={{ y: mediaY }}
+          initial={reduced ? undefined : { scale: 1.08, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2, ease }}
+          transition={{ duration: 2.4, ease }}
         />
       </div>
 
-      {/* Arc de parcours — signature */}
+      {/* Arc de parcours — s'ouvre depuis le centre */}
       <motion.svg
         className="hero__arc"
         viewBox="0 0 1000 140"
         fill="none"
         aria-hidden="true"
-        initial={reduced ? undefined : { opacity: 0 }}
-        animate={{ opacity: 0.75 }}
-        transition={{ duration: 1.4, ease, delay: 1.1 }}
+        initial={reduced ? undefined : { clipPath: 'inset(0 50% 0 50%)', opacity: 0 }}
+        animate={{ clipPath: 'inset(0 0% 0 0%)', opacity: 0.55 }}
+        transition={{ duration: 2, ease, delay: 1.3 }}
       >
         <path
           d="M 5 5 Q 500 230 995 5"
@@ -54,41 +71,61 @@ export default function Hero() {
       </motion.svg>
 
       <div className="hero__inner">
-        <motion.div
-          variants={staggerContainer}
-          initial={reduced ? false : 'hidden'}
-          animate="show"
-          className="hero__head"
-        >
-          <motion.p className="hero__kicker" variants={staggerItem}>
+        <div className="hero__head">
+          <motion.p
+            className="hero__kicker"
+            initial={reduced ? undefined : { opacity: 0, letterSpacing: '0.12em' }}
+            animate={{ opacity: 1, letterSpacing: '0.3em' }}
+            transition={{ duration: 1.8, ease, delay: 0.15 }}
+          >
             Harmonie Yacht — location privée avec skipper
           </motion.p>
-          <motion.h1 className="mixed hero__title" variants={staggerItem}>
-            Créateur de <span className="it">moments authentiques</span> sur l’eau
-          </motion.h1>
-        </motion.div>
 
-        <motion.div
-          className="hero__metas"
-          initial={reduced ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, ease, delay: 0.9 }}
-        >
-          <p className="hero__meta hero__meta--left">
+          <motion.h1
+            className="mixed hero__title"
+            variants={wordContainer}
+            initial={reduced ? false : 'hidden'}
+            animate="show"
+          >
+            {WORDS.map((w, i) => (
+              <span key={i}>
+                <span className="mask">
+                  <motion.span className={`word${w.it ? ' it' : ''}`} variants={wordUp}>
+                    {w.text}
+                  </motion.span>
+                </span>
+                {i < WORDS.length - 1 ? ' ' : null}
+              </span>
+            ))}
+          </motion.h1>
+        </div>
+
+        <div className="hero__metas">
+          <motion.p
+            className="hero__meta hero__meta--left"
+            initial={reduced ? undefined : { opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, ease, delay: 1.15 }}
+          >
             <PinIcon />
             Port d’attache — Méditerranée
-          </p>
-          <p className="hero__meta hero__meta--right">
+          </motion.p>
+          <motion.p
+            className="hero__meta hero__meta--right"
+            initial={reduced ? undefined : { opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.1, ease, delay: 1.15 }}
+          >
             <CalendarIcon />
             Toute l’année, sur réservation
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         <motion.div
           className="hero__cta"
           initial={reduced ? undefined : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.75 }}
+          transition={{ duration: 1, ease, delay: 1.05 }}
         >
           <a href="#prestations" className="btn btn--light">
             Voir nos prestations

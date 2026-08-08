@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useReveal } from '../motion'
+import { useFocusReveal, useReveal } from '../motion'
 
 const DATA = [
   { key: 'Formule', value: 'Privatisation totale' },
@@ -10,7 +10,7 @@ const DATA = [
 
 export default function Manifesto() {
   const head = useReveal()
-  const text = useReveal(0.05)
+  const text = useFocusReveal(0.05)
   const data = useReveal(0.15)
 
   return (
