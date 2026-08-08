@@ -278,8 +278,8 @@ section {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 70% at 50% 42%, rgba(12, 43, 69, 0.22) 0%, rgba(12, 43, 69, 0.5) 100%),
-    linear-gradient(to bottom, rgba(12, 43, 69, 0.5) 0%, rgba(12, 43, 69, 0.24) 38%, rgba(12, 43, 69, 0.18) 70%, rgba(12, 43, 69, 0.55) 100%);
+    linear-gradient(to bottom, rgba(12, 43, 69, 0.38) 0%, rgba(12, 43, 69, 0.08) 26%, transparent 45%, transparent 62%, rgba(12, 43, 69, 0.42) 100%),
+    rgba(12, 43, 69, 0.14);
 }
 
 .hero__inner {
@@ -291,11 +291,27 @@ section {
   width: 100%;
 }
 
+.hero__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 3vh, 28px);
+}
+
+.hero__kicker {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  text-shadow: 0 1px 14px rgba(12, 43, 69, 0.55);
+}
+
 .hero__title {
-  font-size: clamp(42px, 7.6vw, 104px);
+  font-size: clamp(44px, 7.4vw, 100px);
   max-width: 12em;
   text-wrap: balance;
-  text-shadow: 0 2px 26px rgba(12, 43, 69, 0.4);
+  text-shadow: 0 2px 30px rgba(12, 43, 69, 0.45);
 }
 
 .hero__title .line {
@@ -310,7 +326,7 @@ section {
   top: 66%;
   width: min(76vw, 1000px);
   transform: translateX(-50%);
-  opacity: 0.75;
+  opacity: 0.55;
   pointer-events: none;
 }
 

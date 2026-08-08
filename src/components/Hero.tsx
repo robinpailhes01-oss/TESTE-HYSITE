@@ -54,25 +54,25 @@ export default function Hero() {
       </motion.svg>
 
       <div className="hero__inner">
-        <motion.h1
-          className="mixed hero__title"
+        <motion.div
           variants={staggerContainer}
           initial={reduced ? false : 'hidden'}
           animate="show"
+          className="hero__head"
         >
-          <motion.span className="line" variants={staggerItem}>
-            Votre yacht <span className="it">privé.</span>
-          </motion.span>
-          <motion.span className="line" variants={staggerItem}>
-            La mer <span className="it">le jour,</span>
-          </motion.span>
-          <motion.span className="line" variants={staggerItem}>
-            une <span className="it">suite sur l’eau</span>
-          </motion.span>
-          <motion.span className="line" variants={staggerItem}>
-            la nuit.
-          </motion.span>
-        </motion.h1>
+          <motion.p className="hero__kicker" variants={staggerItem}>
+            Harmonie Yacht — location privée avec skipper
+          </motion.p>
+          <motion.h1 className="mixed hero__title" variants={staggerItem}>
+            <span className="line">
+              La mer <span className="it">le jour,</span>
+            </span>
+            <span className="line">
+              une <span className="it">suite sur l’eau</span>
+            </span>
+            <span className="line">la nuit.</span>
+          </motion.h1>
+        </motion.div>
 
         <motion.div
           className="hero__metas"
@@ -99,7 +99,6 @@ export default function Hero() {
           <a href="#reservation" className="btn btn--light">
             Demander une date
           </a>
-          <span className="hero__cta-note">Réponse sous 24 h</span>
         </motion.div>
       </div>
     </section>
