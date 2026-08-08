@@ -1,18 +1,22 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
 
+function preselect(experience: string) {
+  window.dispatchEvent(new CustomEvent('preselect-experience', { detail: experience }))
+}
+
 export default function Experiences() {
   const head = useReveal()
   const one = useReveal()
   const two = useReveal()
 
   return (
-    <section className="section" id="experiences" style={{ background: 'var(--white)' }}>
+    <section className="section" id="prestations" style={{ background: 'var(--white)' }}>
       <div className="container">
         <motion.div className="section-head" {...head}>
-          <p className="kicker">Les expériences</p>
+          <p className="kicker">Nos prestations</p>
           <h2 className="mixed">
-            Deux manières <span className="it">d’habiter la mer</span>
+            La <span className="it">sortie en mer</span>, ou la <span className="it">nuit à quai</span>&nbsp;?
           </h2>
         </motion.div>
 
@@ -47,8 +51,12 @@ export default function Experiences() {
                 <span>Inclus</span>
               </li>
             </ul>
-            <a href="#reservation" className="link-arrow">
-              Composer votre sortie
+            <a
+              href="#reservation"
+              className="link-arrow"
+              onClick={() => preselect('Sortie en mer')}
+            >
+              Réserver une sortie
             </a>
           </div>
         </motion.article>
@@ -85,8 +93,12 @@ export default function Experiences() {
                 <span>Inclus</span>
               </li>
             </ul>
-            <a href="#reservation" className="link-arrow">
-              Réserver votre nuit
+            <a
+              href="#reservation"
+              className="link-arrow"
+              onClick={() => preselect('Nuit insolite à quai')}
+            >
+              Réserver une nuit
             </a>
           </div>
         </motion.article>

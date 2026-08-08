@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
@@ -9,6 +9,13 @@ export default function Booking() {
   const intro = useReveal()
   const form = useReveal(0.12)
   const [sent, setSent] = useState(false)
+  const [experience, setExperience] = useState('Sortie en mer')
+
+  useEffect(() => {
+    const onPreselect = (e: Event) => setExperience((e as CustomEvent<string>).detail)
+    window.addEventListener('preselect-experience', onPreselect)
+    return () => window.removeEventListener('preselect-experience', onPreselect)
+  }, [])
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -56,7 +63,13 @@ export default function Booking() {
           </div>
           <div className="field">
             <label htmlFor="experience">Expérience</label>
-            <select id="experience" name="experience" defaultValue="Sortie en mer" required>
+            <select
+              id="experience"
+              name="experience"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              required
+            >
               <option>Sortie en mer</option>
               <option>Nuit insolite à quai</option>
               <option>Les deux — jour & nuit</option>

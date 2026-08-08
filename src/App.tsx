@@ -15,8 +15,8 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <Manifesto />
         <Experiences />
+        <Manifesto />
         <Route />
         <Yacht />
         <Band />

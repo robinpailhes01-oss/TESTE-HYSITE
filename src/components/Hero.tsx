@@ -64,13 +64,7 @@ export default function Hero() {
             Harmonie Yacht — location privée avec skipper
           </motion.p>
           <motion.h1 className="mixed hero__title" variants={staggerItem}>
-            <span className="line">
-              La mer <span className="it">le jour,</span>
-            </span>
-            <span className="line">
-              une <span className="it">suite sur l’eau</span>
-            </span>
-            <span className="line">la nuit.</span>
+            Créateur de <span className="it">moments authentiques</span> sur l’eau
           </motion.h1>
         </motion.div>
 
@@ -96,8 +90,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease, delay: 0.75 }}
         >
-          <a href="#reservation" className="btn btn--light">
-            Demander une date
+          <a href="#prestations" className="btn btn--light">
+            Voir nos prestations
           </a>
         </motion.div>
       </div>

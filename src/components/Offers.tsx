@@ -6,6 +6,7 @@ const OFFERS = [
   {
     plain: 'Sortie',
     it: 'en mer',
+    value: 'Sortie en mer',
     amount: '890 €',
     unit: 'la journée',
     desc: 'Yacht privatisé avec skipper, carburant et mouillage compris, apéritif au soleil couchant. Jusqu’à 8 invités, demi-journée possible.',
@@ -13,6 +14,7 @@ const OFFERS = [
   {
     plain: 'Nuit insolite',
     it: 'à quai',
+    value: 'Nuit insolite à quai',
     amount: '490 €',
     unit: 'la nuit',
     desc: 'Le yacht pour vous seuls de 18 h à 10 h — champagne de bienvenue, cabine préparée, petit-déjeuner servi à bord au réveil.',
@@ -45,7 +47,15 @@ export default function Offers() {
                 <span className="offer__unit">{o.unit}</span>
               </p>
               <p className="offer__desc">{o.desc}</p>
-              <a href="#reservation" className="link-arrow">
+              <a
+                href="#reservation"
+                className="link-arrow"
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent('preselect-experience', { detail: o.value }),
+                  )
+                }
+              >
                 Vérifier une date
               </a>
             </article>
