@@ -1,15 +1,11 @@
 import { useEffect } from 'react'
+import { Route as RouterRoute, Routes } from 'react-router-dom'
 import Lenis from 'lenis'
 import Nav from './components/Nav'
-import Hero from './components/Hero'
-import Manifesto from './components/Manifesto'
-import Experiences from './components/Experiences'
-import Route from './components/Route'
-import Yacht from './components/Yacht'
-import Band from './components/Band'
-import Offers from './components/Offers'
-import Booking from './components/Booking'
 import Footer from './components/Footer'
+import SocialToast from './components/SocialToast'
+import Home from './pages/Home'
+import ExperiencePage from './pages/ExperiencePage'
 
 /* Défilement inertiel « butter-smooth » — désactivé si reduced-motion */
 function useSmoothScroll() {
@@ -29,7 +25,7 @@ function useSmoothScroll() {
     }
     raf = requestAnimationFrame(loop)
 
-    /* Les ancres passent par Lenis pour garder l'inertie */
+    /* Les ancres locales passent par Lenis pour garder l'inertie */
     const onClick = (e: MouseEvent) => {
       const link = (e.target as HTMLElement).closest('a[href^="#"]') as HTMLAnchorElement | null
       if (!link) return
@@ -61,17 +57,12 @@ export default function App() {
   return (
     <>
       <Nav />
-      <main>
-        <Hero />
-        <Experiences />
-        <Manifesto />
-        <Route />
-        <Yacht />
-        <Band />
-        <Offers />
-        <Booking />
-      </main>
+      <Routes>
+        <RouterRoute path="/" element={<Home />} />
+        <RouterRoute path="/:slug" element={<ExperiencePage />} />
+      </Routes>
       <Footer />
+      <SocialToast />
     </>
   )
 }

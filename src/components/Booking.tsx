@@ -1,38 +1,12 @@
-import { useEffect, useState } from 'react'
-import type { FormEvent } from 'react'
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
+import BookingForm from './BookingForm'
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
 
 export default function Booking() {
   const intro = useReveal()
   const form = useReveal(0.12)
-  const [sent, setSent] = useState(false)
-  const [experience, setExperience] = useState('Sortie en mer')
-
-  useEffect(() => {
-    const onPreselect = (e: Event) => setExperience((e as CustomEvent<string>).detail)
-    window.addEventListener('preselect-experience', onPreselect)
-    return () => window.removeEventListener('preselect-experience', onPreselect)
-  }, [])
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const data = new FormData(e.currentTarget)
-    const name = String(data.get('name') ?? '')
-    const email = String(data.get('email') ?? '')
-    const experience = String(data.get('experience') ?? '')
-    const date = String(data.get('date') ?? '')
-    const message = String(data.get('message') ?? '')
-
-    const subject = encodeURIComponent(`Demande de réservation — ${experience}`)
-    const body = encodeURIComponent(
-      `Nom : ${name}\nEmail : ${email}\nExpérience : ${experience}\nDate souhaitée : ${date}\n\n${message}`,
-    )
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
-    setSent(true)
-  }
 
   return (
     <section className="section on-ocean-deep on-ocean" id="reservation">
@@ -52,52 +26,9 @@ export default function Booking() {
           </div>
         </motion.div>
 
-        <motion.form className="form" onSubmit={handleSubmit} {...form}>
-          <div className="field">
-            <label htmlFor="name">Nom</label>
-            <input id="name" name="name" type="text" autoComplete="name" required />
-          </div>
-          <div className="field">
-            <label htmlFor="email">Email</label>
-            <input id="email" name="email" type="email" autoComplete="email" required />
-          </div>
-          <div className="field">
-            <label htmlFor="experience">Expérience</label>
-            <select
-              id="experience"
-              name="experience"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              required
-            >
-              <option>Sortie en mer</option>
-              <option>Nuit insolite à quai</option>
-              <option>Les deux — jour & nuit</option>
-            </select>
-          </div>
-          <div className="field">
-            <label htmlFor="date">Date souhaitée</label>
-            <input id="date" name="date" type="date" required />
-          </div>
-          <div className="field field--full">
-            <label htmlFor="message">Votre occasion, vos envies</label>
-            <textarea
-              id="message"
-              name="message"
-              placeholder="Un anniversaire à fêter, une surprise à organiser…"
-            />
-          </div>
-          <div className="form__footer">
-            <button type="submit" className="btn btn--light">
-              Envoyer la demande
-            </button>
-            <span className="form__hint" role="status">
-              {sent
-                ? 'Votre messagerie s’est ouverte — envoyez, on s’occupe du reste.'
-                : 'Réponse sous 24 h'}
-            </span>
-          </div>
-        </motion.form>
+        <motion.div className="booking__form" {...form}>
+          <BookingForm />
+        </motion.div>
       </div>
     </section>
   )

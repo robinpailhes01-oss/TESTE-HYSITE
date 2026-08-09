@@ -1,10 +1,7 @@
 import { motion } from 'motion/react'
+import { Link } from 'react-router-dom'
 import { useReveal } from '../motion'
 import RevealImage from './RevealImage'
-
-function preselect(experience: string) {
-  window.dispatchEvent(new CustomEvent('preselect-experience', { detail: experience }))
-}
 
 export default function Experiences() {
   const head = useReveal()
@@ -22,11 +19,13 @@ export default function Experiences() {
         </motion.div>
 
         <motion.article className="exp" {...one}>
-          <RevealImage
-            className="exp__media"
-            src="/images/sortie-bateau.jpg"
-            alt="Le yacht Harmonie au mouillage sur une eau turquoise, plateforme de baignade dépliée"
-          />
+          <Link to="/sorties-en-mer" className="exp__media-link" aria-label="Découvrir les sorties en mer">
+            <RevealImage
+              className="exp__media"
+              src="/images/sortie-bateau.jpg"
+              alt="Le yacht Harmonie au mouillage sur une eau turquoise, plateforme de baignade dépliée"
+            />
+          </Link>
           <div className="exp__body">
             <span className="exp__tag">01 — Le jour</span>
             <h3 className="mixed exp__title">
@@ -50,22 +49,20 @@ export default function Experiences() {
                 <span>Inclus</span>
               </li>
             </ul>
-            <a
-              href="#reservation"
-              className="link-arrow"
-              onClick={() => preselect('Sortie en mer')}
-            >
-              Réserver une sortie
-            </a>
+            <Link to="/sorties-en-mer" className="link-arrow">
+              Découvrir la sortie en mer
+            </Link>
           </div>
         </motion.article>
 
         <motion.article className="exp exp--reverse" {...two}>
-          <RevealImage
-            className="exp__media"
-            src="/images/nuit-bateau.jpg"
-            alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
-          />
+          <Link to="/nuits-a-quai" className="exp__media-link" aria-label="Découvrir les nuits insolites à quai">
+            <RevealImage
+              className="exp__media"
+              src="/images/nuit-bateau.jpg"
+              alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
+            />
+          </Link>
           <div className="exp__body">
             <span className="exp__tag">02 — La nuit</span>
             <h3 className="mixed exp__title">
@@ -90,13 +87,9 @@ export default function Experiences() {
                 <span>Inclus</span>
               </li>
             </ul>
-            <a
-              href="#reservation"
-              className="link-arrow"
-              onClick={() => preselect('Nuit insolite à quai')}
-            >
-              Réserver une nuit
-            </a>
+            <Link to="/nuits-a-quai" className="link-arrow">
+              Découvrir la nuit à quai
+            </Link>
           </div>
         </motion.article>
       </div>

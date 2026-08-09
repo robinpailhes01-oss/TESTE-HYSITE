@@ -8,13 +8,16 @@ export default function Footer() {
           </a>
           <ul className="footer__nav">
             <li>
-              <a href="#experiences">Expériences</a>
+              <a href="#prestations">Prestations</a>
             </li>
             <li>
               <a href="#abord">À bord</a>
             </li>
             <li>
-              <a href="#yacht">Le yacht</a>
+              <a href="#galerie">Galerie</a>
+            </li>
+            <li>
+              <a href="#avis">Avis</a>
             </li>
             <li>
               <a href="#tarifs">Tarifs</a>

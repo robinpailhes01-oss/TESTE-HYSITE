@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import type { Variants } from 'motion/react'
 import { ease, useReveal } from '../motion'
+import { DAY_STEPS, NIGHT_STEPS } from '../experiences'
 
 /* Les waypoints s'égrènent un à un le long du parcours */
 const listVariants: Variants = {
@@ -15,30 +16,12 @@ const stepVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
 }
 
-type Step = { time: string; label: string; it?: string; note: string }
-
-const DAY: Step[] = [
-  { time: '10 h 00', label: 'Embarquement', note: 'Accueil au ponton, café servi à bord.' },
-  { time: '11 h 30', label: 'Cap sur', it: 'les criques', note: 'Le skipper choisit avec vous le mouillage du jour.' },
-  { time: '13 h 00', label: 'Déjeuner', it: 'au mouillage', note: 'Table dressée sur le pont, baignade à volonté.' },
-  { time: '17 h 30', label: 'La', it: 'golden hour', note: 'Apéritif face au soleil qui descend.' },
-  { time: '19 h 00', label: 'Retour au port', note: 'Dans la lumière du soir, sans se presser.' },
-]
-
-const NIGHT: Step[] = [
-  { time: '18 h 00', label: 'Embarquement', note: 'Le yacht est prêt, la cabine aussi.' },
-  { time: '19 h 00', label: 'Champagne', it: 'au carré', note: 'Coupe de bienvenue face au port.' },
-  { time: '21 h 00', label: 'Soirée', it: 'sur le pont', note: 'Dîner livré à bord sur demande.' },
-  { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, loin de tout.' },
-  { time: '9 h 00', label: 'Réveil', it: 'face à la mer', note: 'Petit-déjeuner servi sur le pont.' },
-]
-
 export default function Route() {
   const [mode, setMode] = useState<'day' | 'night'>('day')
   const reduced = useReducedMotion()
   const head = useReveal()
   const track = useReveal(0.1)
-  const steps = mode === 'day' ? DAY : NIGHT
+  const steps = mode === 'day' ? DAY_STEPS : NIGHT_STEPS
 
   return (
     <section className="section on-ocean" id="abord">
