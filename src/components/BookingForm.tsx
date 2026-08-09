@@ -2,16 +2,29 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ease } from '../motion'
+import Calendar from './Calendar'
 
 type Props = {
   /* Si fourni, l'expérience est fixée (pages détail) — sinon menu déroulant (home). */
   fixedExperience?: string
 }
 
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
 /* Formulaire visuel uniquement — aucune donnée n'est envoyée pour l'instant. */
 export default function BookingForm({ fixedExperience }: Props) {
   const [sent, setSent] = useState(false)
   const [experience, setExperience] = useState(fixedExperience ?? 'Sortie en mer')
+  const [date, setDate] = useState<Date | null>(null)
+  const [calOpen, setCalOpen] = useState(false)
+  const [dateHint, setDateHint] = useState(false)
 
   useEffect(() => {
     if (fixedExperience) return
@@ -22,6 +35,11 @@ export default function BookingForm({ fixedExperience }: Props) {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (!date) {
+      setCalOpen(true)
+      setDateHint(true)
+      return
+    }
     setSent(true)
   }
 
@@ -44,7 +62,8 @@ export default function BookingForm({ fixedExperience }: Props) {
           </p>
           <p className="form__done-text">
             Nous revenons vers vous sous 24&nbsp;heures avec une proposition sur mesure pour votre{' '}
-            {experience.toLowerCase()}.
+            {experience.toLowerCase()}
+            {date ? ` le ${formatDate(date)}` : ''}.
           </p>
         </motion.div>
       ) : (
@@ -90,10 +109,53 @@ export default function BookingForm({ fixedExperience }: Props) {
               </select>
             </div>
           )}
-          <div className="field">
+
+          {/* Date : vrai calendrier visuel */}
+          <div className="field field--full">
             <label htmlFor="bk-date">Date souhaitée</label>
-            <input id="bk-date" name="date" type="date" required />
+            <button
+              id="bk-date"
+              type="button"
+              className={`cal-trigger${date ? ' has-value' : ''}`}
+              aria-expanded={calOpen}
+              onClick={() => setCalOpen((v) => !v)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+                <path d="M3.5 9.5h17M8 3v4M16 3v4" />
+              </svg>
+              {date ? formatDate(date) : 'Choisir une date'}
+              <span className="cal-trigger__chevron" aria-hidden="true">
+                {calOpen ? '▴' : '▾'}
+              </span>
+            </button>
+            {dateHint && !date ? (
+              <span className="cal-hint" role="alert">
+                Choisissez d’abord une date dans le calendrier.
+              </span>
+            ) : null}
+            <AnimatePresence>
+              {calOpen ? (
+                <motion.div
+                  className="calendar-wrap"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.45, ease }}
+                >
+                  <Calendar
+                    value={date}
+                    onChange={(d) => {
+                      setDate(d)
+                      setDateHint(false)
+                      window.setTimeout(() => setCalOpen(false), 260)
+                    }}
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </div>
+
           <div className="field field--full">
             <label htmlFor="bk-message">Votre occasion, vos envies</label>
             <textarea

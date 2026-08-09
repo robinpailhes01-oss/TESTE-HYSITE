@@ -13,6 +13,8 @@ export default function ExperiencePage() {
 
   const intro = useReveal()
   const includes = useReveal(0.1)
+  const formulesHead = useReveal()
+  const formulesGrid = useReveal(0.1)
   const stepsReveal = useReveal()
   const priceReveal = useReveal(0.1)
   const galleryReveal = useReveal()
@@ -79,6 +81,44 @@ export default function ExperiencePage() {
         </div>
       </section>
 
+      {/* Formules (sorties en mer) */}
+      {exp.formules ? (
+        <section className="section" style={{ background: 'var(--white)' }}>
+          <div className="container">
+            <motion.div className="section-head" {...formulesHead}>
+              <p className="kicker">Nos formules</p>
+              <h2 className="mixed">
+                Trois façons de <span className="it">prendre le large</span>
+              </h2>
+            </motion.div>
+            <motion.div className="formules" {...formulesGrid}>
+              {exp.formules.map((f) => (
+                <article className="formule" key={f.num}>
+                  <div className="formule__top">
+                    <span className="formule__num">{f.num}</span>
+                    {f.highlight ? <span className="formule__badge">{f.highlight}</span> : null}
+                  </div>
+                  <h3 className="mixed formule__name">
+                    {f.name}
+                    {f.name.endsWith('-') ? null : ' '}
+                    <span className="it">{f.it}</span>
+                  </h3>
+                  <p className="formule__duration">{f.duration}</p>
+                  <p className="formule__price">
+                    <span className="offer__unit">à partir de</span>
+                    <span className="formule__amount">{f.amount}</span>
+                  </p>
+                  <p className="formule__desc">{f.desc}</p>
+                  <a href="#reservation" className="link-arrow">
+                    Réserver cette formule
+                  </a>
+                </article>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      ) : null}
+
       {/* Déroulé */}
       <section className="section on-ocean">
         <div className="container">
@@ -108,14 +148,16 @@ export default function ExperiencePage() {
               ))}
             </ol>
           </div>
-          <motion.div className="page-price" {...priceReveal}>
-            <p className="page-price__amount">
-              <span className="offer__unit">à partir de</span>
-              <span className="page-price__value">{exp.price.amount}</span>
-              <span className="offer__unit">{exp.price.unit}</span>
-            </p>
-            <p className="page-price__note">{exp.price.note}</p>
-          </motion.div>
+          {!exp.formules ? (
+            <motion.div className="page-price" {...priceReveal}>
+              <p className="page-price__amount">
+                <span className="offer__unit">à partir de</span>
+                <span className="page-price__value">{exp.price.amount}</span>
+                <span className="offer__unit">{exp.price.unit}</span>
+              </p>
+              <p className="page-price__note">{exp.price.note}</p>
+            </motion.div>
+          ) : null}
         </div>
       </section>
 

@@ -19,6 +19,16 @@ export const NIGHT_STEPS: Step[] = [
   { time: '9 h 00', label: 'Réveil', it: 'face à la mer', note: 'Petit-déjeuner servi sur le pont.' },
 ]
 
+export type Formule = {
+  num: string
+  name: string
+  it: string
+  duration: string
+  amount: string
+  desc: string
+  highlight?: string
+}
+
 export type Experience = {
   slug: string
   value: string
@@ -32,6 +42,7 @@ export type Experience = {
   includes: { label: string; detail: string }[]
   steps: Step[]
   price: { amount: string; unit: string; note: string }
+  formules?: Formule[]
   gallery: { src: string; alt: string }[]
 }
 
@@ -61,6 +72,34 @@ export const EXPERIENCES: Experience[] = [
       unit: 'la journée',
       note: 'À partir de — demi-journée disponible sur demande.',
     },
+    /* Tarifs indicatifs — à ajuster avant mise en ligne. */
+    formules: [
+      {
+        num: '01',
+        name: 'Golden',
+        it: 'hour',
+        duration: '2 h 30 — au couchant',
+        amount: '350 €',
+        desc: 'La sortie du soir : cap au large à la golden hour, apéritif servi face au soleil qui descend, retour de nuit tombante.',
+      },
+      {
+        num: '02',
+        name: 'Demi-',
+        it: 'journée',
+        duration: '4 h — matin ou après-midi',
+        amount: '590 €',
+        desc: 'L’essentiel d’une journée en mer : une crique, un mouillage, baignade et paddle — condensés en une demi-journée.',
+      },
+      {
+        num: '03',
+        name: 'Journée',
+        it: 'entière',
+        duration: '8 h — de 10 h à 19 h',
+        amount: '890 €',
+        desc: 'La journée complète : criques au programme libre, déjeuner au mouillage, baignade à volonté et retour dans la lumière du soir.',
+        highlight: 'La plus choisie',
+      },
+    ],
     gallery: [
       { src: '/images/sortie-bateau.jpg', alt: 'Le yacht au mouillage, eau turquoise' },
       { src: '/images/sortie-carre.jpg', alt: 'Le yacht vu depuis l’eau' },
