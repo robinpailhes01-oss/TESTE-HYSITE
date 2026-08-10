@@ -7,9 +7,9 @@ const OFFERS = [
     plain: 'Sortie',
     it: 'en mer',
     value: 'Sortie en mer',
-    amount: '890 €',
-    unit: 'la journée',
-    desc: 'Yacht privatisé avec skipper, carburant et mouillage compris, apéritif au soleil couchant. Jusqu’à 8 invités, demi-journée possible.',
+    amount: '380 €',
+    unit: 'les 2 heures',
+    desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. Formules 2 h, 3 h ou 4 h — sans capitaine (permis côtier) dès 320 €. Jusqu’à 8 invités.',
   },
   {
     plain: 'Nuit insolite',

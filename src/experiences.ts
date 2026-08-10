@@ -3,12 +3,13 @@
 
 export type Step = { time: string; label: string; it?: string; note: string }
 
+/* Exemple sur une sortie 4 h de l'après-midi — les horaires s'adaptent au créneau choisi. */
 export const DAY_STEPS: Step[] = [
-  { time: '10 h 00', label: 'Embarquement', note: 'Accueil au ponton, café servi à bord.' },
-  { time: '11 h 30', label: 'Cap sur', it: 'les criques', note: 'Le skipper choisit avec vous le mouillage du jour.' },
-  { time: '13 h 00', label: 'Déjeuner', it: 'au mouillage', note: 'Table dressée sur le pont, baignade à volonté.' },
-  { time: '17 h 30', label: 'La', it: 'golden hour', note: 'Apéritif face au soleil qui descend.' },
-  { time: '19 h 00', label: 'Retour au port', note: 'Dans la lumière du soir, sans se presser.' },
+  { time: '14 h 00', label: 'Embarquement', note: 'Accueil au ponton, briefing et café.' },
+  { time: '14 h 30', label: 'Cap sur', it: 'les criques', note: 'Le capitaine choisit avec vous le mouillage.' },
+  { time: '15 h 30', label: 'Mouillage', it: '& baignade', note: 'Eau claire, plateforme de baignade dépliée.' },
+  { time: '17 h 00', label: 'L’apéritif', it: 'au couchant', note: 'Coupe à la main face au soleil qui descend.' },
+  { time: '18 h 00', label: 'Retour au port', note: 'Dans la lumière du soir, sans se presser.' },
 ]
 
 export const NIGHT_STEPS: Step[] = [
@@ -25,6 +26,7 @@ export type Formule = {
   it: string
   duration: string
   amount: string
+  amountSolo: string
   desc: string
   highlight?: string
 }
@@ -57,47 +59,49 @@ export const EXPERIENCES: Experience[] = [
     hero: '/images/sortie-bateau.jpg',
     heroAlt: 'Le yacht Harmonie au mouillage sur une eau turquoise',
     intro:
-      'Le yacht est à vous, le programme aussi. Vous embarquez avec votre skipper, et la journée se dessine selon vos envies : cap sur les criques, mouillage dans une eau claire, déjeuner sur le pont, baignade, paddle — et le retour au port dans la lumière du soir. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
+      'Le yacht est à vous, le programme aussi. Vous embarquez avec votre capitaine — ou sans, si vous avez le permis — et la sortie se dessine selon vos envies : cap sur les criques, mouillage dans une eau claire, baignade, et l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
-      { label: 'Yacht privatisé avec skipper', detail: 'Le bateau est à vous, personne d’autre à bord' },
-      { label: 'Demi-journée ou journée entière', detail: '4 h — 8 h' },
+      { label: 'Yacht privatisé', detail: 'Le bateau est à vous, personne d’autre à bord' },
+      { label: 'Avec capitaine, ou sans', detail: 'Sans : permis côtier requis, −15 %' },
+      { label: 'Sorties de 2 h, 3 h ou 4 h', detail: 'Au choix' },
       { label: 'Carburant & mouillage compris', detail: 'Aucun supplément surprise' },
-      { label: 'Plateforme de baignade & équipements', detail: 'Paddle, masques, serviettes' },
-      { label: 'Apéritif au soleil couchant', detail: 'Inclus' },
+      { label: 'Plateforme de baignade & équipements', detail: 'Masques, serviettes' },
       { label: 'Jusqu’à 8 invités', detail: 'Anniversaires, EVJF, familles' },
     ],
     steps: DAY_STEPS,
     price: {
-      amount: '890 €',
-      unit: 'la journée',
-      note: 'À partir de — demi-journée disponible sur demande.',
+      amount: '380 €',
+      unit: 'la sortie',
+      note: 'À partir de — sans capitaine dès 320 €.',
     },
-    /* Tarifs indicatifs — à ajuster avant mise en ligne. */
     formules: [
       {
         num: '01',
-        name: 'Golden',
-        it: 'hour',
-        duration: '2 h 30 — au couchant',
-        amount: '350 €',
-        desc: 'La sortie du soir : cap au large à la golden hour, apéritif servi face au soleil qui descend, retour de nuit tombante.',
+        name: 'Deux',
+        it: 'heures',
+        duration: '2 h — idéale au couchant',
+        amount: '380 €',
+        amountSolo: '320 €',
+        desc: 'La parenthèse : cap au large, baignade express et coupe à la main — parfaite sur le créneau de la golden hour.',
       },
       {
         num: '02',
-        name: 'Demi-',
-        it: 'journée',
-        duration: '4 h — matin ou après-midi',
-        amount: '590 €',
-        desc: 'L’essentiel d’une journée en mer : une crique, un mouillage, baignade et paddle — condensés en une demi-journée.',
+        name: 'Trois',
+        it: 'heures',
+        duration: '3 h — crique & baignade',
+        amount: '550 €',
+        amountSolo: '470 €',
+        desc: 'Le bon équilibre : une crique, un vrai mouillage, baignade et apéritif — sans regarder la montre.',
+        highlight: 'La plus choisie',
       },
       {
         num: '03',
-        name: 'Journée',
-        it: 'entière',
-        duration: '8 h — de 10 h à 19 h',
-        amount: '890 €',
-        desc: 'La journée complète : criques au programme libre, déjeuner au mouillage, baignade à volonté et retour dans la lumière du soir.',
-        highlight: 'La plus choisie',
+        name: 'Quatre',
+        it: 'heures',
+        duration: '4 h — la demi-journée',
+        amount: '750 €',
+        amountSolo: '640 €',
+        desc: 'La demi-journée complète : deux mouillages possibles, apéritif dînatoire à bord, baignade à volonté.',
       },
     ],
     gallery: [

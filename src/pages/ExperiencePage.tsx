@@ -105,8 +105,11 @@ export default function ExperiencePage() {
                   </h3>
                   <p className="formule__duration">{f.duration}</p>
                   <p className="formule__price">
-                    <span className="offer__unit">à partir de</span>
+                    <span className="offer__unit">avec capitaine</span>
                     <span className="formule__amount">{f.amount}</span>
+                  </p>
+                  <p className="formule__solo">
+                    Sans capitaine (permis côtier) — {f.amountSolo}
                   </p>
                   <p className="formule__desc">{f.desc}</p>
                   <a href="#reservation" className="link-arrow">

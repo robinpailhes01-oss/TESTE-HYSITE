@@ -1674,6 +1674,14 @@ section {
   color: var(--ocean);
 }
 
+.formule__solo {
+  font-size: 13px;
+  color: var(--ink-muted);
+  border: 1px solid var(--ink-faint);
+  border-radius: 100px;
+  padding: 5px 14px;
+}
+
 .formule__desc {
   font-size: 14.5px;
   color: var(--ink-muted);

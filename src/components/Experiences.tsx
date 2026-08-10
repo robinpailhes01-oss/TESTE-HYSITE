@@ -33,20 +33,20 @@ export default function Experiences() {
             </h3>
             <p className="exp__desc">
               Le yacht est à vous, le programme aussi. Cap sur les criques, mouillage dans une eau
-              claire, déjeuner à bord, baignade — et le retour au port dans la lumière du soir.
+              claire, baignade — et l’apéritif face au soleil qui descend.
             </p>
             <ul className="exp__list">
               <li>
-                <span>Demi-journée ou journée entière</span>
-                <span>4 h — 8 h</span>
+                <span>Sorties de 2 h, 3 h ou 4 h</span>
+                <span>Dès 380 €</span>
+              </li>
+              <li>
+                <span>Avec capitaine, ou sans (permis)</span>
+                <span>−15 %</span>
               </li>
               <li>
                 <span>Mouillage & baignade dans une crique</span>
                 <span>Au choix</span>
-              </li>
-              <li>
-                <span>Apéritif au soleil couchant</span>
-                <span>Inclus</span>
               </li>
             </ul>
             <Link to="/sorties-en-mer" className="link-arrow">
