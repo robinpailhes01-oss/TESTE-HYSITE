@@ -1688,6 +1688,159 @@ section {
   flex: 1;
 }
 
+/* --- Formulaire de réservation : sélecteur de prestation & récap tarifaire - */
+
+.group-switch {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--white-faint);
+  border-radius: var(--r-btn);
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 4px;
+}
+
+.group-switch button {
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 5px;
+  color: var(--white-muted);
+  transition: background var(--t-std) var(--ease), color var(--t-std) var(--ease);
+}
+
+.group-switch button[aria-pressed='true'] {
+  background: var(--foam);
+  color: var(--ink);
+}
+
+.price-recap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--white-faint);
+  border-radius: var(--r-btn);
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.price-recap__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.price-recap__row.is-total {
+  font-size: 13px;
+  color: var(--white-muted);
+}
+
+.price-recap__row.is-deposit {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 21px;
+  color: var(--white);
+}
+
+.price-recap__note {
+  font-size: 12px;
+  color: var(--white-muted);
+}
+
+.form__error {
+  font-size: 13.5px;
+  color: #f6c9a6;
+  border: 1px solid rgba(246, 201, 166, 0.4);
+  border-radius: var(--r-btn);
+  padding: 12px 14px;
+}
+
+.form__error a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none;
+}
+
+/* --- Page de confirmation (/merci) ------------------------------------------ */
+
+.confirm {
+  min-height: 78svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm__card {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding-block: 60px;
+}
+
+.confirm__icon {
+  color: var(--white);
+}
+
+.confirm__title {
+  font-size: clamp(30px, 3.6vw, 44px);
+}
+
+.confirm__text {
+  color: var(--white-muted);
+  max-width: 42ch;
+}
+
+.confirm__loading {
+  color: var(--white-muted);
+  font-size: 14px;
+}
+
+.confirm__recap {
+  margin-top: 8px;
+  width: 100%;
+  max-width: 380px;
+  border-top: 1px solid var(--white-faint);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.confirm__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--white-muted);
+}
+
+.confirm__row span:last-child {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--white);
+}
+
+.confirm__actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.confirm__failed .confirm__text {
+  margin-top: 4px;
+}
+
 /* --- Responsive ------------------------------------------------------------- */
 
 @media (max-width: 1080px) {
@@ -1937,6 +2090,18 @@ section {
 
   .calendar {
     max-width: none;
+  }
+
+  .group-switch {
+    width: 100%;
+  }
+
+  .group-switch button {
+    flex: 1;
+  }
+
+  .confirm__actions .btn {
+    width: 100%;
   }
 
   .footer__inner {

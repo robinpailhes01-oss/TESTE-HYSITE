@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import SocialToast from './components/SocialToast'
 import Home from './pages/Home'
 import ExperiencePage from './pages/ExperiencePage'
+import Confirmation from './pages/Confirmation'
 
 /* Défilement inertiel « butter-smooth » — désactivé si reduced-motion */
 function useSmoothScroll() {
@@ -59,6 +60,7 @@ export default function App() {
       <Nav />
       <Routes>
         <RouterRoute path="/" element={<Home />} />
+        <RouterRoute path="/merci" element={<Confirmation />} />
         <RouterRoute path="/:slug" element={<ExperiencePage />} />
       </Routes>
       <Footer />

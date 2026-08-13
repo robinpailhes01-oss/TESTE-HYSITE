@@ -112,7 +112,13 @@ export default function ExperiencePage() {
                     Sans capitaine (permis côtier) — {f.amountSolo}
                   </p>
                   <p className="formule__desc">{f.desc}</p>
-                  <a href="#reservation" className="link-arrow">
+                  <a
+                    href="#reservation"
+                    className="link-arrow"
+                    onClick={() =>
+                      window.dispatchEvent(new CustomEvent('preselect-formule', { detail: f.key }))
+                    }
+                  >
                     Réserver cette formule
                   </a>
                 </article>
@@ -184,8 +190,8 @@ export default function ExperiencePage() {
               Réserver votre <span className="it">{exp.value.toLowerCase()}</span>
             </h2>
             <p className="booking__text">
-              Indiquez-nous la date et l’occasion — nous revenons vers vous sous 24&nbsp;heures
-              avec une proposition sur mesure.
+              Choisissez votre date, réglez l’acompte de 30&nbsp;% en ligne — c’est réservé.
+              Nous revenons vers vous sous 24&nbsp;heures pour finaliser les détails.
             </p>
             <div className="booking__direct">
               <span className="kicker">Directement</span>
@@ -199,7 +205,7 @@ export default function ExperiencePage() {
             </p>
           </div>
           <div className="booking__form">
-            <BookingForm fixedExperience={exp.value} />
+            <BookingForm group={exp.group} />
           </div>
         </div>
       </section>

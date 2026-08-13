@@ -21,6 +21,7 @@ export const NIGHT_STEPS: Step[] = [
 ]
 
 export type Formule = {
+  key: '2h' | '3h' | '4h'
   num: string
   name: string
   it: string
@@ -33,6 +34,7 @@ export type Formule = {
 
 export type Experience = {
   slug: string
+  group: 'sortie' | 'nuit'
   value: string
   tag: string
   titlePlain: string
@@ -51,6 +53,7 @@ export type Experience = {
 export const EXPERIENCES: Experience[] = [
   {
     slug: 'sorties-en-mer',
+    group: 'sortie',
     value: 'Sortie en mer',
     tag: '01 — Le jour',
     titlePlain: 'Sorties',
@@ -76,6 +79,7 @@ export const EXPERIENCES: Experience[] = [
     },
     formules: [
       {
+        key: '2h',
         num: '01',
         name: 'Deux',
         it: 'heures',
@@ -85,6 +89,7 @@ export const EXPERIENCES: Experience[] = [
         desc: 'La parenthèse : cap au large, baignade express et coupe à la main — parfaite sur le créneau de la golden hour.',
       },
       {
+        key: '3h',
         num: '02',
         name: 'Trois',
         it: 'heures',
@@ -95,6 +100,7 @@ export const EXPERIENCES: Experience[] = [
         highlight: 'La plus choisie',
       },
       {
+        key: '4h',
         num: '03',
         name: 'Quatre',
         it: 'heures',
@@ -112,6 +118,7 @@ export const EXPERIENCES: Experience[] = [
   },
   {
     slug: 'nuits-a-quai',
+    group: 'nuit',
     value: 'Nuit insolite à quai',
     tag: '02 — La nuit',
     titlePlain: 'Nuits insolites',
