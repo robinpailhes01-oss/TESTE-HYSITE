@@ -93,6 +93,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const dateStr = typeof date === 'string' ? date : ''
+
+  if (price.availableFrom && dateStr && dateStr < price.availableFrom) {
+    return res.status(400).json({ error: `Cette formule est disponible à partir du ${price.availableFrom.split('-').reverse().join('/')}.` })
+  }
   const startTimeStr = typeof startTime === 'string' && /^\d{2}:\d{2}$/.test(startTime) ? startTime : ''
   const endTimeStr = (() => {
     if (!startTimeStr) return ''

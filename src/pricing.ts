@@ -31,6 +31,9 @@ export type PriceItem = {
   /* Nuit Prestige le week-end (ven-dim) : pas de paiement en ligne, contact
      direct avec l'équipe (règle métier de Léa — escalade humaine obligatoire). */
   weekendRequiresContact?: boolean
+  /* Première date réservable (YYYY-MM-DD) — ex. Nuit à quai à 250 €,
+     ouverte à partir du 1er septembre. */
+  availableFrom?: string
 }
 
 function deposit(amount: number) {
@@ -67,8 +70,9 @@ export const PRICES: PriceItem[] = [
     group: 'nuit',
     bookingType: 'nuit_insolite',
     label: 'Nuit à quai — petit-déjeuner',
-    detail: 'Amarré au calme, petit-déjeuner (Hôtel Neptune) inclus le lendemain matin — 18 h à 12 h le lendemain',
+    detail: 'Amarré au calme, petit-déjeuner (Hôtel Neptune) inclus le lendemain matin — 18 h à 12 h le lendemain. Disponible à partir du 1er septembre.',
     amount: 250,
+    availableFrom: '2026-09-01',
   },
 ]
 

@@ -145,7 +145,7 @@ export const EXPERIENCES: Experience[] = [
       { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
       { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
-      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer, pour se lover à deux' },
+      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
       { label: 'Petit-déjeuner inclus', detail: 'Hôtel Neptune, juste à côté du ponton' },
       { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
@@ -166,6 +166,7 @@ export const EXPERIENCES: Experience[] = [
         it: 'à quai',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '250 €',
+        season: 'Disponible à partir du 1er septembre',
         desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
       },
       {

@@ -132,6 +132,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     to.setMonth(to.getMonth() + 6)
     for (const d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
       const iso = toDateOnly(d)
+      if (price?.availableFrom && iso < price.availableFrom) {
+        set.add(iso)
+        continue
+      }
       if (isDateFullyBlocked(iso, slots)) {
         set.add(iso)
         continue
@@ -146,7 +150,17 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     }
     return set
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupChoice, slots, price?.durationHours])
+  }, [groupChoice, slots, price?.durationHours, price?.availableFrom])
+
+  /* Si la date déjà choisie devient invalide (ex. bascule vers la Nuit à
+     quai, disponible seulement à partir du 1er septembre), on la vide plutôt
+     que de laisser une date impossible sélectionnée. */
+  useEffect(() => {
+    if (dateISO && price?.availableFrom && dateISO < price.availableFrom) {
+      setDate(null)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [price?.availableFrom])
 
   /* Nuit Prestige + date tombant un week-end : pas de paiement en ligne. */
   const blockedWeekendPrestige =
@@ -292,6 +306,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <option value="prestige">Nuit Prestige — avec sortie en mer & tapas (380 €)</option>
             <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (250 €)</option>
           </select>
+          {nightFormule === 'sans-sortie' ? (
+            <p className="field__note">Disponible à partir du 1er septembre.</p>
+          ) : null}
         </div>
       )}
 
