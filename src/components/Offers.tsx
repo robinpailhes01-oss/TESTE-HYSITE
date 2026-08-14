@@ -8,15 +8,15 @@ const OFFERS = [
     group: 'sortie',
     amount: '380 €',
     unit: 'les 2 heures',
-    desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. Formules 2 h, 3 h ou 4 h — sans capitaine (permis côtier) dès 320 €. Jusqu’à 8 invités.',
+    desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. De 2 h à 8 h (Ultra Premium, 1 250 €) — sans capitaine dès 320 €. Jusqu’à 10 invités.',
   },
   {
     plain: 'Nuit',
     it: 'à quai',
     group: 'nuit',
-    amount: '380 €',
+    amount: '250 €',
     unit: 'la nuit',
-    desc: 'Nuit Prestige, toute l’année : sortie en mer d’1 h, planche charcuterie-fromage (Una Mas) et petit-déjeuner (Hôtel Neptune) inclus. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
+    desc: 'À partir de 250 € (petit-déjeuner Hôtel Neptune), ou 380 € en Nuit Prestige avec sortie en mer au coucher de soleil et tapas Una Mas. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
   },
 ]
 

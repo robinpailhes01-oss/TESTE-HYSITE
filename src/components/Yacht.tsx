@@ -2,13 +2,12 @@ import { motion } from 'motion/react'
 import { useReveal } from '../motion'
 import RevealImage from './RevealImage'
 
-/* Caractéristiques à ajuster avec les vraies données du bateau. */
 const SPECS = [
-  { key: 'Invités en journée', value: '8' },
-  { key: 'Couchages pour la nuit', value: '4' },
-  { key: 'Cabines', value: '2' },
+  { key: 'Invités en journée', value: '10' },
+  { key: 'Invités la nuit', value: '2' },
   { key: 'Skipper', value: 'Inclus' },
-  { key: 'Pont', value: 'Teck & bain de soleil' },
+  { key: 'Pont', value: 'Bains de soleil avant & arrière, table extérieure centrale' },
+  { key: 'Salon intérieur', value: 'Table & frigo' },
 ]
 
 export default function Yacht() {
@@ -25,7 +24,7 @@ export default function Yacht() {
         <motion.div className="yacht__body" {...body}>
           <p className="kicker">Le yacht</p>
           <h2 className="mixed yacht__title">
-            Un seul bateau, tenu <span className="it">comme une maison</span>
+            Un seul bateau, tenu <span className="it">avec soin</span>
           </h2>
           <p className="yacht__desc">
             Nous ne gérons pas une flotte. Nous tenons un yacht — préparé, briefé et fleuri avant

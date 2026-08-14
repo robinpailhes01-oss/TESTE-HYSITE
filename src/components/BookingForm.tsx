@@ -3,10 +3,19 @@ import type { FormEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { DEPOSIT_RATE, findPrice } from '../pricing'
+import { DEPOSIT_RATE, findPrice, SORTIE_WINDOW } from '../pricing'
+import {
+  fetchBookedSlots,
+  formatHour,
+  getSortieStartHours,
+  isDateFullyBlocked,
+  isNightBlocked,
+} from '../availability'
+import type { BookedSlot } from '../availability'
 
 type Group = 'sortie' | 'nuit'
-type Duration = '2h' | '3h' | '4h'
+type Duration = '2h' | '3h' | '4h' | '8h'
+type NightFormule = 'prestige' | 'sans-sortie'
 
 type Props = {
   /* Si fourni, la prestation est fixée (pages détail) — sinon bascule (home). */
@@ -47,11 +56,23 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
   const [duration, setDuration] = useState<Duration>('3h')
   const [captain, setCaptain] = useState<'avec' | 'sans'>('avec')
+  const [nightFormule, setNightFormule] = useState<NightFormule>('prestige')
   const [date, setDate] = useState<Date | null>(null)
+  const [startHour, setStartHour] = useState<number | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [dateHint, setDateHint] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [slots, setSlots] = useState<BookedSlot[]>([])
+
+  /* Disponibilité réelle : lue une fois dans Supabase (réservations déjà
+     confirmées + dates bloquées), sur une fenêtre de 6 mois glissants. */
+  useEffect(() => {
+    const from = new Date()
+    const to = new Date()
+    to.setMonth(to.getMonth() + 6)
+    fetchBookedSlots(toDateOnly(from), toDateOnly(to)).then(setSlots)
+  }, [])
 
   /* Les cartes de formules (pages détail) présélectionnent une durée (sorties)
      ou une formule de nuit. Les cartes tarifaires de la home ne présélectionnent
@@ -59,11 +80,12 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   useEffect(() => {
     const onFormule = (e: Event) => {
       const key = (e as CustomEvent<string>).detail
-      if (key === '2h' || key === '3h' || key === '4h') {
+      if (key === '2h' || key === '3h' || key === '4h' || key === '8h') {
         setGroupChoice('sortie')
         setDuration(key)
-      } else if (key === 'prestige') {
+      } else if (key === 'prestige' || key === 'sans-sortie') {
         setGroupChoice('nuit')
+        setNightFormule(key)
       }
     }
     const onGroup = (e: Event) => {
@@ -78,14 +100,53 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     }
   }, [])
 
+  const isUltraPremium = groupChoice === 'sortie' && duration === '8h'
+
   const priceId = useMemo(() => {
-    if (groupChoice === 'nuit') return 'nuit-prestige'
+    if (groupChoice === 'nuit') return nightFormule === 'prestige' ? 'nuit-prestige' : 'nuit-sans-sortie'
+    if (isUltraPremium) return 'sortie-8h-ultra-premium'
     return `sortie-${duration}-${captain === 'avec' ? 'capitaine' : 'solo'}`
-  }, [groupChoice, duration, captain])
+  }, [groupChoice, duration, captain, nightFormule, isUltraPremium])
 
   const price = findPrice(priceId)
   const deposit = price ? Math.round(price.amount * DEPOSIT_RATE) : null
   const balance = price && deposit !== null ? price.amount - deposit : null
+
+  const dateISO = date ? toDateOnly(date) : null
+
+  /* Créneaux de départ possibles pour une sortie, une fois la date choisie —
+     entre 9 h et 21 h, 1 h de battement avec les sorties déjà réservées. */
+  const sortieHours = useMemo(() => {
+    if (groupChoice !== 'sortie' || !dateISO || !price?.durationHours) return []
+    return getSortieStartHours(dateISO, price.durationHours, slots)
+  }, [groupChoice, dateISO, price, slots])
+
+  useEffect(() => {
+    setStartHour(null)
+  }, [dateISO, duration])
+
+  const disabledDates = useMemo(() => {
+    const set = new Set<string>()
+    const from = new Date()
+    const to = new Date()
+    to.setMonth(to.getMonth() + 6)
+    for (const d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+      const iso = toDateOnly(d)
+      if (isDateFullyBlocked(iso, slots)) {
+        set.add(iso)
+        continue
+      }
+      if (groupChoice === 'nuit' && isNightBlocked(iso, slots)) {
+        set.add(iso)
+        continue
+      }
+      if (groupChoice === 'sortie' && price?.durationHours && getSortieStartHours(iso, price.durationHours, slots).length === 0) {
+        set.add(iso)
+      }
+    }
+    return set
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupChoice, slots, price?.durationHours])
 
   /* Nuit Prestige + date tombant un week-end : pas de paiement en ligne. */
   const blockedWeekendPrestige =
@@ -93,6 +154,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     !!price?.weekendRequiresContact &&
     date !== null &&
     isWeekend(date)
+
+  const needsSortieHour = groupChoice === 'sortie'
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -104,8 +167,13 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       return
     }
     if (!price || deposit === null || blockedWeekendPrestige) return
+    if (needsSortieHour && startHour === null) {
+      setErrorMsg('Choisissez une heure de départ disponible.')
+      return
+    }
 
     const data = new FormData(e.currentTarget)
+    const startTime = groupChoice === 'nuit' ? '18:00' : startHour !== null ? `${String(startHour).padStart(2, '0')}:00` : ''
     setLoading(true)
     try {
       const res = await fetch('/api/create-checkout-session', {
@@ -118,6 +186,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           guests: String(data.get('guests') ?? ''),
           message: String(data.get('message') ?? ''),
           date: toDateOnly(date),
+          startTime,
         }),
       })
       const payload = await res.json().catch(() => ({}))
@@ -146,6 +215,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           <button
             type="button"
             role="tab"
+            data-variant="sortie"
             aria-pressed={groupChoice === 'sortie'}
             onClick={() => setGroupChoice('sortie')}
           >
@@ -154,6 +224,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           <button
             type="button"
             role="tab"
+            data-variant="nuit"
             aria-pressed={groupChoice === 'nuit'}
             onClick={() => setGroupChoice('nuit')}
           >
@@ -183,26 +254,51 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               <option value="2h">2 heures</option>
               <option value="3h">3 heures</option>
               <option value="4h">4 heures</option>
+              <option value="8h">8 heures — Ultra Premium (1 250 €, tout compris)</option>
             </select>
           </div>
-          <div className="field">
-            <label htmlFor="bk-captain">Capitaine</label>
-            <select
-              id="bk-captain"
-              value={captain}
-              onChange={(e) => setCaptain(e.target.value as 'avec' | 'sans')}
-            >
-              <option value="avec">Avec capitaine</option>
-              <option value="sans">Sans capitaine (permis côtier)</option>
-            </select>
-          </div>
+          {!isUltraPremium ? (
+            <div className="field">
+              <label htmlFor="bk-captain">Capitaine</label>
+              <select
+                id="bk-captain"
+                value={captain}
+                onChange={(e) => setCaptain(e.target.value as 'avec' | 'sans')}
+              >
+                <option value="avec">Avec capitaine</option>
+                <option value="sans">Sans capitaine (permis côtier)</option>
+              </select>
+              {captain === 'sans' ? (
+                <p className="field__note">
+                  Permis bateau depuis au moins 5 ans et 50 h de navigation justifiables sur un
+                  bateau de ce type.
+                </p>
+              ) : null}
+            </div>
+          ) : (
+            <p className="field__note field--full">
+              Journée aux Aresquiers, capitaine et tout inclus — efoil et BBQ à bord.
+            </p>
+          )}
         </>
-      ) : null}
+      ) : (
+        <div className="field field--full">
+          <label htmlFor="bk-formule">Formule</label>
+          <select
+            id="bk-formule"
+            value={nightFormule}
+            onChange={(e) => setNightFormule(e.target.value as NightFormule)}
+          >
+            <option value="prestige">Nuit Prestige — avec sortie en mer & tapas (380 €)</option>
+            <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (250 €)</option>
+          </select>
+        </div>
+      )}
 
       <div className="field">
         <label htmlFor="bk-guests">Nombre d’invités</label>
         <select id="bk-guests" name="guests" defaultValue="2">
-          {(groupChoice === 'nuit' ? ['1', '2'] : ['2', '3', '4', '5', '6', '7', '8']).map((n) => (
+          {(groupChoice === 'nuit' ? ['1', '2'] : ['2', '3', '4', '5', '6', '7', '8', '9', '10']).map((n) => (
             <option key={n} value={n}>
               {n}
             </option>
@@ -250,11 +346,41 @@ export default function BookingForm({ group: fixedGroup }: Props) {
                   setDateHint(false)
                   window.setTimeout(() => setCalOpen(false), 260)
                 }}
+                disabledDates={disabledDates}
               />
             </motion.div>
           ) : null}
         </AnimatePresence>
       </div>
+
+      {needsSortieHour && date ? (
+        <div className="field field--full">
+          <label htmlFor="bk-hour">Heure de départ</label>
+          {sortieHours.length > 0 ? (
+            <select
+              id="bk-hour"
+              value={startHour ?? ''}
+              onChange={(e) => setStartHour(e.target.value ? Number(e.target.value) : null)}
+              required
+            >
+              <option value="" disabled>
+                Choisir une heure
+              </option>
+              {sortieHours.map((h) => (
+                <option key={h} value={h}>
+                  {formatHour(h)}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <p className="cal-hint" role="alert">
+              Plus aucun créneau disponible ce jour-là (sorties entre {SORTIE_WINDOW.openHour} h et{' '}
+              {SORTIE_WINDOW.closeHour} h, 1 h de battement entre deux sorties) — choisissez une
+              autre date.
+            </p>
+          )}
+        </div>
+      ) : null}
 
       <div className="field field--full">
         <label htmlFor="bk-message">Votre occasion, vos envies</label>

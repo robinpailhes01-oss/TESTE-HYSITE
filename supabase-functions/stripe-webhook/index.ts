@@ -164,6 +164,8 @@ Deno.serve(async (req) => {
   const nom = md.nom ?? "Client";
   const email = md.email || session.customer_details?.email || session.customer_email || "";
   const dateOnly = md.date ?? "";
+  const startTime = md.startTime || null;
+  const endTime = md.endTime || null;
   const montantTotal = Number(md.montantTotal ?? 0);
   const invites = md.invites ? Number.parseInt(md.invites, 10) : null;
   const message = md.message || null;
@@ -209,6 +211,8 @@ Deno.serve(async (req) => {
       customer_id: customerId,
       booking_type: bookingType,
       date: dateOnly || null,
+      start_time: startTime,
+      end_time: endTime,
       offer_name: formule,
       party_size: invites,
       total_amount: montantTotal,

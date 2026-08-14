@@ -9,6 +9,15 @@ const WEEKDAYS = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim']
 type Props = {
   value: Date | null
   onChange: (d: Date) => void
+  /* Dates YYYY-MM-DD entièrement indisponibles (déjà réservées ou bloquées). */
+  disabledDates?: Set<string>
+}
+
+function toDateOnly(d: Date) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
 }
 
 function sameDay(a: Date, b: Date) {
@@ -20,7 +29,7 @@ function sameDay(a: Date, b: Date) {
 }
 
 /* Calendrier visuel maison — mois par mois, semaine commençant le lundi. */
-export default function Calendar({ value, onChange }: Props) {
+export default function Calendar({ value, onChange, disabledDates }: Props) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -76,15 +85,17 @@ export default function Calendar({ value, onChange }: Props) {
           if (day === null) return <span key={`empty-${i}`} />
           const date = new Date(year, month, day)
           const past = date < today
+          const full = !past && !!disabledDates?.has(toDateOnly(date))
           const selected = value !== null && sameDay(date, value)
           const isToday = sameDay(date, today)
           return (
             <button
               type="button"
               key={day}
-              className={`calendar__day${selected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}`}
-              disabled={past}
+              className={`calendar__day${selected ? ' is-selected' : ''}${isToday ? ' is-today' : ''}${full ? ' is-full' : ''}`}
+              disabled={past || full}
               aria-pressed={selected}
+              aria-label={full ? `${day} — complet` : undefined}
               onClick={() => onChange(date)}
             >
               {day}

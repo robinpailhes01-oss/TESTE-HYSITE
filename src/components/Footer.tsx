@@ -32,6 +32,7 @@ export default function Footer() {
         </div>
         <div className="footer__legal">
           <span>© {new Date().getFullYear()} Harmonie Yacht — tous droits réservés</span>
+          <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
           <span>Photographies Unsplash & Pexels</span>
         </div>
       </div>

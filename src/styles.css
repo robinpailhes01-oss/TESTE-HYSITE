@@ -932,6 +932,12 @@ section {
   color: var(--white-muted);
 }
 
+.field__note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--white-muted);
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -1606,11 +1612,17 @@ section {
   box-shadow: none;
 }
 
+.calendar__day.is-full {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
 /* --- Formules (page sorties) ------------------------------------------------ */
 
 .formules {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(24px, 3.4vw, 48px);
   border-top: 1px solid var(--ink-faint);
 }
@@ -1726,6 +1738,18 @@ section {
 .group-switch button[aria-pressed='true'] {
   background: var(--foam);
   color: var(--ink);
+}
+
+/* Jour (sortie) en accent chaud, nuit en océan profond — repère visuel
+   immédiat sur la prestation en cours de réservation. */
+.group-switch button[aria-pressed='true'][data-variant='sortie'] {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+.group-switch button[aria-pressed='true'][data-variant='nuit'] {
+  background: var(--ocean-deep);
+  color: var(--white);
 }
 
 .price-recap {

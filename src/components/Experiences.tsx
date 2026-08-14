@@ -37,7 +37,7 @@ export default function Experiences() {
             </p>
             <ul className="exp__list">
               <li>
-                <span>Sorties de 2 h, 3 h ou 4 h</span>
+                <span>Sorties de 2 h à 8 h, entre 9 h et 21 h</span>
                 <span>Dès 380 €</span>
               </li>
               <li>
@@ -45,7 +45,7 @@ export default function Experiences() {
                 <span>−15 %</span>
               </li>
               <li>
-                <span>Mouillage & baignade dans une crique</span>
+                <span>Jusqu’à 10 invités</span>
                 <span>Au choix</span>
               </li>
             </ul>
@@ -79,12 +79,12 @@ export default function Experiences() {
                 <span>18 h — 12 h</span>
               </li>
               <li>
-                <span>Nuit Prestige, toute l’année</span>
-                <span>380 €</span>
+                <span>Nuit à quai, petit-déjeuner inclus</span>
+                <span>250 €</span>
               </li>
               <li>
-                <span>Sortie en mer d’1 h & planche Una Mas</span>
-                <span>Incluses</span>
+                <span>Nuit Prestige, sortie au coucher de soleil & tapas</span>
+                <span>380 €</span>
               </li>
               <li>
                 <span>Petit-déjeuner inclus</span>

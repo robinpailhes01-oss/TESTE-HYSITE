@@ -106,7 +106,9 @@ export default function ExperiencePage() {
                   <p className="formule__duration">{f.duration}</p>
                   {f.season ? <p className="formule__season">{f.season}</p> : null}
                   <p className="formule__price">
-                    <span className="offer__unit">{f.amountSolo ? 'avec capitaine' : f.amountFrom ? 'dès' : 'à partir de'}</span>
+                    <span className="offer__unit">
+                      {f.amountFlat ? 'tout compris' : f.amountSolo ? 'avec capitaine' : f.amountFrom ? 'dès' : 'à partir de'}
+                    </span>
                     <span className="formule__amount">{f.amount}</span>
                   </p>
                   {f.amountSolo ? (
@@ -130,47 +132,50 @@ export default function ExperiencePage() {
         </section>
       ) : null}
 
-      {/* Déroulé */}
-      <section className="section on-ocean">
-        <div className="container">
-          <motion.div className="section-head" {...stepsReveal}>
-            <p className="kicker">Le déroulé</p>
-            <h2 className="mixed">
-              Heure <span className="it">par heure</span>
-            </h2>
-          </motion.div>
-          <div className="route__track">
-            <div className="route__line" aria-hidden="true" />
-            <ol className="route__steps">
-              {exp.steps.map((s) => (
-                <li className="route__step" key={s.time + s.label}>
-                  <span className="route__time">{s.time}</span>
-                  <p className="route__label">
-                    {s.label}
-                    {s.it ? (
-                      <>
-                        {' '}
-                        <span className="it">{s.it}</span>
-                      </>
-                    ) : null}
-                  </p>
-                  <p className="route__note">{s.note}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-          {!exp.formules ? (
-            <motion.div className="page-price" {...priceReveal}>
-              <p className="page-price__amount">
-                <span className="offer__unit">à partir de</span>
-                <span className="page-price__value">{exp.price.amount}</span>
-                <span className="offer__unit">{exp.price.unit}</span>
-              </p>
-              <p className="page-price__note">{exp.price.note}</p>
+      {/* Déroulé — uniquement quand un horaire fixe a du sens (nuits ; les
+          sorties dépendent de la durée choisie, pas de créneau fixe). */}
+      {exp.steps.length > 0 ? (
+        <section className="section on-ocean">
+          <div className="container">
+            <motion.div className="section-head" {...stepsReveal}>
+              <p className="kicker">Le déroulé</p>
+              <h2 className="mixed">
+                Heure <span className="it">par heure</span>
+              </h2>
             </motion.div>
-          ) : null}
-        </div>
-      </section>
+            <div className="route__track">
+              <div className="route__line" aria-hidden="true" />
+              <ol className="route__steps">
+                {exp.steps.map((s) => (
+                  <li className="route__step" key={s.time + s.label}>
+                    <span className="route__time">{s.time}</span>
+                    <p className="route__label">
+                      {s.label}
+                      {s.it ? (
+                        <>
+                          {' '}
+                          <span className="it">{s.it}</span>
+                        </>
+                      ) : null}
+                    </p>
+                    <p className="route__note">{s.note}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            {!exp.formules ? (
+              <motion.div className="page-price" {...priceReveal}>
+                <p className="page-price__amount">
+                  <span className="offer__unit">à partir de</span>
+                  <span className="page-price__value">{exp.price.amount}</span>
+                  <span className="offer__unit">{exp.price.unit}</span>
+                </p>
+                <p className="page-price__note">{exp.price.note}</p>
+              </motion.div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       {/* Galerie de la prestation */}
       <section className="section" style={{ background: 'var(--white)' }}>

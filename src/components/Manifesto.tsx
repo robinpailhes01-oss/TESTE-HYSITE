@@ -14,16 +14,16 @@ export default function Manifesto() {
   const data = useReveal(0.15)
 
   return (
-    <section className="section" id="maison">
+    <section className="section" id="manifeste">
       <div className="container">
         <motion.p className="kicker" style={{ marginBottom: 24 }} {...head}>
-          La maison
+          Notre promesse
         </motion.p>
 
         <motion.p className="manifesto__text" {...text}>
           Harmonie Yacht est née d’une conviction&nbsp;: les plus beaux moments méritent un écrin
           rare. Nous privatisons notre yacht pour une seule chose — <span className="it">vous
-          recevoir</span> comme les grandes maisons&nbsp;: avec calme, précision et générosité.
+          recevoir</span> avec calme, précision et générosité.
           En mer à la journée, ou amarré au port pour une nuit que vous n’oublierez pas.
         </motion.p>
 

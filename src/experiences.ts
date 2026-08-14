@@ -3,19 +3,11 @@
 
 export type Step = { time: string; label: string; it?: string; note: string }
 
-/* Exemple sur une sortie 4 h de l'après-midi — les horaires s'adaptent au créneau choisi. */
-export const DAY_STEPS: Step[] = [
-  { time: '14 h 00', label: 'Embarquement', note: 'Accueil au ponton, briefing et café.' },
-  { time: '14 h 30', label: 'Cap sur', it: 'les criques', note: 'Le capitaine choisit avec vous le mouillage.' },
-  { time: '15 h 30', label: 'Mouillage', it: '& baignade', note: 'Eau claire, plateforme de baignade dépliée.' },
-  { time: '17 h 00', label: 'L’apéritif', it: 'au couchant', note: 'Coupe à la main face au soleil qui descend.' },
-  { time: '18 h 00', label: 'Retour au port', note: 'Dans la lumière du soir, sans se presser.' },
-]
-
+/* Nuit Prestige (avec sortie en mer) — la Nuit à quai (sans sortie) saute
+   directement de l'embarquement à la nuit à bord. */
 export const NIGHT_STEPS: Step[] = [
   { time: '18 h 00', label: 'Embarquement', note: 'Accueil au ponton, le yacht et la cabine sont prêts.' },
-  { time: '19 h 00', label: 'Sortie en mer', it: 'd’une heure', note: 'Un tour au large avant la nuit, avec votre capitaine.' },
-  { time: '21 h 00', label: 'Planche', it: 'Una Mas', note: 'Charcuterie & fromage servis à bord, notre partenaire local.' },
+  { time: 'Coucher de soleil', label: 'Sortie en mer', it: '& tapas', note: 'Une heure au large, plateau tapas de notre partenaire Una Mas.' },
   { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, amarrés au calme du port.' },
   { time: '12 h 00', label: 'Petit-déjeuner', it: 'et départ', note: 'Petit-déjeuner inclus (Hôtel Neptune), checkout à midi.' },
 ]
@@ -29,6 +21,7 @@ export type Formule = {
   amount: string
   amountSolo?: string
   amountFrom?: boolean
+  amountFlat?: boolean
   season?: string
   weekendNote?: string
   desc: string
@@ -71,20 +64,20 @@ export const EXPERIENCES: Experience[] = [
       'Le yacht est à vous, le programme aussi. Vous embarquez avec votre capitaine — ou sans, si vous avez le permis — et la sortie se dessine selon vos envies : cap sur les criques, mouillage dans une eau claire, baignade, et l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
       { label: 'Yacht privatisé', detail: 'Le bateau est à vous, personne d’autre à bord' },
-      { label: 'Avec capitaine, ou sans', detail: 'Sans : permis côtier requis, −15 %' },
-      { label: 'Sorties de 2 h, 3 h ou 4 h', detail: 'Au choix' },
+      { label: 'Avec capitaine, ou sans', detail: 'Sans : permis ≥ 5 ans + 50 h de navigation justifiables, −15 %' },
+      { label: 'Sorties de 2 h à 8 h', detail: 'Au choix — entre 9 h et 21 h' },
       { label: 'Carburant & mouillage compris', detail: 'Aucun supplément surprise' },
-      { label: 'Plateforme de baignade & équipements', detail: 'Masques, serviettes' },
-      { label: 'Jusqu’à 8 invités', detail: 'Anniversaires, EVJF, familles' },
+      { label: 'Paddle, plateforme flottante, masque & tuba', detail: 'À bord, en libre usage' },
+      { label: 'Jusqu’à 10 invités', detail: 'Anniversaires, EVJF, familles' },
     ],
-    steps: DAY_STEPS,
+    steps: [],
     price: {
       amount: '380 €',
       unit: 'la sortie',
-      note: 'À partir de — sans capitaine dès 320 €.',
+      note: 'À partir de — sans capitaine dès 320 €. Sorties entre 9 h et 21 h.',
     },
     formulesKicker: 'Nos formules',
-    formulesTitlePlain: 'Trois façons de',
+    formulesTitlePlain: 'Quatre façons de',
     formulesTitleIt: 'prendre le large',
     formules: [
       {
@@ -118,6 +111,17 @@ export const EXPERIENCES: Experience[] = [
         amountSolo: '640 €',
         desc: 'La demi-journée complète : deux mouillages possibles, apéritif dînatoire à bord, baignade à volonté.',
       },
+      {
+        key: '8h',
+        num: '04',
+        name: 'Ultra',
+        it: 'Premium',
+        duration: '8 h — la journée complète',
+        amount: '1 250 €',
+        amountFlat: true,
+        desc: 'Cap sur Les Aresquiers, près de la plage : efoil à disposition, BBQ à bord, capitaine inclus — tout compris, pour une journée hors norme.',
+        highlight: 'Ultra Premium',
+      },
     ],
     gallery: [
       { src: '/images/sortie-bateau.jpg', alt: 'Le yacht au mouillage, eau turquoise' },
@@ -136,35 +140,44 @@ export const EXPERIENCES: Experience[] = [
     hero: '/images/nuit-bateau.jpg',
     heroAlt: 'Le yacht Harmonie au soir tombant, reflets dorés sur l’eau',
     intro:
-      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. La Nuit Prestige, toute l’année : une sortie en mer d’une heure, une planche charcuterie-fromage de notre partenaire Una Mas, et le petit-déjeuner de l’Hôtel Neptune au réveil. Formule intimiste, réservée à deux personnes.',
+      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. Deux façons d’en profiter, à partir de 18 h : la Nuit à quai, cocooning avec le petit-déjeuner au réveil, ou la Nuit Prestige, avec une sortie en mer au coucher de soleil et son plateau de tapas. Formule intimiste, réservée à deux personnes.',
     includes: [
       { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
-      { label: 'Sortie en mer d’1 h incluse', detail: 'En début de soirée, avec le capitaine' },
-      { label: 'Planche Una Mas', detail: 'Charcuterie & fromage, servie à bord' },
+      { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
+      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer, pour se lover à deux' },
       { label: 'Petit-déjeuner inclus', detail: 'Hôtel Neptune, juste à côté du ponton' },
       { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
     steps: NIGHT_STEPS,
     price: {
-      amount: '380 €',
+      amount: '250 €',
       unit: 'la nuit',
-      note: 'Sortie en mer, planche Una Mas et petit-déjeuner inclus — hors week-end, réservation directe avec notre équipe.',
+      note: 'À partir de — avec sortie en mer au coucher de soleil et tapas Una Mas dès 380 €.',
     },
-    formulesKicker: 'Notre formule',
-    formulesTitlePlain: 'La nuit,',
-    formulesTitleIt: 'tout compris',
+    formulesKicker: 'Nos formules',
+    formulesTitlePlain: 'Deux façons de',
+    formulesTitleIt: 'passer la nuit',
     formules: [
       {
-        key: 'prestige',
+        key: 'sans-sortie',
         num: '01',
+        name: 'Nuit',
+        it: 'à quai',
+        duration: '18 h — jusqu’à 12 h le lendemain',
+        amount: '250 €',
+        desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
+      },
+      {
+        key: 'prestige',
+        num: '02',
         name: 'Nuit',
         it: 'Prestige',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
         weekendNote: 'Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.',
-        desc: 'La formule signature : sortie en mer d’une heure en début de soirée, planche charcuterie-fromage (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
-        highlight: 'Notre formule',
+        desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
+        highlight: 'La plus demandée',
       },
     ],
     gallery: [
