@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe'
-import { findPrice, depositFor } from '../src/pricing'
+import { findPrice, depositFor } from '../src/pricing.js'
 
 /* Crée une session Stripe Checkout pour l'acompte de 30 % d'une formule.
    Le montant n'est JAMAIS accepté depuis le navigateur : on ne recalcule
