@@ -11,7 +11,9 @@
 export const DEPOSIT_RATE = 0.3 // acompte de 30 %, réglé en ligne à la réservation
 
 /* Doit correspondre exactement aux valeurs acceptées par
-   bookings.booking_type côté Supabase (contrainte CHECK). */
+   bookings.booking_type côté Supabase (contrainte CHECK — celle-ci accepte
+   aussi 'nuit_insolite', conservé côté base pour compat mais plus proposé
+   côté site depuis la formule Nuit Prestige unique). */
 export type BookingType = 'sortie_privative' | 'nuit_prestige' | 'nuit_insolite'
 
 export type PriceItem = {
@@ -20,7 +22,7 @@ export type PriceItem = {
   bookingType: BookingType
   label: string
   detail: string
-  amount: number // prix total en euros ("à partir de" pour nuit-insolite-sans-sortie)
+  amount: number // prix total en euros
   /* Nuit Prestige le week-end (ven-dim) : pas de paiement en ligne, contact
      direct avec l'équipe (règle métier de Léa — escalade humaine obligatoire). */
   weekendRequiresContact?: boolean
@@ -42,25 +44,9 @@ export const PRICES: PriceItem[] = [
     group: 'nuit',
     bookingType: 'nuit_prestige',
     label: 'Nuit Prestige',
-    detail: 'Été (mai-septembre) — avec sortie en mer, 18 h à 12 h le lendemain',
+    detail: 'Petit-déjeuner Hôtel Neptune, sortie en mer d’1 h et planche charcuterie-fromage (Una Mas) incluses — 18 h à 12 h le lendemain',
     amount: 380,
     weekendRequiresContact: true,
-  },
-  {
-    id: 'nuit-insolite-avec-sortie',
-    group: 'nuit',
-    bookingType: 'nuit_insolite',
-    label: 'Nuit Insolite — avec sortie en mer',
-    detail: 'Hiver (octobre-avril) — yacht chauffé, 18 h à 12 h le lendemain',
-    amount: 380,
-  },
-  {
-    id: 'nuit-insolite-sans-sortie',
-    group: 'nuit',
-    bookingType: 'nuit_insolite',
-    label: 'Nuit Insolite — sans sortie en mer',
-    detail: 'Hiver (octobre-avril) — yacht chauffé, amarré au calme',
-    amount: 180,
   },
 ]
 

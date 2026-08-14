@@ -14,9 +14,9 @@ const OFFERS = [
     plain: 'Nuit',
     it: 'à quai',
     group: 'nuit',
-    amount: '180 €',
+    amount: '380 €',
     unit: 'la nuit',
-    desc: 'Nuit Insolite (hiver, yacht chauffé) dès 180 €, ou Nuit Prestige (été, avec sortie en mer) à 380 €. Le yacht pour vous seuls, petit-déjeuner inclus. Jusqu’à 2 personnes.',
+    desc: 'Nuit Prestige, toute l’année : sortie en mer d’1 h, planche charcuterie-fromage (Una Mas) et petit-déjeuner (Hôtel Neptune) inclus. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
   },
 ]
 

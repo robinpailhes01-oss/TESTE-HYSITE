@@ -79,8 +79,12 @@ export default function Experiences() {
                 <span>18 h — 12 h</span>
               </li>
               <li>
-                <span>Nuit Prestige (été) ou Insolite (hiver)</span>
-                <span>Dès 180 €</span>
+                <span>Nuit Prestige, toute l’année</span>
+                <span>380 €</span>
+              </li>
+              <li>
+                <span>Sortie en mer d’1 h & planche Una Mas</span>
+                <span>Incluses</span>
               </li>
               <li>
                 <span>Petit-déjeuner inclus</span>

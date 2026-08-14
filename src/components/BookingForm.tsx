@@ -7,7 +7,6 @@ import { DEPOSIT_RATE, findPrice } from '../pricing'
 
 type Group = 'sortie' | 'nuit'
 type Duration = '2h' | '3h' | '4h'
-type NightFormule = 'prestige' | 'insolite-avec-sortie' | 'insolite-sans-sortie'
 
 type Props = {
   /* Si fourni, la prestation est fixée (pages détail) — sinon bascule (home). */
@@ -48,7 +47,6 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
   const [duration, setDuration] = useState<Duration>('3h')
   const [captain, setCaptain] = useState<'avec' | 'sans'>('avec')
-  const [nightFormule, setNightFormule] = useState<NightFormule>('prestige')
   const [date, setDate] = useState<Date | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [dateHint, setDateHint] = useState(false)
@@ -64,9 +62,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       if (key === '2h' || key === '3h' || key === '4h') {
         setGroupChoice('sortie')
         setDuration(key)
-      } else if (key === 'prestige' || key === 'insolite-avec-sortie' || key === 'insolite-sans-sortie') {
+      } else if (key === 'prestige') {
         setGroupChoice('nuit')
-        setNightFormule(key)
       }
     }
     const onGroup = (e: Event) => {
@@ -82,9 +79,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   }, [])
 
   const priceId = useMemo(() => {
-    if (groupChoice === 'nuit') return `nuit-${nightFormule}`
+    if (groupChoice === 'nuit') return 'nuit-prestige'
     return `sortie-${duration}-${captain === 'avec' ? 'capitaine' : 'solo'}`
-  }, [groupChoice, duration, captain, nightFormule])
+  }, [groupChoice, duration, captain])
 
   const price = findPrice(priceId)
   const deposit = price ? Math.round(price.amount * DEPOSIT_RATE) : null
@@ -93,7 +90,6 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   /* Nuit Prestige + date tombant un week-end : pas de paiement en ligne. */
   const blockedWeekendPrestige =
     groupChoice === 'nuit' &&
-    nightFormule === 'prestige' &&
     !!price?.weekendRequiresContact &&
     date !== null &&
     isWeekend(date)
@@ -201,20 +197,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             </select>
           </div>
         </>
-      ) : (
-        <div className="field field--full">
-          <label htmlFor="bk-formule">Formule</label>
-          <select
-            id="bk-formule"
-            value={nightFormule}
-            onChange={(e) => setNightFormule(e.target.value as NightFormule)}
-          >
-            <option value="prestige">Nuit Prestige — été, avec sortie en mer</option>
-            <option value="insolite-avec-sortie">Nuit Insolite — hiver, avec sortie en mer</option>
-            <option value="insolite-sans-sortie">Nuit Insolite — hiver, sans sortie en mer</option>
-          </select>
-        </div>
-      )}
+      ) : null}
 
       <div className="field">
         <label htmlFor="bk-guests">Nombre d’invités</label>
@@ -302,8 +285,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       {blockedWeekendPrestige ? (
         <div className="form__error field--full" role="alert">
           La Nuit Prestige le week-end (ven-dim) se réserve directement avec notre équipe.
-          Écrivez-nous à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, ou choisissez
-          la Nuit Insolite ci-dessus si votre date est flexible.
+          Écrivez-nous à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </div>
       ) : null}
 

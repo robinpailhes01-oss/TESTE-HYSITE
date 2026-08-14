@@ -14,8 +14,8 @@ export const DAY_STEPS: Step[] = [
 
 export const NIGHT_STEPS: Step[] = [
   { time: '18 h 00', label: 'Embarquement', note: 'Accueil au ponton, le yacht et la cabine sont prêts.' },
-  { time: '19 h 00', label: 'Sortie en mer', it: 'en début de soirée', note: 'Selon la formule choisie — un tour au large avant la nuit.' },
-  { time: '21 h 00', label: 'Tapas', it: 'Una Mas', note: 'Plateau apéritif servi à bord, notre partenaire local.' },
+  { time: '19 h 00', label: 'Sortie en mer', it: 'd’une heure', note: 'Un tour au large avant la nuit, avec votre capitaine.' },
+  { time: '21 h 00', label: 'Planche', it: 'Una Mas', note: 'Charcuterie & fromage servis à bord, notre partenaire local.' },
   { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, amarrés au calme du port.' },
   { time: '12 h 00', label: 'Petit-déjeuner', it: 'et départ', note: 'Petit-déjeuner inclus (Hôtel Neptune), checkout à midi.' },
 ]
@@ -136,24 +136,24 @@ export const EXPERIENCES: Experience[] = [
     hero: '/images/nuit-bateau.jpg',
     heroAlt: 'Le yacht Harmonie au soir tombant, reflets dorés sur l’eau',
     intro:
-      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. Deux registres selon la saison — la Nuit Prestige l’été, la Nuit Insolite (yacht chauffé) l’hiver, avec ou sans sortie en mer en début de soirée. Formule intimiste, réservée à deux personnes.',
+      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. La Nuit Prestige, toute l’année : une sortie en mer d’une heure, une planche charcuterie-fromage de notre partenaire Una Mas, et le petit-déjeuner de l’Hôtel Neptune au réveil. Formule intimiste, réservée à deux personnes.',
     includes: [
       { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
+      { label: 'Sortie en mer d’1 h incluse', detail: 'En début de soirée, avec le capitaine' },
+      { label: 'Planche Una Mas', detail: 'Charcuterie & fromage, servie à bord' },
       { label: 'Petit-déjeuner inclus', detail: 'Hôtel Neptune, juste à côté du ponton' },
-      { label: 'Cabine préparée', detail: 'Linge de maison hôtelier' },
-      { label: 'Sortie en mer en soirée', detail: 'Incluse — sauf formule sans sortie' },
       { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
     steps: NIGHT_STEPS,
     price: {
-      amount: '180 €',
+      amount: '380 €',
       unit: 'la nuit',
-      note: 'À partir de — Nuit Insolite sans sortie, hors week-end pour la Nuit Prestige.',
+      note: 'Sortie en mer, planche Una Mas et petit-déjeuner inclus — hors week-end, réservation directe avec notre équipe.',
     },
-    formulesKicker: 'Nos formules',
-    formulesTitlePlain: 'Deux saisons,',
-    formulesTitleIt: 'trois nuits',
+    formulesKicker: 'Notre formule',
+    formulesTitlePlain: 'La nuit,',
+    formulesTitleIt: 'tout compris',
     formules: [
       {
         key: 'prestige',
@@ -162,31 +162,9 @@ export const EXPERIENCES: Experience[] = [
         it: 'Prestige',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
-        season: 'Été — mai à septembre',
         weekendNote: 'Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.',
-        desc: 'La formule signature : sortie en mer en début de soirée, plateau tapas (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain.',
-        highlight: 'La plus demandée',
-      },
-      {
-        key: 'insolite-avec-sortie',
-        num: '02',
-        name: 'Nuit Insolite',
-        it: 'avec sortie',
-        duration: '18 h — jusqu’à 12 h le lendemain',
-        amount: '380 €',
-        season: 'Hiver — octobre à avril',
-        desc: 'Le yacht chauffé pour l’hiver : une sortie en mer en début de soirée, puis la nuit à bord, petit-déjeuner inclus.',
-      },
-      {
-        key: 'insolite-sans-sortie',
-        num: '03',
-        name: 'Nuit Insolite',
-        it: 'cocooning',
-        duration: '18 h — jusqu’à 12 h le lendemain',
-        amount: '180 €',
-        amountFrom: true,
-        season: 'Hiver — octobre à avril',
-        desc: 'L’expérience insolite à petit budget : le yacht chauffé, amarré au calme, sans sortie en mer — pour se lover à deux.',
+        desc: 'La formule signature : sortie en mer d’une heure en début de soirée, planche charcuterie-fromage (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
+        highlight: 'Notre formule',
       },
     ],
     gallery: [
@@ -204,7 +182,7 @@ export const REVIEWS: Review[] = [
   {
     initials: 'L&T',
     name: 'Léa & Thomas',
-    context: 'Nuit insolite à quai',
+    context: 'Nuit Prestige à quai',
     text: 'On a dormi bercés par l’eau, réveillés par le soleil sur le port. Le champagne à l’arrivée, le petit-déjeuner sur le pont… on s’est crus très loin, à dix minutes de chez nous.',
   },
   {
