@@ -10,9 +10,9 @@ function Stars({ n }: { n: number }) {
   )
 }
 
-/* Les 4 avis les plus récents suffisent pour la page — les autres restent
-   disponibles dans src/reviews.ts (voir aussi ReviewToast). */
-const FEATURED = REVIEWS.slice(0, 4)
+/* Un échantillon suffit pour la page — le reste des avis reste disponible
+   dans src/reviews.ts (voir aussi ReviewToast) et sur la fiche Google. */
+const FEATURED = REVIEWS.slice(0, 6)
 
 export default function Reviews() {
   const head = useReveal()
