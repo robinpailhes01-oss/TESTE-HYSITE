@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { GOOGLE_REVIEWS_URL } from '../reviews'
+import { WHATSAPP_URL } from '../whatsapp'
 
 export default function Footer() {
   return (
@@ -27,6 +28,11 @@ export default function Footer() {
             </li>
             <li>
               <a href="#reservation">Réserver</a>
+            </li>
+            <li>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
             </li>
             <li>
               <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">

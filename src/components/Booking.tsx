@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
 import BookingForm from './BookingForm'
+import { WHATSAPP_URL } from '../whatsapp'
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
 
@@ -23,6 +24,9 @@ export default function Booking() {
           </p>
           <div className="booking__direct">
             <span className="kicker">Directement</span>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+              WhatsApp — réponse en moins de 5 min
+            </a>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
           </div>
         </motion.div>

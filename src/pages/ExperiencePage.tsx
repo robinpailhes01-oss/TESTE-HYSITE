@@ -5,6 +5,7 @@ import { ease, useReveal } from '../motion'
 import { EXPERIENCES } from '../experiences'
 import RevealImage from '../components/RevealImage'
 import BookingForm from '../components/BookingForm'
+import { WHATSAPP_URL } from '../whatsapp'
 
 export default function ExperiencePage() {
   const { slug } = useParams()
@@ -202,6 +203,9 @@ export default function ExperiencePage() {
             </p>
             <div className="booking__direct">
               <span className="kicker">Directement</span>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                WhatsApp — réponse en moins de 5 min
+              </a>
               <a href="mailto:harmonieyacht@gmail.com">harmonieyacht@gmail.com</a>
             </div>
             <p className="booking__other">

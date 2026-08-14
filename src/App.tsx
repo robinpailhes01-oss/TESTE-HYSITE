@@ -4,6 +4,7 @@ import Lenis from 'lenis'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
+import WhatsAppButton from './components/WhatsAppButton'
 import Home from './pages/Home'
 import ExperiencePage from './pages/ExperiencePage'
 import Confirmation from './pages/Confirmation'
@@ -69,6 +70,7 @@ export default function App() {
       </Routes>
       <Footer />
       <ReviewToast />
+      <WhatsAppButton />
     </>
   )
 }

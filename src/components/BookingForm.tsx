@@ -12,6 +12,7 @@ import {
   isNightBlocked,
 } from '../availability'
 import type { BookedSlot } from '../availability'
+import { WHATSAPP_URL } from '../whatsapp'
 
 type Group = 'sortie' | 'nuit'
 type Duration = '2h' | '3h' | '4h' | '8h'
@@ -434,7 +435,11 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       {blockedWeekendPrestige ? (
         <div className="form__error field--full" role="alert">
           La Nuit Prestige le week-end (ven-dim) se réserve directement avec notre équipe.
-          Écrivez-nous à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          Écrivez-nous sur{' '}
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            WhatsApp
+          </a>{' '}
+          (réponse en moins de 5 min) ou à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </div>
       ) : null}
 
