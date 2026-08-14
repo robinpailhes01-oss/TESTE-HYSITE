@@ -1,10 +1,22 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
-import { GOOGLE_REVIEWS_URL } from '../experiences'
+import { GOOGLE_REVIEWS_URL, REVIEWS } from '../reviews'
+
+function Stars({ n }: { n: number }) {
+  return (
+    <span className="review__stars" aria-label={`${n} étoiles sur 5`}>
+      {'★'.repeat(n)}
+    </span>
+  )
+}
+
+/* Les 4 avis les plus récents suffisent pour la page — les autres restent
+   disponibles dans src/reviews.ts (voir aussi ReviewToast). */
+const FEATURED = REVIEWS.slice(0, 4)
 
 export default function Reviews() {
   const head = useReveal()
-  const card = useReveal(0.1)
+  const grid = useReveal(0.1)
 
   return (
     <section className="section" id="avis" style={{ background: 'var(--white)' }}>
@@ -16,21 +28,32 @@ export default function Reviews() {
           </h2>
         </motion.div>
 
-        <motion.a
-          className="reviews-google"
+        <motion.div className="reviews" {...grid}>
+          {FEATURED.map((r) => (
+            <article className="review" key={r.name}>
+              <Stars n={r.stars} />
+              <p className="review__text">« {r.text} »</p>
+              <footer className="review__footer">
+                <span className="review__avatar" aria-hidden="true">
+                  {r.initials}
+                </span>
+                <span>
+                  <span className="review__name">{r.name}</span>
+                  <span className="review__context">{r.when} · avis Google</span>
+                </span>
+              </footer>
+            </article>
+          ))}
+        </motion.div>
+
+        <a
+          className="link-arrow reviews__more"
           href={GOOGLE_REVIEWS_URL}
           target="_blank"
           rel="noopener noreferrer"
-          {...card}
         >
-          <span className="reviews-google__stars" aria-hidden="true">
-            ★★★★★
-          </span>
-          <span className="reviews-google__text">
-            Retrouvez les avis de nos clients sur notre fiche Google
-          </span>
-          <span className="link-arrow">Voir les avis Google</span>
-        </motion.a>
+          Voir tous nos avis sur Google
+        </a>
       </div>
     </section>
   )

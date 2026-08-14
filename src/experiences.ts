@@ -189,7 +189,4 @@ export const EXPERIENCES: Experience[] = [
   },
 ]
 
-/* Lien vers la fiche Google d'Harmonie Yacht — les avis affichés sur le
-   site pointent vers les vrais avis Google plutôt que de citer des
-   témoignages inventés. */
-export const GOOGLE_REVIEWS_URL = 'https://share.google/siKxvFXOcmnevziOp'
+/* Avis clients : voir src/reviews.ts (vrais avis Google). */

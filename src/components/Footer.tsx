@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-
-const GOOGLE_REVIEWS_URL = 'https://share.google/siKxvFXOcmnevziOp'
+import { GOOGLE_REVIEWS_URL } from '../reviews'
 
 export default function Footer() {
   return (

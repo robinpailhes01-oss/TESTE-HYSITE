@@ -1062,32 +1062,143 @@ section {
 
 /* --- Avis ------------------------------------------------------------------ */
 
-.reviews-google {
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.review {
+  border-top: 1px solid var(--ink-faint);
+  padding-top: 22px;
   display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  border: 1px solid var(--ink-faint);
-  border-radius: var(--r-card);
-  padding: 28px 32px;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.reviews-google:hover {
-  border-color: var(--ocean);
-}
-
-.reviews-google__stars {
+.review__stars {
   color: var(--ocean);
   letter-spacing: 0.2em;
-  font-size: 18px;
+  font-size: 13px;
 }
 
-.reviews-google__text {
+.review__text {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(17px, 1.6vw, 20px);
-  flex: 1;
-  min-width: 200px;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.5;
+}
+
+.review__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.review__avatar,
+.toast__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ocean);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.review__name {
+  display: block;
+  font-weight: 500;
+  font-size: 14.5px;
+}
+
+.review__context {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+.reviews__more {
+  display: inline-block;
+  margin-top: 32px;
+}
+
+/* --- Notification d'avis (près de la réservation) --------------------------- */
+
+.toast-zone {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 60;
+  pointer-events: none;
+  max-width: calc(100vw - 32px);
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 340px;
+  background: var(--white);
+  color: var(--ink);
+  border: 1px solid var(--ink-faint);
+  border-radius: 12px;
+  padding: 13px 14px;
+  box-shadow: 0 14px 44px rgba(12, 43, 69, 0.22);
+}
+
+.toast__avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 11px;
+}
+
+.toast__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toast__title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.toast__stars {
+  color: var(--ocean);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+.toast__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.toast__close {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink-muted);
+  padding: 2px 4px;
+  margin: -2px -4px 0 0;
+}
+
+.toast__close:hover {
+  color: var(--ink);
 }
 
 /* --- Galerie + lightbox ----------------------------------------------------- */
