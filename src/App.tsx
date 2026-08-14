@@ -3,10 +3,10 @@ import { Route as RouterRoute, Routes } from 'react-router-dom'
 import Lenis from 'lenis'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
-import SocialToast from './components/SocialToast'
 import Home from './pages/Home'
 import ExperiencePage from './pages/ExperiencePage'
 import Confirmation from './pages/Confirmation'
+import { CGV, Confidentialite, MentionsLegales } from './pages/Legal'
 
 /* Défilement inertiel « butter-smooth » — désactivé si reduced-motion */
 function useSmoothScroll() {
@@ -61,10 +61,12 @@ export default function App() {
       <Routes>
         <RouterRoute path="/" element={<Home />} />
         <RouterRoute path="/merci" element={<Confirmation />} />
+        <RouterRoute path="/mentions-legales" element={<MentionsLegales />} />
+        <RouterRoute path="/cgv" element={<CGV />} />
+        <RouterRoute path="/confidentialite" element={<Confidentialite />} />
         <RouterRoute path="/:slug" element={<ExperiencePage />} />
       </Routes>
       <Footer />
-      <SocialToast />
     </>
   )
 }

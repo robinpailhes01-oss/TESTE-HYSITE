@@ -104,7 +104,7 @@ réservation.
 | Caractéristiques du yacht (8 invités, 4 couchages, 2 cabines… — à vérifier) | `src/components/Yacht.tsx` |
 | Déroulés horaires (sortie / nuit) | `src/experiences.ts` |
 | Port d'attache & disponibilité (méta du héro) | `src/components/Hero.tsx` |
-| Avis clients (actuellement des exemples rédigés) | `src/experiences.ts` (`REVIEWS`) |
+| Lien vers les avis Google | `src/experiences.ts` (`GOOGLE_REVIEWS_URL`) |
 | Notifications pop-up (preuve sociale) | `src/components/SocialToast.tsx` |
 | Photos | `public/images/` — `hero-bateau`, `sortie-bateau`, `nuit-bateau` et `calme-bateau` sont les vraies photos du bateau ; le reste est libre de droits (Unsplash/Pexels) en attendant vos photos |
 | Email de contact | `src/components/Booking.tsx`, `Footer.tsx`, `api/*.ts` |

@@ -189,32 +189,7 @@ export const EXPERIENCES: Experience[] = [
   },
 ]
 
-/* Avis clients — exemples à remplacer par de vrais avis. */
-export type Review = { initials: string; name: string; context: string; text: string }
-
-export const REVIEWS: Review[] = [
-  {
-    initials: 'L&T',
-    name: 'Léa & Thomas',
-    context: 'Nuit Prestige à quai',
-    text: 'On a dormi bercés par l’eau, réveillés par le soleil sur le port. Le champagne à l’arrivée, le petit-déjeuner sur le pont… on s’est crus très loin, à dix minutes de chez nous.',
-  },
-  {
-    initials: 'C',
-    name: 'Camille',
-    context: 'EVJF — sortie en mer',
-    text: 'Journée parfaite pour l’enterrement de vie de jeune fille de ma sœur. Le skipper a trouvé une crique incroyable, tout était fluide du début à la fin.',
-  },
-  {
-    initials: 'M&S',
-    name: 'Marc & Sophie',
-    context: 'Anniversaire de mariage',
-    text: 'Vingt ans de mariage fêtés au mouillage, coupe à la main face au coucher de soleil. Un service discret et attentionné, digne d’un grand hôtel.',
-  },
-  {
-    initials: 'J',
-    name: 'Julien',
-    context: 'Demande en fiançailles',
-    text: 'J’ai fait ma demande à la golden hour, exactement comme on l’avait préparée ensemble. Elle a dit oui. Merci pour la complicité et la discrétion.',
-  },
-]
+/* Lien vers la fiche Google d'Harmonie Yacht — les avis affichés sur le
+   site pointent vers les vrais avis Google plutôt que de citer des
+   témoignages inventés. */
+export const GOOGLE_REVIEWS_URL = 'https://share.google/siKxvFXOcmnevziOp'

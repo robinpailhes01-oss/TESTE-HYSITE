@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom'
+
+const GOOGLE_REVIEWS_URL = 'https://share.google/siKxvFXOcmnevziOp'
+
 export default function Footer() {
   return (
     <footer className="footer on-ocean">
@@ -26,14 +30,24 @@ export default function Footer() {
               <a href="#reservation">Réserver</a>
             </li>
             <li>
+              <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+                Avis Google
+              </a>
+            </li>
+            <li>
               <a href="mailto:harmonieyacht@gmail.com">harmonieyacht@gmail.com</a>
             </li>
           </ul>
         </div>
         <div className="footer__legal">
-          <span>© {new Date().getFullYear()} Harmonie Yacht — tous droits réservés</span>
+          <span>© {new Date().getFullYear()} Harmonie Group — tous droits réservés</span>
           <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
           <span>Photographies Unsplash & Pexels</span>
+        </div>
+        <div className="footer__legal">
+          <Link to="/mentions-legales">Mentions légales</Link>
+          <Link to="/cgv">Conditions générales de vente</Link>
+          <Link to="/confidentialite">Confidentialité</Link>
         </div>
       </div>
     </footer>

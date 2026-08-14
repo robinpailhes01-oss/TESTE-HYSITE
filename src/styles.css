@@ -799,14 +799,6 @@ section {
   text-shadow: 0 1px 20px rgba(12, 43, 69, 0.5);
 }
 
-.band__quote footer {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--white-muted);
-}
 
 /* --- Tarifs (éditorial, sans cartes) -------------------------------------- */
 
@@ -1050,136 +1042,52 @@ section {
   color: var(--white-faint);
 }
 
+.footer__legal + .footer__legal {
+  margin-top: 12px;
+  padding-top: 0;
+  border-top: none;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.footer__legal a {
+  color: var(--white-faint);
+  transition: color var(--t-micro);
+}
+
+.footer__legal a:hover {
+  color: var(--white);
+}
+
 
 /* --- Avis ------------------------------------------------------------------ */
 
-.reviews {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(20px, 3vw, 40px);
-}
-
-.review {
-  border-top: 1px solid var(--ink-faint);
-  padding-top: 22px;
+.reviews-google {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  border: 1px solid var(--ink-faint);
+  border-radius: var(--r-card);
+  padding: 28px 32px;
 }
 
-.review__stars {
+.reviews-google:hover {
+  border-color: var(--ocean);
+}
+
+.reviews-google__stars {
   color: var(--ocean);
   letter-spacing: 0.2em;
-  font-size: 13px;
-}
-
-.review__text {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(19px, 1.8vw, 23px);
-  line-height: 1.5;
-}
-
-.review__footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: auto;
-}
-
-.review__avatar,
-.toast__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--ocean);
-  color: var(--white);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
-}
-
-.review__name {
-  display: block;
-  font-weight: 500;
-  font-size: 14.5px;
-}
-
-.review__context {
-  display: block;
-  font-size: 12.5px;
-  color: var(--ink-muted);
-}
-
-/* --- Pop-ups discrets (preuve sociale) ------------------------------------- */
-
-.toast-zone {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 60;
-  pointer-events: none;
-}
-
-.toast {
-  pointer-events: auto;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  max-width: 340px;
-  background: var(--white);
-  color: var(--ink);
-  border: 1px solid var(--ink-faint);
-  border-radius: 12px;
-  padding: 13px 14px;
-  box-shadow: 0 14px 44px rgba(12, 43, 69, 0.22);
-}
-
-.toast__avatar {
-  width: 34px;
-  height: 34px;
-  font-size: 11px;
-}
-
-.toast__body {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.toast__title {
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.toast__stars {
-  color: var(--ocean);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-}
-
-.toast__text {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 13.5px;
-  color: var(--ink-muted);
-}
-
-.toast__close {
   font-size: 18px;
-  line-height: 1;
-  color: var(--ink-muted);
-  padding: 2px 4px;
-  margin: -2px -4px 0 0;
 }
 
-.toast__close:hover {
-  color: var(--ink);
+.reviews-google__text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(17px, 1.6vw, 20px);
+  flex: 1;
+  min-width: 200px;
 }
 
 /* --- Galerie + lightbox ----------------------------------------------------- */
@@ -1330,6 +1238,59 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* --- Pages légales (mentions, CGV, confidentialité) ------------------- */
+
+.legal-hero {
+  padding-top: clamp(120px, 18vw, 160px);
+  padding-bottom: 40px;
+}
+
+.legal-hero__title {
+  font-size: clamp(32px, 5vw, 46px);
+  margin-top: 10px;
+}
+
+.legal-body {
+  max-width: 720px;
+}
+
+.legal-intro {
+  font-size: 17px;
+  color: var(--ink-muted);
+}
+
+.legal-body h2 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+.legal-body h2:first-child {
+  margin-top: 0;
+}
+
+.legal-body p {
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+
+.legal-body ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+.legal-body li {
+  margin-bottom: 8px;
+}
+
+.legal-body a {
+  color: var(--ocean);
+  text-decoration: underline;
 }
 
 .page-hero__media::after {

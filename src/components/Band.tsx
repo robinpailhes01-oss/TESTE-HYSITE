@@ -7,13 +7,12 @@ export default function Band() {
   return (
     <section className="band" aria-label="Citation">
       <img src="/images/reflets.jpg" alt="" loading="lazy" />
-      <motion.blockquote className="band__quote" {...reveal}>
+      <motion.div className="band__quote" {...reveal}>
         <p>
-          « Nous étions venus pour une nuit. Nous sommes repartis avec le sentiment
-          d’avoir voyagé très loin, sans avoir quitté le port. »
+          Venir pour une nuit, repartir avec le sentiment d’avoir voyagé très loin —
+          sans avoir quitté le port.
         </p>
-        <footer>A. & C. — nuit à quai</footer>
-      </motion.blockquote>
+      </motion.div>
     </section>
   )
 }
