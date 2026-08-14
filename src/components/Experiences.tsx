@@ -69,22 +69,22 @@ export default function Experiences() {
               Nuits insolites <span className="it">à quai</span>
             </h3>
             <p className="exp__desc">
-              À la tombée du jour, le yacht devient votre suite. Amarré au calme, il vous offre ce
-              qu’aucune chambre ne peut offrir&nbsp;: le clapot de l’eau, le port qui s’endort, et
-              un réveil face à la mer, petit-déjeuner servi à bord.
+              À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de
+              Carnon, il vous offre ce qu’aucune chambre ne peut offrir&nbsp;: le clapot de l’eau, le
+              port qui s’endort, et un réveil face à la mer.
             </p>
             <ul className="exp__list">
               <li>
                 <span>Nuit à bord, yacht amarré au port</span>
-                <span>18 h — 10 h</span>
+                <span>18 h — 12 h</span>
               </li>
               <li>
-                <span>Champagne de bienvenue</span>
-                <span>Inclus</span>
+                <span>Nuit Prestige (été) ou Insolite (hiver)</span>
+                <span>Dès 180 €</span>
               </li>
               <li>
-                <span>Petit-déjeuner servi à bord</span>
-                <span>Inclus</span>
+                <span>Petit-déjeuner inclus</span>
+                <span>Hôtel Neptune</span>
               </li>
             </ul>
             <Link to="/nuits-a-quai" className="link-arrow">

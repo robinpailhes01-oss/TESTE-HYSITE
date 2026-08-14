@@ -13,21 +13,24 @@ export const DAY_STEPS: Step[] = [
 ]
 
 export const NIGHT_STEPS: Step[] = [
-  { time: '18 h 00', label: 'Embarquement', note: 'Le yacht est prêt, la cabine aussi.' },
-  { time: '19 h 00', label: 'Champagne', it: 'au carré', note: 'Coupe de bienvenue face au port.' },
-  { time: '21 h 00', label: 'Soirée', it: 'sur le pont', note: 'Dîner livré à bord sur demande.' },
-  { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, loin de tout.' },
-  { time: '9 h 00', label: 'Réveil', it: 'face à la mer', note: 'Petit-déjeuner servi sur le pont.' },
+  { time: '18 h 00', label: 'Embarquement', note: 'Accueil au ponton, le yacht et la cabine sont prêts.' },
+  { time: '19 h 00', label: 'Sortie en mer', it: 'en début de soirée', note: 'Selon la formule choisie — un tour au large avant la nuit.' },
+  { time: '21 h 00', label: 'Tapas', it: 'Una Mas', note: 'Plateau apéritif servi à bord, notre partenaire local.' },
+  { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, amarrés au calme du port.' },
+  { time: '12 h 00', label: 'Petit-déjeuner', it: 'et départ', note: 'Petit-déjeuner inclus (Hôtel Neptune), checkout à midi.' },
 ]
 
 export type Formule = {
-  key: '2h' | '3h' | '4h'
+  key: string
   num: string
   name: string
   it: string
   duration: string
   amount: string
-  amountSolo: string
+  amountSolo?: string
+  amountFrom?: boolean
+  season?: string
+  weekendNote?: string
   desc: string
   highlight?: string
 }
@@ -46,6 +49,9 @@ export type Experience = {
   includes: { label: string; detail: string }[]
   steps: Step[]
   price: { amount: string; unit: string; note: string }
+  formulesKicker: string
+  formulesTitlePlain: string
+  formulesTitleIt: string
   formules?: Formule[]
   gallery: { src: string; alt: string }[]
 }
@@ -77,6 +83,9 @@ export const EXPERIENCES: Experience[] = [
       unit: 'la sortie',
       note: 'À partir de — sans capitaine dès 320 €.',
     },
+    formulesKicker: 'Nos formules',
+    formulesTitlePlain: 'Trois façons de',
+    formulesTitleIt: 'prendre le large',
     formules: [
       {
         key: '2h',
@@ -119,29 +128,67 @@ export const EXPERIENCES: Experience[] = [
   {
     slug: 'nuits-a-quai',
     group: 'nuit',
-    value: 'Nuit insolite à quai',
+    value: 'Nuit à quai',
     tag: '02 — La nuit',
     titlePlain: 'Nuits insolites',
     titleIt: 'à quai',
-    tagline: 'Votre suite sur l’eau',
+    tagline: 'Votre suite sur l’eau, à Carnon',
     hero: '/images/nuit-bateau.jpg',
     heroAlt: 'Le yacht Harmonie au soir tombant, reflets dorés sur l’eau',
     intro:
-      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans son port, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. Vous arrivez, tout est prêt — champagne au frais, cabine préparée, lumière douce.',
+      'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. Deux registres selon la saison — la Nuit Prestige l’été, la Nuit Insolite (yacht chauffé) l’hiver, avec ou sans sortie en mer en début de soirée. Formule intimiste, réservée à deux personnes.',
     includes: [
-      { label: 'Le yacht pour vous seuls', detail: 'De 18 h à 10 h' },
-      { label: 'Champagne de bienvenue', detail: 'Servi à l’embarquement' },
+      { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
+      { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
+      { label: 'Petit-déjeuner inclus', detail: 'Hôtel Neptune, juste à côté du ponton' },
       { label: 'Cabine préparée', detail: 'Linge de maison hôtelier' },
-      { label: 'Petit-déjeuner servi à bord', detail: 'Au réveil, sur le pont' },
-      { label: 'Dîner livré à bord', detail: 'Sur demande' },
-      { label: 'Idéal à deux', detail: 'Anniversaires, demandes, escapades' },
+      { label: 'Sortie en mer en soirée', detail: 'Incluse — sauf formule sans sortie' },
+      { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
     steps: NIGHT_STEPS,
     price: {
-      amount: '490 €',
+      amount: '180 €',
       unit: 'la nuit',
-      note: 'À partir de — petit-déjeuner inclus.',
+      note: 'À partir de — Nuit Insolite sans sortie, hors week-end pour la Nuit Prestige.',
     },
+    formulesKicker: 'Nos formules',
+    formulesTitlePlain: 'Deux saisons,',
+    formulesTitleIt: 'trois nuits',
+    formules: [
+      {
+        key: 'prestige',
+        num: '01',
+        name: 'Nuit',
+        it: 'Prestige',
+        duration: '18 h — jusqu’à 12 h le lendemain',
+        amount: '380 €',
+        season: 'Été — mai à septembre',
+        weekendNote: 'Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.',
+        desc: 'La formule signature : sortie en mer en début de soirée, plateau tapas (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain.',
+        highlight: 'La plus demandée',
+      },
+      {
+        key: 'insolite-avec-sortie',
+        num: '02',
+        name: 'Nuit Insolite',
+        it: 'avec sortie',
+        duration: '18 h — jusqu’à 12 h le lendemain',
+        amount: '380 €',
+        season: 'Hiver — octobre à avril',
+        desc: 'Le yacht chauffé pour l’hiver : une sortie en mer en début de soirée, puis la nuit à bord, petit-déjeuner inclus.',
+      },
+      {
+        key: 'insolite-sans-sortie',
+        num: '03',
+        name: 'Nuit Insolite',
+        it: 'cocooning',
+        duration: '18 h — jusqu’à 12 h le lendemain',
+        amount: '180 €',
+        amountFrom: true,
+        season: 'Hiver — octobre à avril',
+        desc: 'L’expérience insolite à petit budget : le yacht chauffé, amarré au calme, sans sortie en mer — pour se lover à deux.',
+      },
+    ],
     gallery: [
       { src: '/images/nuit-bateau.jpg', alt: 'Le yacht au soir tombant' },
       { src: '/images/reflets.jpg', alt: 'Reflets dorés sur l’eau' },

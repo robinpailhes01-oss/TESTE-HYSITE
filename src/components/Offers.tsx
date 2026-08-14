@@ -1,23 +1,22 @@
 import { motion } from 'motion/react'
 import { useReveal } from '../motion'
 
-/* Tarifs indicatifs — à ajuster avant mise en ligne. */
 const OFFERS = [
   {
     plain: 'Sortie',
     it: 'en mer',
-    value: 'Sortie en mer',
+    group: 'sortie',
     amount: '380 €',
     unit: 'les 2 heures',
     desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. Formules 2 h, 3 h ou 4 h — sans capitaine (permis côtier) dès 320 €. Jusqu’à 8 invités.',
   },
   {
-    plain: 'Nuit insolite',
+    plain: 'Nuit',
     it: 'à quai',
-    value: 'Nuit insolite à quai',
-    amount: '490 €',
+    group: 'nuit',
+    amount: '180 €',
     unit: 'la nuit',
-    desc: 'Le yacht pour vous seuls de 18 h à 10 h — champagne de bienvenue, cabine préparée, petit-déjeuner servi à bord au réveil.',
+    desc: 'Nuit Insolite (hiver, yacht chauffé) dès 180 €, ou Nuit Prestige (été, avec sortie en mer) à 380 €. Le yacht pour vous seuls, petit-déjeuner inclus. Jusqu’à 2 personnes.',
   },
 ]
 
@@ -31,7 +30,7 @@ export default function Offers() {
         <motion.div className="section-head" {...head}>
           <p className="kicker">Tarifs</p>
           <h2 className="mixed">
-            Deux formules, <span className="it">tout compris</span>
+            Deux prestations, <span className="it">tout compris</span>
           </h2>
         </motion.div>
 
@@ -51,9 +50,7 @@ export default function Offers() {
                 href="#reservation"
                 className="link-arrow"
                 onClick={() =>
-                  window.dispatchEvent(
-                    new CustomEvent('preselect-experience', { detail: o.value }),
-                  )
+                  window.dispatchEvent(new CustomEvent('preselect-group', { detail: o.group }))
                 }
               >
                 Vérifier une date

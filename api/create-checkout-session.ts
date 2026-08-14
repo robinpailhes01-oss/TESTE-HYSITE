@@ -39,6 +39,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const stripe = new Stripe(secretKey)
   const origin = (req.headers.origin as string) || `https://${req.headers.host}`
+  /* date arrive en YYYY-MM-DD (sans heure) — new Date() la lit en UTC minuit ;
+     on formate explicitement en UTC pour ne jamais la décaler d'un jour selon
+     le fuseau du serveur. */
   const dateStr = typeof date === 'string' ? date : ''
   const dateLabel = dateStr
     ? new Date(dateStr).toLocaleDateString('fr-FR', {
@@ -46,6 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
+        timeZone: 'UTC',
       })
     : ''
 
@@ -71,6 +75,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ],
       metadata: {
         priceId,
+        bookingType: price.bookingType,
+        group: price.group,
         formule: price.label,
         montantTotal: String(price.amount),
         acompte: String(deposit),

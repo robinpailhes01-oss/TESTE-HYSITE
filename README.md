@@ -58,6 +58,43 @@ générées à la volée (`price_data`) à partir du catalogue `src/pricing.ts`.
 réservation apparaît dans Stripe avec en métadonnées : formule, nom, email, date souhaitée,
 nombre d'invités et message.
 
+## Coordination avec le tableau de bord (Supabase) — après paiement
+
+Dès qu'un acompte est payé, `supabase-functions/stripe-webhook/index.ts` (déployée sur le
+projet Supabase `harmonie-yacht`, function `stripe-webhook`) prend le relais :
+
+1. Retrouve ou crée le client dans `customers`.
+2. Insère la réservation dans `bookings` — **exactement la même table que le tableau de
+   bord**, donc elle apparaît immédiatement, éditable comme n'importe quelle réservation
+   créée manuellement.
+3. Cette insertion déclenche automatiquement (triggers déjà en place, rien à faire) :
+   - la création de l'événement **Google Calendar** ;
+   - l'enregistrement de l'acompte encaissé dans la compta (`revenues`) ;
+   - le rattachement au `lead` correspondant, marqué `booked`.
+4. Envoie l'**email de confirmation** au client (montant payé, solde restant, lieu de
+   rendez-vous, politique de retard) via Resend — même expéditeur que le reste du système.
+
+Le **solde restant** (`balance_due`) se règle comme aujourd'hui, directement à bord —
+c'est vous qui l'enregistrez dans le tableau de bord le jour J (`balance_payments`),
+rien ne change de ce côté.
+
+**Pour activer cette coordination :**
+
+1. Dans **Stripe → Developers → Webhooks → Add endpoint**, renseigner :
+   - URL : `https://szdfpjyytwedhochvzfd.supabase.co/functions/v1/stripe-webhook`
+   - Événement à écouter : `checkout.session.completed`
+   - Copier le secret de signature généré (`whsec_...`).
+2. Dans **Supabase → Project Settings → Edge Functions → Secrets**, ajouter :
+   - `STRIPE_SECRET_KEY` — la même valeur que dans Vercel.
+   - `STRIPE_WEBHOOK_SECRET` — le `whsec_...` de l'étape 1.
+   - (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM` sont déjà
+     configurés — partagés avec les autres fonctions du projet.)
+3. Tester en mode test Stripe (carte `4242 4242 4242 4242`) avant de passer en clé live.
+
+La fonction est idempotente (colonne `bookings.stripe_session_id`, unique) : si Stripe
+renvoie deux fois le même événement, la deuxième tentative est ignorée sans dupliquer la
+réservation.
+
 ## À personnaliser avant mise en ligne
 
 | Quoi | Où |

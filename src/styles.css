@@ -1660,6 +1660,13 @@ section {
   color: var(--ink-muted);
 }
 
+.formule__season {
+  font-size: 12.5px;
+  font-style: italic;
+  font-family: var(--font-serif);
+  color: var(--ocean);
+}
+
 .formule__price {
   display: flex;
   align-items: baseline;
@@ -1686,6 +1693,13 @@ section {
   font-size: 14.5px;
   color: var(--ink-muted);
   flex: 1;
+}
+
+.formule__weekend {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--ink-faint);
+  padding-top: 10px;
 }
 
 /* --- Formulaire de réservation : sélecteur de prestation & récap tarifaire - */

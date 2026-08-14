@@ -15,7 +15,15 @@ type Result = {
 function formatDate(iso: string) {
   const d = new Date(iso)
   if (Number.isNaN(d.getTime())) return null
-  return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+  /* iso est un YYYY-MM-DD sans heure, lu en UTC minuit — on formate en UTC
+     pour ne jamais la décaler d'un jour selon le fuseau du visiteur. */
+  return d.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
 }
 
 /* Page de retour après paiement Stripe — on ne fait jamais confiance à

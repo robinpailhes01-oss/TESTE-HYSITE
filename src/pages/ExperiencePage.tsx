@@ -81,14 +81,14 @@ export default function ExperiencePage() {
         </div>
       </section>
 
-      {/* Formules (sorties en mer) */}
+      {/* Formules */}
       {exp.formules ? (
         <section className="section" style={{ background: 'var(--white)' }}>
           <div className="container">
             <motion.div className="section-head" {...formulesHead}>
-              <p className="kicker">Nos formules</p>
+              <p className="kicker">{exp.formulesKicker}</p>
               <h2 className="mixed">
-                Trois façons de <span className="it">prendre le large</span>
+                {exp.formulesTitlePlain} <span className="it">{exp.formulesTitleIt}</span>
               </h2>
             </motion.div>
             <motion.div className="formules" {...formulesGrid}>
@@ -104,14 +104,16 @@ export default function ExperiencePage() {
                     <span className="it">{f.it}</span>
                   </h3>
                   <p className="formule__duration">{f.duration}</p>
+                  {f.season ? <p className="formule__season">{f.season}</p> : null}
                   <p className="formule__price">
-                    <span className="offer__unit">avec capitaine</span>
+                    <span className="offer__unit">{f.amountSolo ? 'avec capitaine' : f.amountFrom ? 'dès' : 'à partir de'}</span>
                     <span className="formule__amount">{f.amount}</span>
                   </p>
-                  <p className="formule__solo">
-                    Sans capitaine (permis côtier) — {f.amountSolo}
-                  </p>
+                  {f.amountSolo ? (
+                    <p className="formule__solo">Sans capitaine (permis côtier) — {f.amountSolo}</p>
+                  ) : null}
                   <p className="formule__desc">{f.desc}</p>
+                  {f.weekendNote ? <p className="formule__weekend">{f.weekendNote}</p> : null}
                   <a
                     href="#reservation"
                     className="link-arrow"
