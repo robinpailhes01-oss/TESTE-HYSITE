@@ -1,11 +1,22 @@
+import { useEffect, useState } from 'react'
 import { WHATSAPP_URL } from '../whatsapp'
 
-/* Bouton discret, toujours accessible — le canal le plus rapide pour
-   joindre l'équipe (Léa, l'agent WhatsApp, répond en quelques minutes). */
+/* Bouton discret, accessible dès qu'on a dépassé le héros — en position
+   fixe, il chevaucherait sinon la méta ou le CTA du héros sur mobile
+   (contenu lui aussi collé en bas du premier écran). */
 export default function WhatsAppButton() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.6)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <a
-      className="wa-fab"
+      className={`wa-fab${visible ? ' is-visible' : ''}`}
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"

@@ -1217,7 +1217,16 @@ section {
   border-radius: 100px;
   padding: 8px 16px 8px 8px;
   box-shadow: 0 14px 44px rgba(12, 43, 69, 0.22);
-  transition: box-shadow var(--t-micro), transform var(--t-micro);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity var(--t-std) var(--ease), transform var(--t-std) var(--ease), box-shadow var(--t-micro);
+}
+
+.wa-fab.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .wa-fab:hover {
