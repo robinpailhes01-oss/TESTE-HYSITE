@@ -37,6 +37,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -48,6 +49,8 @@ body {
   background: var(--foam);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 img {
@@ -918,6 +921,7 @@ section {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
 .field--full {
@@ -948,6 +952,8 @@ section {
   border: 1px solid var(--white-faint);
   border-radius: var(--r-btn);
   padding: 12px 14px;
+  width: 100%;
+  min-width: 0;
   transition: border-color var(--t-std) var(--ease), background var(--t-std) var(--ease);
 }
 
@@ -1414,7 +1420,7 @@ section {
   color: var(--ink-muted);
   letter-spacing: 0.06em;
   text-align: right;
-  white-space: nowrap;
+  max-width: 60%;
 }
 
 .page-price {
@@ -1512,7 +1518,9 @@ section {
   overflow: hidden;
 }
 
-.calendar {
+/* Carte blanche unique : calendrier + créneaux horaires (sorties) affichés
+   dans le même panneau, pour un parcours « jour → heure » en une étape. */
+.calendar-panel {
   margin-top: 10px;
   background: var(--white);
   color: var(--ink);
@@ -1520,6 +1528,55 @@ section {
   padding: 18px;
   max-width: 400px;
   box-shadow: 0 18px 54px rgba(8, 24, 38, 0.35);
+}
+
+.calendar {
+  width: 100%;
+}
+
+.hour-panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.hour-panel__label {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+
+.hour-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.hour-chip {
+  padding: 10px 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 8px;
+  background: var(--foam);
+  color: var(--ink);
+  transition: background var(--t-micro), color var(--t-micro);
+}
+
+.hour-chip:hover {
+  background: var(--ink-faint);
+}
+
+.hour-chip.is-selected {
+  background: var(--ocean);
+  color: var(--white);
+}
+
+.cal-hint--dark {
+  color: #b4562e;
 }
 
 .calendar__head {
@@ -2126,8 +2183,21 @@ section {
     border-bottom: none;
   }
 
-  .calendar {
+  .calendar-panel {
     max-width: none;
+  }
+
+  .hour-chips {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .includes li {
+    flex-wrap: wrap;
+  }
+
+  .includes__detail {
+    max-width: 100%;
+    text-align: left;
   }
 
   .group-switch {

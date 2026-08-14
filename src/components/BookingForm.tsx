@@ -323,9 +323,11 @@ export default function BookingForm({ group: fixedGroup }: Props) {
         </select>
       </div>
 
-      {/* Date : vrai calendrier visuel */}
+      {/* Date (et heure pour les sorties) : un seul calendrier visuel — on
+          choisit le jour, les créneaux compatibles avec la durée choisie
+          apparaissent aussitôt dans le même panneau. */}
       <div className="field field--full">
-        <label htmlFor="bk-date">Date souhaitée</label>
+        <label htmlFor="bk-date">{needsSortieHour ? 'Date & heure de départ' : 'Date souhaitée'}</label>
         <button
           id="bk-date"
           type="button"
@@ -337,7 +339,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
             <path d="M3.5 9.5h17M8 3v4M16 3v4" />
           </svg>
-          {date ? formatDate(date) : 'Choisir une date'}
+          {date
+            ? `${formatDate(date)}${needsSortieHour && startHour !== null ? ` · ${formatHour(startHour)}` : ''}`
+            : 'Choisir une date'}
           <span className="cal-trigger__chevron" aria-hidden="true">
             {calOpen ? '▴' : '▾'}
           </span>
@@ -356,48 +360,50 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.45, ease }}
             >
-              <Calendar
-                value={date}
-                onChange={(d) => {
-                  setDate(d)
-                  setDateHint(false)
-                  window.setTimeout(() => setCalOpen(false), 260)
-                }}
-                disabledDates={disabledDates}
-              />
+              <div className="calendar-panel">
+                <Calendar
+                  value={date}
+                  onChange={(d) => {
+                    setDate(d)
+                    setDateHint(false)
+                    if (!needsSortieHour) window.setTimeout(() => setCalOpen(false), 260)
+                  }}
+                  disabledDates={disabledDates}
+                />
+                {needsSortieHour && date ? (
+                  <div className="hour-panel">
+                    <p className="hour-panel__label">Heure de départ — {formatDate(date)}</p>
+                    {sortieHours.length > 0 ? (
+                      <div className="hour-chips" role="group" aria-label="Choisir une heure de départ">
+                        {sortieHours.map((h) => (
+                          <button
+                            type="button"
+                            key={h}
+                            className={`hour-chip${startHour === h ? ' is-selected' : ''}`}
+                            aria-pressed={startHour === h}
+                            onClick={() => {
+                              setStartHour(h)
+                              window.setTimeout(() => setCalOpen(false), 260)
+                            }}
+                          >
+                            {formatHour(h)}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="cal-hint cal-hint--dark" role="alert">
+                        Plus aucun créneau disponible ce jour-là (sorties entre {SORTIE_WINDOW.openHour} h
+                        et {SORTIE_WINDOW.closeHour} h, 1 h de battement entre deux sorties) —
+                        choisissez une autre date.
+                      </p>
+                    )}
+                  </div>
+                ) : null}
+              </div>
             </motion.div>
           ) : null}
         </AnimatePresence>
       </div>
-
-      {needsSortieHour && date ? (
-        <div className="field field--full">
-          <label htmlFor="bk-hour">Heure de départ</label>
-          {sortieHours.length > 0 ? (
-            <select
-              id="bk-hour"
-              value={startHour ?? ''}
-              onChange={(e) => setStartHour(e.target.value ? Number(e.target.value) : null)}
-              required
-            >
-              <option value="" disabled>
-                Choisir une heure
-              </option>
-              {sortieHours.map((h) => (
-                <option key={h} value={h}>
-                  {formatHour(h)}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <p className="cal-hint" role="alert">
-              Plus aucun créneau disponible ce jour-là (sorties entre {SORTIE_WINDOW.openHour} h et{' '}
-              {SORTIE_WINDOW.closeHour} h, 1 h de battement entre deux sorties) — choisissez une
-              autre date.
-            </p>
-          )}
-        </div>
-      ) : null}
 
       <div className="field field--full">
         <label htmlFor="bk-message">Votre occasion, vos envies</label>
