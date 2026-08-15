@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
 import { DEPOSIT_RATE, findPrice, SORTIE_WINDOW } from '../pricing'
@@ -62,6 +63,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [startHour, setStartHour] = useState<number | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [dateHint, setDateHint] = useState(false)
+  const [cgvAccepted, setCgvAccepted] = useState(false)
+  const [cgvHint, setCgvHint] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [slots, setSlots] = useState<BookedSlot[]>([])
@@ -184,6 +187,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     if (!price || deposit === null || blockedWeekendPrestige) return
     if (needsSortieHour && startHour === null) {
       setErrorMsg('Choisissez une heure de départ disponible.')
+      return
+    }
+    if (!cgvAccepted) {
+      setCgvHint(true)
       return
     }
 
@@ -449,6 +456,32 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       ) : null}
+
+      <div className="field field--full form__consent">
+        <label className="consent-check">
+          <input
+            type="checkbox"
+            checked={cgvAccepted}
+            onChange={(e) => {
+              setCgvAccepted(e.target.checked)
+              if (e.target.checked) setCgvHint(false)
+            }}
+          />
+          <span>
+            J’ai lu et j’accepte les{' '}
+            <Link to="/cgv" target="_blank" rel="noopener noreferrer">
+              conditions générales de vente
+            </Link>
+            , notamment la politique d’annulation et le renoncement au droit de rétractation
+            (article L221-28 12° du code de la consommation).
+          </span>
+        </label>
+        {cgvHint ? (
+          <span className="cal-hint" role="alert">
+            Merci d’accepter les CGV pour continuer.
+          </span>
+        ) : null}
+      </div>
 
       <div className="form__footer">
         <button type="submit" className="btn btn--light" disabled={loading || blockedWeekendPrestige}>
