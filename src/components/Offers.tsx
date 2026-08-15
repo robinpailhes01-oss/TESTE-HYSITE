@@ -16,7 +16,7 @@ const OFFERS = [
     group: 'nuit',
     amount: '250 €',
     unit: 'la nuit',
-    desc: 'À partir de 250 € (petit-déjeuner Hôtel Neptune), ou 380 € en Nuit Prestige avec sortie en mer au coucher de soleil et tapas Una Mas. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
+    desc: 'À partir de 250 € (petit-déjeuner sur plateau, jusqu’à 10 h), ou 380 € en Nuit Prestige avec sortie en mer au coucher de soleil et tapas Una Mas. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
   },
 ]
 

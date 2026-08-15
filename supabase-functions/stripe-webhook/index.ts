@@ -88,7 +88,7 @@ function confirmationEmailText(opts: {
       "À savoir : en cas de retard à l'embarquement, la sortie ne peut pas être décalée — le retard empiète directement sur la durée de votre créneau.",
     );
   } else {
-    lines.push("", "Le petit-déjeuner du lendemain est inclus, à récupérer à deux pas du ponton.");
+    lines.push("", "Le petit-déjeuner sur plateau du lendemain est inclus, servi jusqu'à 10 h.");
   }
 
   lines.push(

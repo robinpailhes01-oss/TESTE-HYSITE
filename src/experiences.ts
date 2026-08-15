@@ -9,7 +9,7 @@ export const NIGHT_STEPS: Step[] = [
   { time: '18 h 00', label: 'Embarquement', note: 'Accueil au ponton, le yacht et la cabine sont prêts.' },
   { time: 'Coucher de soleil', label: 'Sortie en mer', it: '& tapas', note: 'Une heure au large, plateau tapas de notre partenaire Una Mas.' },
   { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, amarrés au calme du port.' },
-  { time: '12 h 00', label: 'Petit-déjeuner', it: 'et départ', note: 'Petit-déjeuner inclus (Hôtel Neptune), checkout à midi.' },
+  { time: '10 h 00', label: 'Petit-déjeuner', it: 'sur plateau', note: 'Petit-déjeuner sur plateau (Hôtel Neptune), servi jusqu’à 10 h. Checkout à midi.' },
 ]
 
 export type Formule = {
@@ -26,6 +26,7 @@ export type Formule = {
   weekendNote?: string
   desc: string
   highlight?: string
+  boldNote?: string
 }
 
 export type Experience = {
@@ -61,7 +62,7 @@ export const EXPERIENCES: Experience[] = [
     hero: '/images/sortie-bateau.jpg',
     heroAlt: 'Le yacht Harmonie au mouillage sur une eau turquoise',
     intro:
-      'Le yacht est à vous, le programme aussi. Vous embarquez avec votre capitaine — ou sans, si vous avez le permis — et la sortie se dessine selon vos envies : cap sur les criques, mouillage dans une eau claire, baignade, et l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
+      'Le yacht est à vous, le programme aussi. Votre yacht privatif, avec sa plateforme géante sur l’eau et le paddle à disposition : profitez-en pour manger, vous amuser, nager, et vivre la sortie à votre rythme, jusqu’à l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
       { label: 'Yacht privatisé', detail: 'Le bateau est à vous, personne d’autre à bord' },
       { label: 'Avec capitaine, ou sans', detail: 'Sans : permis ≥ 5 ans + 50 h de navigation justifiables, −15 %' },
@@ -100,6 +101,7 @@ export const EXPERIENCES: Experience[] = [
         amountSolo: '470 €',
         desc: 'Le bon équilibre : une crique, un vrai mouillage, baignade et apéritif — sans regarder la montre.',
         highlight: 'La plus choisie',
+        boldNote: 'Barbecue à disposition',
       },
       {
         key: '4h',
@@ -121,6 +123,7 @@ export const EXPERIENCES: Experience[] = [
         amountFlat: true,
         desc: 'Cap sur Les Aresquiers, près de la plage : efoil à disposition, BBQ à bord, capitaine inclus — tout compris, pour une journée hors norme.',
         highlight: 'Ultra Premium',
+        boldNote: 'Ultra Premium — tout compris',
       },
     ],
     gallery: [
@@ -146,7 +149,7 @@ export const EXPERIENCES: Experience[] = [
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
       { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
       { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
-      { label: 'Petit-déjeuner inclus', detail: 'Hôtel Neptune, juste à côté du ponton' },
+      { label: 'Petit-déjeuner inclus', detail: 'Sur plateau, servi jusqu’à 10 h (Hôtel Neptune)' },
       { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
     steps: NIGHT_STEPS,
@@ -167,7 +170,7 @@ export const EXPERIENCES: Experience[] = [
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '250 €',
         season: 'Disponible à partir du 1er septembre',
-        desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
+        desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
       },
       {
         key: 'prestige',
@@ -177,7 +180,7 @@ export const EXPERIENCES: Experience[] = [
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
         weekendNote: 'Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.',
-        desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner inclus le lendemain (Hôtel Neptune).',
+        desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
         highlight: 'La plus demandée',
       },
     ],

@@ -113,10 +113,12 @@ export default function ExperiencePage({ slug }: Props) {
                     </span>
                     <span className="formule__amount">{f.amount}</span>
                   </p>
-                  {f.amountSolo ? (
-                    <p className="formule__solo">Sans capitaine (permis côtier) — {f.amountSolo}</p>
-                  ) : null}
                   <p className="formule__desc">{f.desc}</p>
+                  {f.boldNote ? (
+                    <p className="formule__desc">
+                      <strong>{f.boldNote}</strong>
+                    </p>
+                  ) : null}
                   {f.weekendNote ? <p className="formule__weekend">{f.weekendNote}</p> : null}
                   <a
                     href="#reservation"

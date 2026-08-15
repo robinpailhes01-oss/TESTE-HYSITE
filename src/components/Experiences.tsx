@@ -31,10 +31,6 @@ export default function Experiences() {
             <h3 className="mixed exp__title">
               Sorties <span className="it">en mer</span>
             </h3>
-            <p className="exp__desc">
-              Le yacht est à vous, le programme aussi. Cap sur les criques, mouillage dans une eau
-              claire, baignade — et l’apéritif face au soleil qui descend.
-            </p>
             <ul className="exp__list">
               <li>
                 <span>Sorties de 2 h à 8 h, entre 9 h et 21 h</span>

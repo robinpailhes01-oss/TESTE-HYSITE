@@ -62,8 +62,8 @@ export default function DemandeMariageRoute() {
           </li>
           <li>
             Nuit Prestige à bord — 380 € pour 2 personnes, sortie en mer d’1 h au coucher de
-            soleil incluse, plateau tapas (Una Mas) et petit-déjeuner (Hôtel Neptune) le
-            lendemain, de 18 h à 12 h
+            soleil incluse, plateau tapas (Una Mas) et petit-déjeuner sur plateau (Hôtel Neptune)
+            le lendemain matin jusqu’à 10 h, de 18 h à 12 h
           </li>
         </ul>
 

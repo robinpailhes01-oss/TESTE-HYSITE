@@ -21,10 +21,10 @@ export default function Manifesto() {
         </motion.p>
 
         <motion.p className="manifesto__text" {...text}>
-          Harmonie Yacht est née d’une conviction&nbsp;: les plus beaux moments méritent un écrin
-          rare. Nous privatisons notre yacht pour une seule chose — <span className="it">vous
-          recevoir</span> avec calme, précision et générosité.
-          En mer à la journée, ou amarré au port pour une nuit que vous n’oublierez pas.
+          Nous sommes convaincus qu’un moment en mer est <span className="it">la parfaite
+          solution pour s’évader</span>. Harmonie Yacht privatise son yacht pour une seule chose
+          — vous recevoir avec calme, précision et générosité, en mer à la journée ou amarré au
+          port pour une nuit que vous n’oublierez pas.
         </motion.p>
 
         <motion.dl className="manifesto__data" {...data}>

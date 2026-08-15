@@ -78,7 +78,7 @@ export default function Hero() {
             animate={{ opacity: 1, letterSpacing: '0.3em' }}
             transition={{ duration: 1.8, ease, delay: 0.15 }}
           >
-            Harmonie Yacht — location privée avec skipper
+            Harmonie Yacht
           </motion.p>
 
           <motion.h1
@@ -108,7 +108,7 @@ export default function Hero() {
             transition={{ duration: 1.1, ease, delay: 1.15 }}
           >
             <PinIcon />
-            Port d’attache — Méditerranée
+            Carnon
           </motion.p>
           <motion.p
             className="hero__meta hero__meta--right"
