@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useReveal } from '../motion'
 import RevealImage from './RevealImage'
 
@@ -19,7 +19,7 @@ export default function Experiences() {
         </motion.div>
 
         <motion.article className="exp" {...one}>
-          <Link to="/sorties-en-mer" className="exp__media-link" aria-label="Découvrir les sorties en mer">
+          <Link to="/sortie-en-mer-carnon" className="exp__media-link" aria-label="Découvrir les sorties en mer">
             <RevealImage
               className="exp__media"
               src="/images/sortie-bateau.jpg"
@@ -49,14 +49,14 @@ export default function Experiences() {
                 <span>Au choix</span>
               </li>
             </ul>
-            <Link to="/sorties-en-mer" className="link-arrow">
+            <Link to="/sortie-en-mer-carnon" className="link-arrow">
               Découvrir la sortie en mer
             </Link>
           </div>
         </motion.article>
 
         <motion.article className="exp exp--reverse" {...two}>
-          <Link to="/nuits-a-quai" className="exp__media-link" aria-label="Découvrir les nuits insolites à quai">
+          <Link to="/nuit-a-bord-yacht-carnon" className="exp__media-link" aria-label="Découvrir les nuits insolites à quai">
             <RevealImage
               className="exp__media"
               src="/images/nuit-bateau.jpg"
@@ -91,7 +91,7 @@ export default function Experiences() {
                 <span>Hôtel Neptune</span>
               </li>
             </ul>
-            <Link to="/nuits-a-quai" className="link-arrow">
+            <Link to="/nuit-a-bord-yacht-carnon" className="link-arrow">
               Découvrir la nuit à quai
             </Link>
           </div>

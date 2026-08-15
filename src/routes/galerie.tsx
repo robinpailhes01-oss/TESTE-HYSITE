@@ -1,0 +1,57 @@
+import { Link } from 'react-router'
+import JsonLd from '../components/JsonLd'
+import { pageMeta, breadcrumbSchema } from '../seo'
+
+const PATH = '/galerie'
+
+const SHOTS = [
+  { src: '/images/hero-bateau.jpg', alt: 'Le yacht Harmonie au soleil couchant, vue aérienne au large de Carnon', cls: 'gal__a' },
+  { src: '/images/sortie-bateau.jpg', alt: 'Le yacht Harmonie au mouillage, eau turquoise', cls: 'gal__b' },
+  { src: '/images/calme-carre.jpg', alt: 'Mer calme au large de Carnon en fin de journée', cls: 'gal__c' },
+  { src: '/images/nuit-bateau.jpg', alt: 'Le yacht Harmonie amarré au port de Carnon à la tombée du jour', cls: 'gal__d' },
+  { src: '/images/sortie-carre.jpg', alt: 'Le yacht Harmonie vu depuis l’eau, près de Carnon', cls: 'gal__e' },
+  { src: '/images/reflets.jpg', alt: 'Reflets dorés du coucher de soleil sur l’eau à Carnon', cls: 'gal__f' },
+]
+
+export function meta() {
+  return pageMeta({
+    title: 'Galerie photos du yacht Harmonie à Carnon | Harmonie Yacht',
+    description:
+      'Photos du yacht Harmonie (Atlantis 42, 12 mètres) et de ses sorties en mer au large de Carnon, dans l’Hérault.',
+    path: PATH,
+  })
+}
+
+export default function GalerieRoute() {
+  return (
+    <main className="page">
+      <section className="legal-hero on-ocean-deep on-ocean">
+        <div className="container">
+          <Link to="/" className="page-hero__back">
+            ← Retour à l’accueil
+          </Link>
+          <p className="kicker" style={{ marginTop: 18 }}>Galerie</p>
+          <h1 className="mixed legal-hero__title">Le yacht Harmonie, en images</h1>
+        </div>
+      </section>
+
+      <section className="section" style={{ background: 'var(--white)' }}>
+        <div className="container">
+          <p className="legal-intro" style={{ maxWidth: 720, marginBottom: 32 }}>
+            L’Atlantis 42 « Harmonie », 12 mètres, amarré au port de Carnon — au mouillage dans
+            une crique, au coucher de soleil, ou à quai pour la nuit.
+          </p>
+          <div className="gal">
+            {SHOTS.map((s) => (
+              <span className={`gal__item ${s.cls}`} key={s.src}>
+                <img src={s.src} alt={s.alt} loading="lazy" />
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <JsonLd data={breadcrumbSchema([{ name: 'Accueil', path: '/' }, { name: 'Galerie', path: PATH }])} />
+    </main>
+  )
+}

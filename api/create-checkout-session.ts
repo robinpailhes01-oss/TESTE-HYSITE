@@ -174,7 +174,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
       },
       success_url: `${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/${price.group === 'sortie' ? 'sorties-en-mer' : 'nuits-a-quai'}#reservation`,
+      cancel_url: `${origin}/${price.group === 'sortie' ? 'sortie-en-mer-carnon' : 'nuit-a-bord-yacht-carnon'}#reservation`,
     })
 
     return res.status(200).json({ url: session.url })

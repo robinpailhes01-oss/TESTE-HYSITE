@@ -51,7 +51,7 @@ export type Experience = {
 
 export const EXPERIENCES: Experience[] = [
   {
-    slug: 'sorties-en-mer',
+    slug: 'sortie-en-mer-carnon',
     group: 'sortie',
     value: 'Sortie en mer',
     tag: '01 — Le jour',
@@ -130,7 +130,7 @@ export const EXPERIENCES: Experience[] = [
     ],
   },
   {
-    slug: 'nuits-a-quai',
+    slug: 'nuit-a-bord-yacht-carnon',
     group: 'nuit',
     value: 'Nuit à quai',
     tag: '02 — La nuit',

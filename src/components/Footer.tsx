@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { GOOGLE_REVIEWS_URL } from '../reviews'
 import { WHATSAPP_URL } from '../whatsapp'
 

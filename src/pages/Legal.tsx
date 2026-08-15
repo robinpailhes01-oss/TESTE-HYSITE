@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
 const COMPANY_ADDRESS = '61 rue du Rouet, 13008 Marseille, France'

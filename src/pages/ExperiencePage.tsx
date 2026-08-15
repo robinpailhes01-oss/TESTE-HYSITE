@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate } from 'react-router'
 import { motion, useReducedMotion } from 'motion/react'
 import { ease, useReveal } from '../motion'
 import { EXPERIENCES } from '../experiences'
@@ -7,8 +7,9 @@ import RevealImage from '../components/RevealImage'
 import BookingForm from '../components/BookingForm'
 import { WHATSAPP_URL } from '../whatsapp'
 
-export default function ExperiencePage() {
-  const { slug } = useParams()
+type Props = { slug: string }
+
+export default function ExperiencePage({ slug }: Props) {
   const reduced = useReducedMotion()
   const exp = EXPERIENCES.find((e) => e.slug === slug)
 
