@@ -113,7 +113,7 @@ export default function ExperiencePage({ slug }: Props) {
                     </span>
                     <span className="formule__amount">{f.amount}</span>
                   </p>
-                  <p className="formule__desc">{f.desc}</p>
+                  {exp.group === 'nuit' && f.desc ? <p className="formule__desc">{f.desc}</p> : null}
                   {f.boldNote ? (
                     <p className="formule__desc">
                       <strong>{f.boldNote}</strong>

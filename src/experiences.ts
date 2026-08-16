@@ -24,7 +24,7 @@ export type Formule = {
   amountFlat?: boolean
   season?: string
   weekendNote?: string
-  desc: string
+  desc?: string
   highlight?: string
   boldNote?: string
 }
@@ -89,7 +89,6 @@ export const EXPERIENCES: Experience[] = [
         duration: '2 h — idéale au couchant',
         amount: '380 €',
         amountSolo: '320 €',
-        desc: 'La parenthèse : cap au large, baignade express et coupe à la main — parfaite sur le créneau de la golden hour.',
       },
       {
         key: '3h',
@@ -99,7 +98,6 @@ export const EXPERIENCES: Experience[] = [
         duration: '3 h — crique & baignade',
         amount: '550 €',
         amountSolo: '470 €',
-        desc: 'Le bon équilibre : une crique, un vrai mouillage, baignade et apéritif — sans regarder la montre.',
         highlight: 'La plus choisie',
         boldNote: 'Barbecue à disposition',
       },
@@ -111,7 +109,7 @@ export const EXPERIENCES: Experience[] = [
         duration: '4 h — la demi-journée',
         amount: '750 €',
         amountSolo: '640 €',
-        desc: 'La demi-journée complète : deux mouillages possibles, apéritif dînatoire à bord, baignade à volonté.',
+        boldNote: 'Apéritif dînatoire à bord',
       },
       {
         key: '8h',
@@ -121,9 +119,8 @@ export const EXPERIENCES: Experience[] = [
         duration: '8 h — la journée complète',
         amount: '1 250 €',
         amountFlat: true,
-        desc: 'Cap sur Les Aresquiers, près de la plage : efoil à disposition, BBQ à bord, capitaine inclus — tout compris, pour une journée hors norme.',
         highlight: 'Ultra Premium',
-        boldNote: 'Ultra Premium — tout compris',
+        boldNote: 'Efoil & barbecue à bord',
       },
     ],
     gallery: [
