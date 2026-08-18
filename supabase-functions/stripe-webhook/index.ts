@@ -17,7 +17,9 @@
 //
 // Secrets attendus (Supabase → Edge Functions → Secrets) :
 //   STRIPE_SECRET_KEY          même clé que côté Vercel (sk_live_... / sk_test_...)
-//   STRIPE_WEBHOOK_SECRET      signature du endpoint (whsec_...), donnée par Stripe
+//   STRIPE_WEBHOOK_SECRET      signature du endpoint live (whsec_...), donnée par Stripe
+//   STRIPE_WEBHOOK_SECRET_TEST (optionnel) signature du endpoint TEST, pour tester le
+//                              parcours de bout en bout sans toucher au secret live
 //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY   déjà présents (partagés par les autres fonctions)
 //   RESEND_API_KEY, RESEND_FROM               déjà présents (partagés par booking-form-webhook)
 //   OWNER_EMAIL                 (optionnel) pour une future alerte à Robin
@@ -27,6 +29,10 @@ import Stripe from "npm:stripe@17";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY") ?? "";
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET") ?? "";
+// Secret du endpoint webhook Stripe en mode TEST (facultatif) — permet de
+// tester le parcour complet (paiement test -> email de confirmation) avec
+// une carte 4242... sans jamais toucher au secret du endpoint live.
+const STRIPE_WEBHOOK_SECRET_TEST = Deno.env.get("STRIPE_WEBHOOK_SECRET_TEST") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
@@ -127,18 +133,30 @@ async function sendConfirmationEmail(to: string, subject: string, text: string):
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("POST only", { status: 405 });
-  if (!STRIPE_WEBHOOK_SECRET) return new Response("STRIPE_WEBHOOK_SECRET manquant", { status: 500 });
+  if (!STRIPE_WEBHOOK_SECRET && !STRIPE_WEBHOOK_SECRET_TEST) {
+    return new Response("STRIPE_WEBHOOK_SECRET manquant", { status: 500 });
+  }
 
   const signature = req.headers.get("stripe-signature");
   if (!signature) return new Response("missing stripe-signature header", { status: 400 });
 
   const rawBody = await req.text();
 
-  let event: Stripe.Event;
-  try {
-    event = await stripe.webhooks.constructEventAsync(rawBody, signature, STRIPE_WEBHOOK_SECRET, undefined, cryptoProvider);
-  } catch (err) {
-    console.error("[stripe-webhook] signature invalide", err);
+  // On essaie d'abord le secret live, puis le secret test (si configuré) —
+  // ça permet de recevoir les deux types d'événements sur le même endpoint
+  // sans jamais désactiver la vérification en production.
+  let event: Stripe.Event | null = null;
+  for (const secret of [STRIPE_WEBHOOK_SECRET, STRIPE_WEBHOOK_SECRET_TEST]) {
+    if (!secret) continue;
+    try {
+      event = await stripe.webhooks.constructEventAsync(rawBody, signature, secret, undefined, cryptoProvider);
+      break;
+    } catch {
+      // essaie le secret suivant
+    }
+  }
+  if (!event) {
+    console.error("[stripe-webhook] signature invalide (aucun secret configuré ne correspond)");
     return new Response("invalid signature", { status: 400 });
   }
 
