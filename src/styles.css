@@ -1954,7 +1954,7 @@ section {
 /* Jour (sortie) en accent chaud, nuit en océan profond — repère visuel
    immédiat sur la prestation en cours de réservation. */
 .group-switch button[aria-pressed='true'][data-variant='sortie'] {
-  background: var(--sand);
+  background: var(--white);
   color: var(--ink);
 }
 

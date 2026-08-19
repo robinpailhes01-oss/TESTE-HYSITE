@@ -9,8 +9,11 @@ import { REVIEWS } from '../reviews'
 const TOASTS = REVIEWS.filter((r) => r.text.length <= 140)
 
 const FIRST_DELAY = 1400
-const INTERVAL = 14000
+const INTERVAL = 18000
 const VISIBLE_FOR = 6500
+/* Un vrai avis de temps en temps rassure ; en boucle, ça devient du
+   spam. Deux maximum par visite de page suffisent. */
+const MAX_SHOWN = 2
 
 /* Notification discrète reprenant de vrais avis Google — se déclenche
    quand le visiteur approche la section réservation (là où l'hésitation
@@ -51,9 +54,10 @@ export default function ReviewToast() {
   useEffect(() => {
     if (!armed || dismissedAll) return
     let count = 0
+    const shown = Math.min(TOASTS.length, MAX_SHOWN)
     let hideTimer: ReturnType<typeof setTimeout>
     const show = () => {
-      if (count >= TOASTS.length) return
+      if (count >= shown) return
       setIndex(count)
       setVisible(true)
       hideTimer = setTimeout(() => setVisible(false), VISIBLE_FOR)
@@ -62,7 +66,7 @@ export default function ReviewToast() {
     const first = setTimeout(() => {
       show()
       const loop = setInterval(() => {
-        if (count >= TOASTS.length) {
+        if (count >= shown) {
           clearInterval(loop)
           return
         }

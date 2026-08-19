@@ -53,7 +53,9 @@ export default function Footer() {
         <div className="footer__legal">
           <span>© {new Date().getFullYear()} Harmonie Group — tous droits réservés</span>
           <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
-          <span>Certaines photographies : Unsplash & Pexels</span>
+        </div>
+        <div className="footer__legal">
+          <span>Nos partenaires : Hôtel Neptune · Champagne Maison Perla · Una Mas</span>
         </div>
         <div className="footer__legal">
           <Link to="/mentions-legales">Mentions légales</Link>
