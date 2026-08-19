@@ -124,9 +124,11 @@ export const EXPERIENCES: Experience[] = [
       },
     ],
     gallery: [
-      { src: '/images/sortie-bateau.jpg', alt: 'Le yacht au mouillage, eau turquoise' },
-      { src: '/images/sortie-carre.jpg', alt: 'Le yacht vu depuis l’eau' },
-      { src: '/images/hero-bateau.jpg', alt: 'Le yacht au soleil couchant' },
+      { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Vue depuis le pont au coucher de soleil, face à Carnon' },
+      { src: '/images/sortie-efoil-jour.jpg', alt: 'Efoil en pleine journée, à la demande' },
+      { src: '/images/sortie-paddle.jpg', alt: 'Paddle depuis la plateforme de bain' },
+      { src: '/images/sortie-plateau-fruits-de-mer.jpg', alt: 'Plateau de fruits de mer et bouquet de roses à bord, en famille' },
+      { src: '/images/sortie-efoil-coucher-soleil.jpg', alt: 'Efoil au coucher de soleil, face à Carnon' },
     ],
   },
   {

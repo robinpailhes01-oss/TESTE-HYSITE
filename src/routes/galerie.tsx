@@ -10,7 +10,7 @@ const SHOTS = [
   { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
   { src: '/images/nuit-bateau.jpg', alt: 'Le yacht Harmonie amarré au port de Carnon à la tombée du jour', cls: 'gal__d' },
   { src: '/images/sortie-carre.jpg', alt: 'Le yacht Harmonie vu depuis l’eau, près de Carnon', cls: 'gal__e' },
-  { src: '/images/reflets.jpg', alt: 'Reflets dorés du coucher de soleil sur l’eau à Carnon', cls: 'gal__f' },
+  { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Coucher de soleil depuis le pont, face à Carnon', cls: 'gal__f' },
 ]
 
 export function meta() {

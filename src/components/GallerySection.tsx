@@ -8,7 +8,7 @@ const SHOTS = [
   { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
   { src: '/images/nuit-bateau.jpg', alt: 'Le soir tombe sur le yacht', cls: 'gal__d' },
   { src: '/images/sortie-carre.jpg', alt: 'Vu depuis l’eau', cls: 'gal__e' },
-  { src: '/images/reflets.jpg', alt: 'Reflets dorés', cls: 'gal__f' },
+  { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Coucher de soleil depuis le pont, face à Carnon', cls: 'gal__f' },
 ]
 
 export default function GallerySection() {
