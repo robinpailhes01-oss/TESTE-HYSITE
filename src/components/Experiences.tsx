@@ -55,8 +55,8 @@ export default function Experiences() {
           <Link to="/nuit-a-bord-yacht-carnon" className="exp__media-link" aria-label="Découvrir les nuits insolites à quai">
             <RevealImage
               className="exp__media"
-              src="/images/nuit-bateau.jpg"
-              alt="Le yacht Harmonie au soir tombant, reflets dorés sur l’eau"
+              src="/images/nuit-salon-amour.jpg"
+              alt="Le salon du yacht Harmonie, table dressée et décor « Amour »"
             />
           </Link>
           <div className="exp__body">

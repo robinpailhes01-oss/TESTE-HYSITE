@@ -250,7 +250,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             aria-pressed={groupChoice === 'nuit'}
             onClick={() => setGroupChoice('nuit')}
           >
-            Nuit à quai
+            Nuit à bord
           </button>
         </div>
       ) : null}
@@ -316,7 +316,11 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           </select>
           {nightFormule === 'sans-sortie' ? (
             <p className="field__note">Disponible à partir du 1er septembre.</p>
-          ) : null}
+          ) : (
+            <p className="field__note">
+              Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.
+            </p>
+          )}
         </div>
       )}
 
