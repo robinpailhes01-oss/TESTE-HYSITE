@@ -2294,7 +2294,8 @@ section {
   .toast-zone {
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    top: 76px;
+    bottom: auto;
   }
 
   .wa-fab {
