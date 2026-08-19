@@ -233,12 +233,14 @@ section {
 }
 
 .monogram {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 34px;
-  line-height: 1;
-  color: var(--white);
   justify-self: center;
+  line-height: 0;
+}
+
+.monogram img {
+  height: 34px;
+  width: auto;
+  display: block;
 }
 
 .nav__actions {
@@ -1008,8 +1010,8 @@ section {
   flex-wrap: wrap;
 }
 
-.footer .monogram {
-  font-size: 30px;
+.footer .monogram img {
+  height: 30px;
 }
 
 .footer__nav {

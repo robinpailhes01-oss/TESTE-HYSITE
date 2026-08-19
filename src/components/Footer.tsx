@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer__inner">
           <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            Hy
+            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
           </a>
           <ul className="footer__nav">
             <li>
@@ -53,7 +53,7 @@ export default function Footer() {
         <div className="footer__legal">
           <span>© {new Date().getFullYear()} Harmonie Group — tous droits réservés</span>
           <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
-          <span>Photographies Unsplash & Pexels</span>
+          <span>Certaines photographies : Unsplash & Pexels</span>
         </div>
         <div className="footer__legal">
           <Link to="/mentions-legales">Mentions légales</Link>

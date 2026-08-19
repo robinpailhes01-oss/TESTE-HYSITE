@@ -7,7 +7,7 @@ const PATH = '/galerie'
 const SHOTS = [
   { src: '/images/hero-bateau.jpg', alt: 'Le yacht Harmonie au soleil couchant, vue aérienne au large de Carnon', cls: 'gal__a' },
   { src: '/images/sortie-bateau.jpg', alt: 'Le yacht Harmonie au mouillage, eau turquoise', cls: 'gal__b' },
-  { src: '/images/calme-carre.jpg', alt: 'Mer calme au large de Carnon en fin de journée', cls: 'gal__c' },
+  { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
   { src: '/images/nuit-bateau.jpg', alt: 'Le yacht Harmonie amarré au port de Carnon à la tombée du jour', cls: 'gal__d' },
   { src: '/images/sortie-carre.jpg', alt: 'Le yacht Harmonie vu depuis l’eau, près de Carnon', cls: 'gal__e' },
   { src: '/images/reflets.jpg', alt: 'Reflets dorés du coucher de soleil sur l’eau à Carnon', cls: 'gal__f' },

@@ -5,7 +5,7 @@ import { ease, useReveal } from '../motion'
 const SHOTS = [
   { src: '/images/hero-bateau.jpg', alt: 'Le yacht au soleil couchant', cls: 'gal__a' },
   { src: '/images/sortie-bateau.jpg', alt: 'Au mouillage, eau turquoise', cls: 'gal__b' },
-  { src: '/images/calme-carre.jpg', alt: 'Mer calme du soir', cls: 'gal__c' },
+  { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
   { src: '/images/nuit-bateau.jpg', alt: 'Le soir tombe sur le yacht', cls: 'gal__d' },
   { src: '/images/sortie-carre.jpg', alt: 'Vu depuis l’eau', cls: 'gal__e' },
   { src: '/images/reflets.jpg', alt: 'Reflets dorés', cls: 'gal__f' },

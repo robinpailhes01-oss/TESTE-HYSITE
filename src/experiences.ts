@@ -182,9 +182,10 @@ export const EXPERIENCES: Experience[] = [
       },
     ],
     gallery: [
-      { src: '/images/nuit-bateau.jpg', alt: 'Le yacht au soir tombant' },
-      { src: '/images/reflets.jpg', alt: 'Reflets dorés sur l’eau' },
-      { src: '/images/calme-bateau.jpg', alt: 'Le yacht sur une mer calme' },
+      { src: '/images/nuit-salon-amour.jpg', alt: 'Le salon du yacht Harmonie, table dressée et décor « Amour »' },
+      { src: '/images/nuit-table-ambiance.jpg', alt: 'Ambiance cocooning à bord, bougies et diffuseur sur la table du salon' },
+      { src: '/images/nuit-petit-dejeuner-plateau.jpg', alt: 'Petit-déjeuner sur plateau : viennoiseries, jus de fruits et confitures' },
+      { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner servi sur le pont au réveil, face au port de Carnon' },
     ],
   },
 ]

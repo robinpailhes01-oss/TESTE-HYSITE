@@ -76,11 +76,11 @@ export default function Nav() {
 
         {onHome ? (
           <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            Hy
+            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
           </a>
         ) : (
           <Link to="/" className="monogram" aria-label="Harmonie Yacht — retour à l’accueil">
-            Hy
+            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
           </Link>
         )}
 
