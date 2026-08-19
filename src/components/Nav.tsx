@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
+import { INSTAGRAM_URL } from '../seo'
 
 const LINKS = [
   { hash: '#prestations', label: 'Prestations' },
@@ -60,6 +61,11 @@ export default function Nav() {
                 </a>
               </li>
             ))}
+            <li>
+              <a href={INSTAGRAM_URL} className="nav__link" target="_blank" rel="noopener noreferrer">
+                Instagram
+              </a>
+            </li>
             <li className="nav__item--mobile">
               <a href={href('#reservation')} className="nav__link" onClick={() => setOpen(false)}>
                 Réserver

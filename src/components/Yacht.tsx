@@ -26,11 +26,6 @@ export default function Yacht() {
           <h2 className="mixed yacht__title">
             Un seul bateau, tenu <span className="it">avec soin</span>
           </h2>
-          <p className="yacht__desc">
-            Nous ne gérons pas une flotte. Nous tenons un yacht — préparé, briefé et fleuri avant
-            chaque embarquement, comme on prépare une suite avant une arrivée. Vous le trouverez
-            exactement comme vous l’espérez.
-          </p>
           <ul className="specs">
             {SPECS.map((s) => (
               <li key={s.key}>

@@ -22,9 +22,9 @@ export default function Manifesto() {
 
         <motion.p className="manifesto__text" {...text}>
           Nous sommes convaincus qu’un moment en mer est <span className="it">la parfaite
-          solution pour s’évader</span>. Harmonie Yacht privatise son yacht pour une seule chose
-          — vous recevoir avec calme, précision et générosité, en mer à la journée ou amarré au
-          port pour une nuit que vous n’oublierez pas.
+          solution pour s’évader</span>. Harmonie Yacht vous accueille pour vos après-midis entre
+          amis ou en famille, vos EVJF, vos demandes en mariage — en mer à la journée, ou amarré
+          au port pour une nuit que vous n’oublierez pas.
         </motion.p>
 
         <motion.dl className="manifesto__data" {...data}>

@@ -472,8 +472,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <Link to="/cgv" target="_blank" rel="noopener noreferrer">
               conditions générales de vente
             </Link>
-            , notamment la politique d’annulation et le renoncement au droit de rétractation
-            (article L221-28 12° du code de la consommation).
+            , notamment la politique d’annulation.
           </span>
         </label>
         {cgvHint ? (

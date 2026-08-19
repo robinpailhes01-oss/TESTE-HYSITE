@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { GOOGLE_REVIEWS_URL } from '../reviews'
 import { WHATSAPP_URL } from '../whatsapp'
+import { INSTAGRAM_URL } from '../seo'
 
 export default function Footer() {
   return (
@@ -37,6 +38,11 @@ export default function Footer() {
             <li>
               <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
                 Avis Google
+              </a>
+            </li>
+            <li>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+                Instagram
               </a>
             </li>
             <li>
