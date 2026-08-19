@@ -5,11 +5,11 @@ import { pageMeta, breadcrumbSchema } from '../seo'
 const PATH = '/galerie'
 
 const SHOTS = [
-  { src: '/images/hero-bateau.jpg', alt: 'Le yacht Harmonie au soleil couchant, vue aérienne au large de Carnon', cls: 'gal__a' },
-  { src: '/images/sortie-bateau.jpg', alt: 'Le yacht Harmonie au mouillage, eau turquoise', cls: 'gal__b' },
+  { src: '/images/sortie-plateau-fruits-de-mer.jpg', alt: 'Plateau de fruits de mer et bouquet de roses à bord, en famille', cls: 'gal__a' },
+  { src: '/images/sortie-efoil-jour.jpg', alt: 'Efoil en pleine journée, à la demande', cls: 'gal__b' },
   { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
   { src: '/images/nuit-bateau.jpg', alt: 'Le yacht Harmonie amarré au port de Carnon à la tombée du jour', cls: 'gal__d' },
-  { src: '/images/sortie-carre.jpg', alt: 'Le yacht Harmonie vu depuis l’eau, près de Carnon', cls: 'gal__e' },
+  { src: '/images/sortie-paddle.jpg', alt: 'Paddle depuis la plateforme de bain', cls: 'gal__e' },
   { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Coucher de soleil depuis le pont, face à Carnon', cls: 'gal__f' },
 ]
 
