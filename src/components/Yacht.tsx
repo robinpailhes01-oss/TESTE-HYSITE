@@ -18,8 +18,8 @@ export default function Yacht() {
       <div className="container yacht">
         <RevealImage
           className="yacht__media"
-          src="/images/calme-bateau.jpg"
-          alt="Le yacht Harmonie à l’ancre sur une mer calme, un invité à la proue"
+          src="/images/yacht-salon-interieur.jpg"
+          alt="Le salon intérieur du yacht Harmonie, boiseries et coin repas"
         />
         <motion.div className="yacht__body" {...body}>
           <p className="kicker">Le yacht</p>

@@ -41,8 +41,8 @@ export default function SeminaireRoute() {
           </>
         }
         tagline="Le yacht Harmonie privatisé pour votre équipe, à Carnon"
-        heroImg="/images/hero-bateau.jpg"
-        heroAlt="Le yacht Harmonie en mer, vue aérienne"
+        heroImg="/images/hero-coucher-soleil-proue.jpg"
+        heroAlt="Vue depuis la proue du yacht Harmonie, face à Carnon"
         ctaHref="/sortie-en-mer-carnon#reservation"
         ctaLabel="Réserver pour l’équipe"
       >

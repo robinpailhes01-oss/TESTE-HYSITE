@@ -6,7 +6,7 @@ const SHOTS = [
   { src: '/images/sortie-plateau-fruits-de-mer.jpg', alt: 'Plateau de fruits de mer et bouquet de roses à bord, en famille', cls: 'gal__a' },
   { src: '/images/sortie-efoil-jour.jpg', alt: 'Efoil en pleine journée, à la demande', cls: 'gal__b' },
   { src: '/images/nuit-petit-dejeuner-pont.jpg', alt: 'Petit-déjeuner sur le pont au réveil, face au port de Carnon', cls: 'gal__c' },
-  { src: '/images/nuit-bateau.jpg', alt: 'Le soir tombe sur le yacht', cls: 'gal__d' },
+  { src: '/images/nuit-yacht-de-nuit.jpg', alt: 'Le yacht Harmonie amarré au ponton, de nuit', cls: 'gal__d' },
   { src: '/images/sortie-paddle.jpg', alt: 'Paddle depuis la plateforme de bain', cls: 'gal__e' },
   { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Coucher de soleil depuis le pont, face à Carnon', cls: 'gal__f' },
 ]

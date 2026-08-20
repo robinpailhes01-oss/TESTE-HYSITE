@@ -39,11 +39,13 @@ export function MentionsLegales() {
         actions simplifiée (SAS) dont le siège social est situé au {COMPANY_ADDRESS}.
       </p>
       <ul>
-        <li>SIRET : <em>à compléter</em></li>
+        <li>SIREN : 991 738 733</li>
+        <li>SIRET (siège social) : 991 738 733 00013</li>
+        <li>N° de TVA intracommunautaire : FR07991738733</li>
         <li>Capital social : <em>à compléter</em></li>
-        <li>RCS : <em>à compléter</em></li>
+        <li>RCS Marseille</li>
         <li>
-          Directeur de la publication : <em>à compléter</em>
+          Directrice de la publication : Ludivine Cadot-Francioli
         </li>
         <li>
           Contact : <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
@@ -84,7 +86,8 @@ export function CGV() {
       <h2>1. Réservation et acompte</h2>
       <p>
         Toute réservation est confirmée après le règlement en ligne, par carte bancaire via
-        Stripe, d’un acompte de 30&nbsp;% du montant total de la prestation choisie. Le solde
+        Stripe (en lien avec notre prestataire technique Nexos Digital LLC), d’un acompte de
+        30&nbsp;% du montant total de la prestation choisie. Le solde
         restant est réglé directement (carte ou espèces) avant l’embarquement. Certaines
         formules (Nuit Prestige le week-end) se réservent uniquement par contact direct avec
         l’équipe.

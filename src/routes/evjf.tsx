@@ -41,8 +41,8 @@ export default function EvjfRoute() {
           </>
         }
         tagline="Un yacht privatisé rien que pour vous, à 15 minutes de Montpellier"
-        heroImg="/images/sortie-carre.jpg"
-        heroAlt="Groupe d'amis sur le pont du yacht Harmonie, au large de Carnon"
+        heroImg="/images/sortie-amis-coucher-soleil.jpg"
+        heroAlt="Groupe d'amis à la proue du yacht Harmonie, au coucher de soleil"
         ctaHref="/sortie-en-mer-carnon#reservation"
         ctaLabel="Réserver la sortie"
       >

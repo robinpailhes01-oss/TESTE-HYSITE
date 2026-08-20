@@ -41,8 +41,8 @@ export default function DemandeMariageRoute() {
           </>
         }
         tagline="Le yacht Harmonie, rien que pour vous deux, à Carnon"
-        heroImg="/images/nuit-bateau.jpg"
-        heroAlt="Le yacht Harmonie au coucher de soleil, ambiance intime"
+        heroImg="/images/nuit-yacht-de-nuit.jpg"
+        heroAlt="Le yacht Harmonie amarré au ponton, de nuit, ambiance intime"
         ctaHref="/nuit-a-bord-yacht-carnon#reservation"
         ctaLabel="Réserver la nuit à bord"
       >

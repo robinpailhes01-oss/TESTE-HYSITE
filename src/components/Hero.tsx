@@ -42,8 +42,8 @@ export default function Hero() {
     <section className="hero" ref={ref}>
       <div className="hero__media">
         <motion.img
-          src="/images/hero-bateau.jpg"
-          alt="Le yacht Harmonie à l’ancre au soleil couchant, reflets dorés sur une mer calme"
+          src="/images/hero-coucher-soleil-proue.jpg"
+          alt="Vue depuis la proue du yacht Harmonie au coucher de soleil, face à Carnon"
           style={{ y: mediaY }}
           initial={reduced ? undefined : { scale: 1.08, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

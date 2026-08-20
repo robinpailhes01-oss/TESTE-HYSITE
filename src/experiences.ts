@@ -59,8 +59,8 @@ export const EXPERIENCES: Experience[] = [
     titlePlain: 'Sorties',
     titleIt: 'en mer',
     tagline: 'Le large, à votre rythme',
-    hero: '/images/sortie-bateau.jpg',
-    heroAlt: 'Le yacht Harmonie au mouillage sur une eau turquoise',
+    hero: '/images/sortie-amis-coucher-soleil.jpg',
+    heroAlt: 'Entre amis à la proue du yacht Harmonie, au coucher de soleil',
     intro:
       'Le yacht est à vous, le programme aussi. Votre yacht privatif, avec sa plateforme géante sur l’eau et le paddle à disposition : profitez-en pour manger, vous amuser, nager, et vivre la sortie à votre rythme, jusqu’à l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
@@ -139,8 +139,8 @@ export const EXPERIENCES: Experience[] = [
     titlePlain: 'Nuits insolites',
     titleIt: 'à quai',
     tagline: 'Votre suite sur l’eau, à Carnon',
-    hero: '/images/nuit-bateau.jpg',
-    heroAlt: 'Le yacht Harmonie au soir tombant, reflets dorés sur l’eau',
+    hero: '/images/nuit-yacht-de-nuit.jpg',
+    heroAlt: 'Le yacht Harmonie amarré au ponton, de nuit',
     intro:
       'À la tombée du jour, le yacht devient votre suite. Amarré au calme dans le port de Carnon, il vous offre ce qu’aucune chambre d’hôtel ne peut offrir : le clapot de l’eau contre la coque, le port qui s’endort autour de vous, et un réveil face à la mer. Deux façons d’en profiter, à partir de 18 h : la Nuit à quai, cocooning avec le petit-déjeuner au réveil, ou la Nuit Prestige, avec une sortie en mer au coucher de soleil et son plateau de tapas. Formule intimiste, réservée à deux personnes.',
     includes: [

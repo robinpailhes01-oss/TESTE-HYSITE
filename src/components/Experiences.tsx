@@ -22,8 +22,8 @@ export default function Experiences() {
           <Link to="/sortie-en-mer-carnon" className="exp__media-link" aria-label="Découvrir les sorties en mer">
             <RevealImage
               className="exp__media"
-              src="/images/sortie-bateau.jpg"
-              alt="Le yacht Harmonie au mouillage sur une eau turquoise, plateforme de baignade dépliée"
+              src="/images/sortie-amis-coucher-soleil.jpg"
+              alt="Entre amis à la proue du yacht Harmonie, au coucher de soleil"
             />
           </Link>
           <div className="exp__body">

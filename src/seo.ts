@@ -10,7 +10,7 @@ export const BUSINESS_NAME = 'Harmonie Yacht'
 export const BUSINESS_PHONE = '+33753481263'
 export const BUSINESS_PHONE_DISPLAY = '07 53 48 12 63'
 export const BUSINESS_EMAIL = 'harmonieyacht@gmail.com'
-export const INSTAGRAM_URL = 'https://instagram.com/harmonieyacht'
+export const INSTAGRAM_URL = 'https://www.instagram.com/harmonieyacht/'
 
 /* React Router ne fusionne pas automatiquement le meta() d'une route avec
    celui de son parent (root.tsx) : le renvoyer depuis une route l'efface.
