@@ -14,7 +14,6 @@ import {
   isNightBlocked,
 } from '../availability'
 import type { BookedSlot } from '../availability'
-import { WHATSAPP_URL } from '../whatsapp'
 
 type Group = 'sortie' | 'nuit'
 type Duration = '2h' | '3h' | '4h' | '8h'
@@ -42,13 +41,6 @@ function toDateOnly(d: Date) {
   const m = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
-}
-
-/* Ven/sam/dim — la Nuit Prestige le week-end se réserve avec l'équipe, pas en ligne
-   (même règle que l'agent Léa : escalade humaine obligatoire). */
-function isWeekend(d: Date) {
-  const day = d.getDay()
-  return day === 0 || day === 5 || day === 6
 }
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
@@ -182,13 +174,6 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price?.availableFrom])
 
-  /* Nuit Prestige + date tombant un week-end : pas de paiement en ligne. */
-  const blockedWeekendPrestige =
-    groupChoice === 'nuit' &&
-    !!price?.weekendRequiresContact &&
-    date !== null &&
-    isWeekend(date)
-
   const needsSortieHour = groupChoice === 'sortie'
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -200,7 +185,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       setDateHint(true)
       return
     }
-    if (!price || deposit === null || blockedWeekendPrestige) return
+    if (!price || deposit === null) return
     if (needsSortieHour && startHour === null) {
       setErrorMsg('Choisissez une heure de départ disponible.')
       return
@@ -333,11 +318,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           </select>
           {nightFormule === 'sans-sortie' ? (
             <p className="field__note">Disponible à partir du 1er septembre.</p>
-          ) : (
-            <p className="field__note">
-              Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.
-            </p>
-          )}
+          ) : null}
         </div>
       )}
 
@@ -450,7 +431,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           type="text"
           value={promoCode}
           onChange={(e) => setPromoCode(e.target.value)}
-          placeholder="BIENVENUE5"
+          placeholder="Entrez votre code"
           autoCapitalize="characters"
         />
         {promoCode && !discountRate ? (
@@ -483,17 +464,6 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           <p className="price-recap__note">
             Solde de {balance} € à régler directement avant l’embarquement.
           </p>
-        </div>
-      ) : null}
-
-      {blockedWeekendPrestige ? (
-        <div className="form__error field--full" role="alert">
-          La Nuit Prestige le week-end (ven-dim) se réserve directement avec notre équipe.
-          Écrivez-nous sur{' '}
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-            WhatsApp
-          </a>{' '}
-          (réponse en moins de 5 min) ou à <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </div>
       ) : null}
 
@@ -530,7 +500,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       </div>
 
       <div className="form__footer">
-        <button type="submit" className="btn btn--light" disabled={loading || blockedWeekendPrestige}>
+        <button type="submit" className="btn btn--light" disabled={loading}>
           {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
         </button>
         <span className="form__hint">Paiement sécurisé · Stripe</span>

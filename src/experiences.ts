@@ -23,7 +23,6 @@ export type Formule = {
   amountFrom?: boolean
   amountFlat?: boolean
   season?: string
-  weekendNote?: string
   desc?: string
   highlight?: string
   boldNote?: string
@@ -149,7 +148,6 @@ export const EXPERIENCES: Experience[] = [
       { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
       { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
       { label: 'Petit-déjeuner inclus', detail: 'Sur plateau, servi jusqu’à 10 h (Hôtel Neptune)' },
-      { label: 'Nuit Prestige le week-end', detail: 'Réservation directe avec notre équipe' },
     ],
     steps: NIGHT_STEPS,
     price: {
@@ -178,7 +176,6 @@ export const EXPERIENCES: Experience[] = [
         it: 'Prestige',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
-        weekendNote: 'Le week-end (ven-dim), cette formule se réserve directement avec notre équipe.',
         desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
         highlight: 'La plus demandée',
       },

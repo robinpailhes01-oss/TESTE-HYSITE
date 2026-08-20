@@ -88,9 +88,7 @@ export function CGV() {
         Toute réservation est confirmée après le règlement en ligne, par carte bancaire via
         Stripe (en lien avec notre prestataire technique Nexos Digital LLC), d’un acompte de
         30&nbsp;% du montant total de la prestation choisie. Le solde
-        restant est réglé directement (carte ou espèces) avant l’embarquement. Certaines
-        formules (Nuit Prestige le week-end) se réservent uniquement par contact direct avec
-        l’équipe.
+        restant est réglé directement (carte ou espèces) avant l’embarquement.
       </p>
 
       <h2>2. Politique d’annulation et de remboursement</h2>

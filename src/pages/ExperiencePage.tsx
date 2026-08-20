@@ -119,7 +119,6 @@ export default function ExperiencePage({ slug }: Props) {
                       <strong>{f.boldNote}</strong>
                     </p>
                   ) : null}
-                  {f.weekendNote ? <p className="formule__weekend">{f.weekendNote}</p> : null}
                   <a
                     href="#reservation"
                     className="link-arrow"

@@ -28,9 +28,6 @@ export type PriceItem = {
   detail: string
   amount: number // prix total en euros
   durationHours?: number // pour calculer l'heure de fin d'une sortie
-  /* Nuit Prestige le week-end (ven-dim) : pas de paiement en ligne, contact
-     direct avec l'équipe (règle métier de Léa — escalade humaine obligatoire). */
-  weekendRequiresContact?: boolean
   /* Première date réservable (YYYY-MM-DD) — ex. Nuit à quai à 250 €,
      ouverte à partir du 1er septembre. */
   availableFrom?: string
@@ -63,7 +60,6 @@ export const PRICES: PriceItem[] = [
     label: 'Nuit Prestige — avec sortie en mer',
     detail: 'Sortie en mer au coucher de soleil, tapas (Una Mas) et petit-déjeuner sur plateau (Hôtel Neptune) inclus, servi jusqu’à 10 h — 18 h à 12 h le lendemain',
     amount: 380,
-    weekendRequiresContact: true,
   },
   {
     id: 'nuit-sans-sortie',
