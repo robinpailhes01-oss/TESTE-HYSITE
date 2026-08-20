@@ -84,3 +84,20 @@ export function depositFor(id: string) {
   const price = findPrice(id)
   return price ? deposit(price.amount) : null
 }
+
+/* Codes promo — remise sur le montant total (donc sur l'acompte ET le
+   solde), pas seulement sur ce qui est payé en ligne aujourd'hui.
+   BIENVENUE5 est distribué en échange d'un email (popup site). */
+export const PROMO_CODES: Record<string, number> = {
+  BIENVENUE5: 0.05,
+}
+
+export function promoDiscountRate(code?: string | null): number {
+  if (!code) return 0
+  return PROMO_CODES[code.trim().toUpperCase()] ?? 0
+}
+
+export function applyPromo(amount: number, code?: string | null): number {
+  const rate = promoDiscountRate(code)
+  return rate ? Math.round(amount * (1 - rate)) : amount
+}

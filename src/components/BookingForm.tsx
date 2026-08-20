@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { DEPOSIT_RATE, findPrice, SORTIE_WINDOW } from '../pricing'
+import { applyPromo, DEPOSIT_RATE, findPrice, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
+import { PROMO_STORAGE_KEY } from '../leadMagnet'
 import {
   fetchBookedSlots,
   formatHour,
@@ -65,6 +66,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [dateHint, setDateHint] = useState(false)
   const [cgvAccepted, setCgvAccepted] = useState(false)
   const [cgvHint, setCgvHint] = useState(false)
+  const [promoCode, setPromoCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [slots, setSlots] = useState<BookedSlot[]>([])
@@ -76,6 +78,18 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     const to = new Date()
     to.setMonth(to.getMonth() + 6)
     fetchBookedSlots(toDateOnly(from), toDateOnly(to)).then(setSlots)
+  }, [])
+
+  /* Code promo obtenu via le pop-up de capture email (LeadMagnet) —
+     pré-rempli automatiquement s'il est présent, jamais écrasé si le
+     client tape le sien. */
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(PROMO_STORAGE_KEY)
+      if (saved) setPromoCode(saved)
+    } catch {
+      // localStorage indisponible (navigation privée...) — pas grave, champ vide.
+    }
   }, [])
 
   /* Les cartes de formules (pages détail) présélectionnent une durée (sorties)
@@ -113,8 +127,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   }, [groupChoice, duration, captain, nightFormule, isUltraPremium])
 
   const price = findPrice(priceId)
-  const deposit = price ? Math.round(price.amount * DEPOSIT_RATE) : null
-  const balance = price && deposit !== null ? price.amount - deposit : null
+  const discountRate = promoDiscountRate(promoCode)
+  const montantTotal = price ? applyPromo(price.amount, promoCode) : null
+  const deposit = montantTotal !== null ? Math.round(montantTotal * DEPOSIT_RATE) : null
+  const balance = montantTotal !== null && deposit !== null ? montantTotal - deposit : null
 
   const dateISO = date ? toDateOnly(date) : null
 
@@ -209,6 +225,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
           message: String(data.get('message') ?? ''),
           date: toDateOnly(date),
           startTime,
+          promoCode,
         }),
       })
       const payload = await res.json().catch(() => ({}))
@@ -426,12 +443,38 @@ export default function BookingForm({ group: fixedGroup }: Props) {
         />
       </div>
 
+      <div className="field field--full">
+        <label htmlFor="bk-promo">Code promo (facultatif)</label>
+        <input
+          id="bk-promo"
+          type="text"
+          value={promoCode}
+          onChange={(e) => setPromoCode(e.target.value)}
+          placeholder="BIENVENUE5"
+          autoCapitalize="characters"
+        />
+        {promoCode && !discountRate ? (
+          <p className="field__note">Ce code n’est pas reconnu.</p>
+        ) : null}
+        {discountRate ? (
+          <p className="field__note">
+            Code appliqué — {Math.round(discountRate * 100)} % sur le montant total.
+          </p>
+        ) : null}
+      </div>
+
       {/* Récapitulatif tarifaire — l'acompte est ce qui est réglé maintenant */}
-      {price && deposit !== null && balance !== null ? (
+      {price && montantTotal !== null && deposit !== null && balance !== null ? (
         <div className="price-recap field--full" aria-live="polite">
           <div className="price-recap__row is-total">
             <span>{price.label}</span>
-            <span>{price.amount} €</span>
+            {discountRate ? (
+              <span>
+                <span className="price-recap__struck">{price.amount} €</span> {montantTotal} €
+              </span>
+            ) : (
+              <span>{montantTotal} €</span>
+            )}
           </div>
           <div className="price-recap__row is-deposit">
             <span>Acompte réglé en ligne (30 %)</span>

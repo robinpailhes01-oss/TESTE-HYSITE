@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Stripe from 'stripe'
-import { findPrice, depositFor } from '../src/pricing.js'
+import { findPrice, applyPromo, promoDiscountRate, DEPOSIT_RATE } from '../src/pricing.js'
 
 const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
 const SUPABASE_ANON_KEY =
@@ -74,7 +74,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = (req.body ?? {}) as Record<string, unknown>
-  const { priceId, name, email, guests, message, date, startTime } = body
+  const { priceId, name, email, guests, message, date, startTime, promoCode } = body
 
   if (
     typeof priceId !== 'string' ||
@@ -87,10 +87,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const price = findPrice(priceId)
-  const deposit = depositFor(priceId)
-  if (!price || deposit === null) {
+  if (!price) {
     return res.status(400).json({ error: 'Formule introuvable.' })
   }
+
+  /* Le code promo réduit le montant TOTAL (donc l'acompte ET le solde) —
+     jamais accepté tel quel du navigateur, recalculé ici à partir de
+     src/pricing.ts comme le reste du prix. */
+  const promoCodeStr = typeof promoCode === 'string' ? promoCode.trim() : ''
+  const discountRate = promoDiscountRate(promoCodeStr)
+  const montantTotal = applyPromo(price.amount, promoCodeStr)
+  const deposit = Math.round(montantTotal * DEPOSIT_RATE)
 
   const dateStr = typeof date === 'string' ? date : ''
 
@@ -143,9 +150,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             unit_amount: deposit * 100,
             product_data: {
               name: `Acompte — ${price.label}`,
-              description: `Acompte de 30 % (${deposit} € sur ${price.amount} €)${
-                dateLabel ? ` — ${dateLabel}` : ''
-              }`,
+              description: `Acompte de 30 % (${deposit} € sur ${montantTotal} €)${
+                discountRate ? ` — code ${promoCodeStr.toUpperCase()} (-${Math.round(discountRate * 100)} %)` : ''
+              }${dateLabel ? ` — ${dateLabel}` : ''}`,
             },
           },
           quantity: 1,
@@ -156,8 +163,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         bookingType: price.bookingType,
         group: price.group,
         formule: price.label,
-        montantTotal: String(price.amount),
+        montantTotal: String(montantTotal),
         acompte: String(deposit),
+        promoCode: discountRate ? promoCodeStr.toUpperCase() : '',
         nom: name,
         email,
         date: dateStr,
