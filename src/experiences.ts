@@ -59,8 +59,8 @@ export const EXPERIENCES: Experience[] = [
     titlePlain: 'Sorties',
     titleIt: 'en mer',
     tagline: 'Le large, à votre rythme',
-    hero: '/images/sortie-amis-coucher-soleil.jpg',
-    heroAlt: 'Entre amis à la proue du yacht Harmonie, au coucher de soleil',
+    hero: '/images/sortie-bateau.jpg',
+    heroAlt: 'Le yacht Harmonie au mouillage sur une eau turquoise',
     intro:
       'Le yacht est à vous, le programme aussi. Votre yacht privatif, avec sa plateforme géante sur l’eau et le paddle à disposition : profitez-en pour manger, vous amuser, nager, et vivre la sortie à votre rythme, jusqu’à l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
