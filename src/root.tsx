@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { Analytics } from '@vercel/analytics/react'
 import Lenis from 'lenis'
 import '@fontsource/instrument-sans/400.css'
 import '@fontsource/instrument-sans/500.css'
@@ -53,6 +54,7 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
       </body>
     </html>
   )
