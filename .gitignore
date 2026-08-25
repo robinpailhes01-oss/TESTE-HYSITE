@@ -19,6 +19,9 @@ build
 .env.*
 !.env.example
 
+# Workspace local de l'outil scrollcraft (scratch, pas un livrable du site)
+/scrollcraft/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
