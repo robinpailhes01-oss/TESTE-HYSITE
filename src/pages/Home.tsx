@@ -1,22 +1,23 @@
-import Immersion from '../components/Immersion'
-import Manifesto from '../components/Manifesto'
+import Hero from '../components/Hero'
 import Experiences from '../components/Experiences'
+import Manifesto from '../components/Manifesto'
+import Route from '../components/Route'
 import Yacht from '../components/Yacht'
+import Band from '../components/Band'
 import Reviews from '../components/Reviews'
 import GallerySection from '../components/GallerySection'
 import Offers from '../components/Offers'
 import Booking from '../components/Booking'
 
-/* La séquence immersive (Immersion) raconte la soirée à bord heure par heure —
-   elle remplace l'ancien trio Hero / Route / Band. Le contenu de conversion
-   (prestations, avis, tarifs, réservation) reprend la main juste après. */
 export default function Home() {
   return (
     <main>
-      <Immersion />
-      <Manifesto />
+      <Hero />
       <Experiences />
+      <Manifesto />
+      <Route />
       <Yacht />
+      <Band />
       <Reviews />
       <GallerySection />
       <Offers />
