@@ -102,11 +102,23 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       const g = (e as CustomEvent<string>).detail
       if (g === 'sortie' || g === 'nuit') setGroupChoice(g)
     }
+    /* Une date proposée par le bandeau « prochaines dates libres » : on la
+       pose telle quelle, la validation habituelle du formulaire s'applique
+       ensuite (créneau, disponibilité, date d'ouverture de la formule). */
+    const onDate = (e: Event) => {
+      const iso = (e as CustomEvent<string>).detail
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return
+      const [y, m, d] = iso.split('-').map(Number)
+      setDate(new Date(y, m - 1, d))
+      setDateHint(false)
+    }
     window.addEventListener('preselect-formule', onFormule)
     window.addEventListener('preselect-group', onGroup)
+    window.addEventListener('preselect-date', onDate)
     return () => {
       window.removeEventListener('preselect-formule', onFormule)
       window.removeEventListener('preselect-group', onGroup)
+      window.removeEventListener('preselect-date', onDate)
     }
   }, [])
 

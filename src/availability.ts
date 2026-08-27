@@ -26,6 +26,33 @@ export type BookedSlot = {
   booking_type: string // 'sortie_privative' | 'nuit_prestige' | 'nuit_insolite' | 'blocked'
 }
 
+/* Variante qui dit si la lecture a RÉUSSI, en plus de ce qu'elle a lu.
+   `fetchBookedSlots` renvoie [] aussi bien quand Supabase est injoignable que
+   quand il n'y a aucune réservation — indistinguable, et c'est très bien pour
+   le calendrier (dans le doute, on laisse essayer). Mais pour annoncer « ces
+   dates sont libres », il faut savoir si l'on a vraiment regardé : un bateau
+   sans aucune réservation est un cas normal, pas une panne. */
+export async function fetchBookedSlotsResult(
+  fromISO: string,
+  toISO: string,
+): Promise<{ ok: boolean; slots: BookedSlot[] }> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_booked_slots`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ p_from: fromISO, p_to: toISO }),
+    })
+    if (!res.ok) return { ok: false, slots: [] }
+    return { ok: true, slots: (await res.json()) as BookedSlot[] }
+  } catch {
+    return { ok: false, slots: [] }
+  }
+}
+
 export async function fetchBookedSlots(fromISO: string, toISO: string): Promise<BookedSlot[]> {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_booked_slots`, {
