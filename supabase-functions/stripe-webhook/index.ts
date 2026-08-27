@@ -39,6 +39,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RESEND_FROM = Deno.env.get("RESEND_FROM") ?? "Harmonie Yacht <reservations@harmonie-yacht.fr>";
 const CONTACT_EMAIL = "harmonieyacht@gmail.com";
+const MEETING_ADDRESS = "239 rue de l'étang de l'or, Carnon-Port, 34130 Mauguio";
 // Alerte interne à chaque réservation payée — par défaut la boîte de contact,
 // surchargeable via le secret OWNER_EMAIL si besoin d'une autre adresse.
 const OWNER_EMAIL = Deno.env.get("OWNER_EMAIL") || CONTACT_EMAIL;
@@ -78,36 +79,43 @@ function confirmationEmailText(opts: {
 }): string {
   const { firstName, bookingTypeLabel, group, dateLabel, total, deposit, balance } = opts;
   const lines = [
-    `Bonjour ${firstName},`,
+    `Bonjour ${firstName} 👋`,
     "",
-    `Votre acompte est bien reçu — votre ${bookingTypeLabel} est réservée pour le ${dateLabel}.`,
+    `Votre acompte est bien reçu, merci ! 🎉 Votre ${bookingTypeLabel} est confirmée pour le ${dateLabel}.`,
     "",
-    "Récapitulatif :",
-    `- Prestation : ${bookingTypeLabel}`,
-    `- Date souhaitée : ${dateLabel}`,
-    `- Montant total : ${total} €`,
-    `- Acompte réglé en ligne : ${deposit} €`,
-    `- Solde restant : ${balance} € — à régler à bord (CB ou espèces) avant l'embarquement`,
+    "📋 Récapitulatif de votre réservation :",
+    `• Prestation : ${bookingTypeLabel}`,
+    `• Date : ${dateLabel}`,
+    `• Montant total : ${total} €`,
+    `• Acompte réglé en ligne : ${deposit} €`,
+    `• Solde restant : ${balance} € — à régler à bord (CB ou espèces) avant l'embarquement`,
     "",
-    "Rendez-vous : Port de Carnon (Hérault), à côté de l'Hôtel Neptune. Le yacht Harmonie vous attend au ponton — nous revenons vers vous sous peu pour préciser l'heure exacte et le numéro de ponton.",
+    `📍 Rendez-vous : ${MEETING_ADDRESS}. Le yacht Harmonie vous attend au ponton !`,
   ];
 
   if (group === "sortie") {
     lines.push(
       "",
-      "À savoir : en cas de retard à l'embarquement, la sortie ne peut pas être décalée — le retard empiète directement sur la durée de votre créneau.",
+      "⏱️ Petit rappel : en cas de retard à l'embarquement, la sortie ne peut malheureusement pas être décalée — le retard empiète directement sur la durée de votre créneau.",
     );
   } else {
-    lines.push("", "Le petit-déjeuner sur plateau du lendemain est inclus, servi jusqu'à 10 h.");
+    lines.push(
+      "",
+      "🔑 La boîte à clé se trouve sur le siège du capitaine.",
+      "",
+      "📞 Nous allons prendre contact avec vous très prochainement pour définir ensemble l'heure de départ.",
+      "",
+      "🥐 Le petit-déjeuner sur plateau du lendemain est inclus, servi jusqu'à 10 h.",
+    );
   }
 
   lines.push(
     "",
-    "En cas de météo défavorable, nous vous recontactons avant le départ pour convenir d'un report ou d'un remboursement.",
+    "☀️ En cas de météo défavorable, nous vous recontactons avant le départ pour convenir d'un report ou d'un remboursement.",
     "",
-    `Une question d'ici là ? Répondez à cet email, ou écrivez-nous à ${CONTACT_EMAIL}.`,
+    `Une question d'ici là ? Répondez simplement à cet email, ou écrivez-nous à ${CONTACT_EMAIL}. 💬`,
     "",
-    "À très vite,",
+    "À très vite ! ⛵",
     "L'équipe Harmonie Yacht",
   );
   return lines.join("\n");
