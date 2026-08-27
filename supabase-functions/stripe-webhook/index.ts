@@ -21,8 +21,9 @@
 //   STRIPE_WEBHOOK_SECRET_TEST (optionnel) signature du endpoint TEST, pour tester le
 //                              parcours de bout en bout sans toucher au secret live
 //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY   déjà présents (partagés par les autres fonctions)
-//   RESEND_API_KEY, RESEND_FROM               déjà présents (partagés par booking-form-webhook)
-//   OWNER_EMAIL                 (optionnel) pour une future alerte à Robin
+//   RESEND_API_KEY, RESEND_FROM               déjà présents (email client + alerte interne)
+//   OWNER_EMAIL                  (optionnel) adresse d'alerte interne à chaque réservation
+//                                payée — par défaut harmonieyacht@gmail.com si absent
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@17";
@@ -38,6 +39,9 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RESEND_FROM = Deno.env.get("RESEND_FROM") ?? "Harmonie Yacht <reservations@harmonie-yacht.fr>";
 const CONTACT_EMAIL = "harmonieyacht@gmail.com";
+// Alerte interne à chaque réservation payée — par défaut la boîte de contact,
+// surchargeable via le secret OWNER_EMAIL si besoin d'une autre adresse.
+const OWNER_EMAIL = Deno.env.get("OWNER_EMAIL") || CONTACT_EMAIL;
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
   httpClient: Stripe.createFetchHttpClient(),
@@ -106,6 +110,35 @@ function confirmationEmailText(opts: {
     "À très vite,",
     "L'équipe Harmonie Yacht",
   );
+  return lines.join("\n");
+}
+
+function ownerNotificationText(opts: {
+  nom: string;
+  email: string;
+  bookingTypeLabel: string;
+  dateLabel: string;
+  total: number;
+  deposit: number;
+  balance: number;
+  invites: number | null;
+  message: string | null;
+  sessionId: string;
+}): string {
+  const { nom, email, bookingTypeLabel, dateLabel, total, deposit, balance, invites, message, sessionId } = opts;
+  const lines = [
+    `Nouvelle réservation payée — ${bookingTypeLabel}`,
+    "",
+    `Client : ${nom}`,
+    `Email : ${email || "non renseigné"}`,
+    `Date souhaitée : ${dateLabel}`,
+    `Montant total : ${total} €`,
+    `Acompte encaissé : ${deposit} €`,
+    `Solde restant : ${balance} €`,
+  ];
+  if (invites !== null) lines.push(`Invités : ${invites}`);
+  if (message) lines.push(`Message du client : ${message}`);
+  lines.push("", `Stripe session : ${sessionId}`);
   return lines.join("\n");
 }
 
@@ -290,8 +323,39 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Alerte interne — indépendante de l'email client : une réservation payée
+  // doit toujours remonter à l'équipe, même si l'email au client a échoué.
+  const ownerSubject = `Nouvelle réservation payée — ${formule}`;
+  const ownerText = ownerNotificationText({
+    nom,
+    email,
+    bookingTypeLabel: formule,
+    dateLabel,
+    total: montantTotal,
+    deposit: depositPaid,
+    balance: montantTotal - depositPaid,
+    invites,
+    message,
+    sessionId: session.id,
+  });
+  const ownerEmailSent = await sendConfirmationEmail(OWNER_EMAIL, ownerSubject, ownerText);
+  if (ownerEmailSent) {
+    await supabase.from("email_log").insert({
+      lead_id: booking.lead_id ?? null,
+      to_email: OWNER_EMAIL,
+      subject: ownerSubject,
+      source: "stripe-webhook",
+    });
+  }
+
   return new Response(
-    JSON.stringify({ received: true, booking_id: booking.id, lead_linked: !!booking.lead_id, email_sent: emailSent }),
+    JSON.stringify({
+      received: true,
+      booking_id: booking.id,
+      lead_linked: !!booking.lead_id,
+      email_sent: emailSent,
+      owner_email_sent: ownerEmailSent,
+    }),
     { status: 200, headers: { "content-type": "application/json" } },
   );
 });
