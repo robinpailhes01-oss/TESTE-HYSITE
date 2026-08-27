@@ -1,0 +1,156 @@
+/* ---------------------------------------------------------------------------
+   Rail immersif — utilisé par l'accueil ET par les deux pages d'expérience.
+
+   Fichier séparé et importé par PhotoRail.tsx, pas par la page : les feuilles
+   de style sont découpées par module, donc une règle rangée dans parcours.css
+   n'existe tout simplement pas sur une route qui ne charge pas Parcours. Le
+   rail s'y retrouvait sans aucun style — donc sans débordement, donc immobile,
+   et aucune vérification automatique ne le signale.
+--------------------------------------------------------------------------- */
+
+.rail {
+  position: relative;
+  height: calc(var(--rail-h, 3) * 100svh);
+}
+.rail--ocean { background: var(--ocean); }
+.rail--deep { background: var(--ocean-ink); }
+
+.rail__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+}
+
+/* Le rail parcourt exactement son débordement : 0 à p = 0, (écran - rail) à
+   p = 1. Le pourcentage d'un translateX se résout sur la largeur de l'élément
+   lui-même, ce qui donne le débordement sans aucune mesure en JS. */
+.rail__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.2vw, 32px);
+  padding-inline: var(--gutter);
+  transform: translateX(calc(var(--sc-p, 0) * (100vw - 100%)));
+  will-change: transform;
+}
+
+.rail__lead {
+  flex: 0 0 auto;
+  width: clamp(260px, 32vw, 560px);
+  color: var(--white);
+}
+
+.rail__lead h2 { font-size: clamp(30px, 3.4vw, 52px); margin-top: 14px; }
+.rail__lead .kicker { color: var(--white-muted); }
+
+.rail__track figure {
+  flex: 0 0 auto;
+  width: clamp(200px, 25vw, 460px);
+  margin: 0;
+}
+
+.rail__track figure img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--r-card);
+}
+
+.rail__track figcaption {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--white-muted);
+}
+
+.rail__track figcaption strong {
+  color: var(--white);
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* Le rail se termine sur une ligne seule : le souffle avant la suite. */
+.rail__end {
+  flex: 0 0 auto;
+  width: clamp(200px, 22vw, 340px);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(19px, 1.9vw, 27px);
+  color: var(--white);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sans mouvement, le rail n'avance plus au défilement vertical : garder sa
+     hauteur reviendrait à faire tourner la molette pendant cinq écrans sans
+     que rien ne change. La section se replie en bloc normal, et le rail
+     redevient une zone de défilement horizontale — la navigation est rendue au
+     lecteur au lieu d'être supprimée. */
+  .rail {
+    height: auto;
+  }
+  .rail__stage {
+    position: static;
+    height: auto;
+    padding-block: clamp(48px, 7vw, 96px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+  }
+  .rail__track {
+    transform: none;
+  }
+  .rail__track > * {
+    scroll-snap-align: center;
+  }
+}
+
+/* « Le compte y est » — le compteur avance avec le rail et s'arrête sur le
+   total. Montrer les prestations ne suffit pas : il faut qu'on constate qu'on
+   les a toutes vues. Ne compte que du réel (les éléments du rail). */
+.rail__count {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(24px, 5vh, 48px);
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white-muted);
+  transition: color 500ms var(--ease);
+}
+
+.rail__count[data-complete='true'] {
+  color: var(--white);
+}
+
+.rail__count-sep {
+  opacity: 0.5;
+}
+
+.rail__count-label {
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sans course, le compteur n'a rien à compter : il annonce directement le
+     total plutôt que de rester bloqué sur 1. */
+  .rail__count > span:first-child {
+    visibility: hidden;
+  }
+  .rail__count-sep {
+    visibility: hidden;
+  }
+}

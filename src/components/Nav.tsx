@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { INSTAGRAM_URL } from '../seo'
 
-const LINKS = [
-  { hash: '#prestations', label: 'Prestations' },
-  { hash: '#abord', label: 'À bord' },
-  { hash: '#galerie', label: 'Galerie' },
+/* Le menu suit le tunnel : les deux expériences d'abord, le reste ensuite.
+   `to` = vraie page, `hash` = ancre sur l'accueil. */
+const LINKS: { to?: string; hash?: string; label: string }[] = [
+  { to: '/sortie-en-mer-carnon', label: 'Sorties en mer' },
+  { to: '/nuit-a-bord-yacht-carnon', label: 'Nuits à bord' },
+  { to: '/galerie', label: 'Galerie' },
   { hash: '#avis', label: 'Avis' },
-  { hash: '#tarifs', label: 'Tarifs' },
+  { to: '/tarifs', label: 'Tarifs' },
 ]
 
 export default function Nav() {
@@ -45,6 +47,11 @@ export default function Nav() {
 
   const href = (hash: string) => (onHome ? hash : `/${hash}`)
 
+  /* On ne réserve plus depuis l'accueil : il faut d'abord avoir choisi. Sur
+     l'accueil le bouton mène donc au choix, ailleurs au formulaire de la page
+     où l'on se trouve. */
+  const reserveHref = onHome ? '#choix' : '#reservation'
+
   return (
     <header
       className={`nav ${solid || open ? 'nav--solid' : ''} ${
@@ -55,10 +62,16 @@ export default function Nav() {
         <nav aria-label="Navigation principale">
           <ul className="nav__links">
             {LINKS.map((l) => (
-              <li key={l.hash}>
-                <a href={href(l.hash)} className="nav__link" onClick={() => setOpen(false)}>
-                  {l.label}
-                </a>
+              <li key={l.label}>
+                {l.to ? (
+                  <Link to={l.to} className="nav__link" onClick={() => setOpen(false)}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <a href={href(l.hash!)} className="nav__link" onClick={() => setOpen(false)}>
+                    {l.label}
+                  </a>
+                )}
               </li>
             ))}
             <li>
@@ -67,7 +80,7 @@ export default function Nav() {
               </a>
             </li>
             <li className="nav__item--mobile">
-              <a href={href('#reservation')} className="nav__link" onClick={() => setOpen(false)}>
+              <a href={reserveHref} className="nav__link" onClick={() => setOpen(false)}>
                 Réserver
               </a>
             </li>
@@ -85,7 +98,7 @@ export default function Nav() {
         )}
 
         <div className="nav__actions">
-          <a href={href('#reservation')} className="btn btn--light">
+          <a href={reserveHref} className="btn btn--light">
             Réserver
           </a>
         </div>

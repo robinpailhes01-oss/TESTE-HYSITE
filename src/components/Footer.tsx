@@ -13,22 +13,24 @@ export default function Footer() {
           </a>
           <ul className="footer__nav">
             <li>
-              <a href="#prestations">Prestations</a>
+              <Link to="/sortie-en-mer-carnon">Sorties en mer</Link>
             </li>
             <li>
-              <a href="#abord">À bord</a>
+              <Link to="/nuit-a-bord-yacht-carnon">Nuits à bord</Link>
             </li>
             <li>
-              <a href="#galerie">Galerie</a>
+              <Link to="/galerie">Galerie</Link>
             </li>
             <li>
-              <a href="#avis">Avis</a>
+              <a href="/#avis">Avis</a>
             </li>
             <li>
-              <a href="#tarifs">Tarifs</a>
+              <Link to="/tarifs">Tarifs</Link>
             </li>
             <li>
-              <a href="#reservation">Réserver</a>
+              {/* On ne réserve pas depuis l'accueil : il faut d'abord choisir
+                  entre la sortie et la nuit. */}
+              <a href="/#choix">Réserver</a>
             </li>
             <li>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">

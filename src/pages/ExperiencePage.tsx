@@ -3,11 +3,50 @@ import { Link, Navigate } from 'react-router'
 import { motion, useReducedMotion } from 'motion/react'
 import { ease, useReveal } from '../motion'
 import { EXPERIENCES } from '../experiences'
+import type { Formule } from '../experiences'
 import RevealImage from '../components/RevealImage'
+import PhotoRail from '../components/PhotoRail'
 import BookingForm from '../components/BookingForm'
 import { WHATSAPP_URL } from '../whatsapp'
 
 type Props = { slug: string }
+
+function FormuleCard({ f, showDesc }: { f: Formule; showDesc: boolean }) {
+  return (
+    <article className="formule">
+      <div className="formule__top">
+        <span className="formule__num">{f.num}</span>
+        {f.highlight ? <span className="formule__badge">{f.highlight}</span> : null}
+      </div>
+      <h3 className="mixed formule__name">
+        {f.name}
+        {f.name.endsWith('-') ? null : ' '}
+        <span className="it">{f.it}</span>
+      </h3>
+      <p className="formule__duration">{f.duration}</p>
+      {f.season ? <p className="formule__season">{f.season}</p> : null}
+      <p className="formule__price">
+        <span className="offer__unit">
+          {f.amountFlat ? 'tout compris' : f.amountSolo ? 'avec capitaine' : f.amountFrom ? 'dès' : 'à partir de'}
+        </span>
+        <span className="formule__amount">{f.amount}</span>
+      </p>
+      {showDesc && f.desc ? <p className="formule__desc">{f.desc}</p> : null}
+      {f.boldNote ? (
+        <p className="formule__desc">
+          <strong>{f.boldNote}</strong>
+        </p>
+      ) : null}
+      <a
+        href="#reservation"
+        className="link-arrow"
+        onClick={() => window.dispatchEvent(new CustomEvent('preselect-formule', { detail: f.key }))}
+      >
+        Réserver cette formule
+      </a>
+    </article>
+  )
+}
 
 export default function ExperiencePage({ slug }: Props) {
   const reduced = useReducedMotion()
@@ -83,6 +122,16 @@ export default function ExperiencePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* Tout ce qui est à bord, en images — l'immersion. */}
+      <PhotoRail
+        kicker="Tout est à bord"
+        titlePlain="Ce que vous"
+        titleIt="avez avec vous"
+        items={exp.inclusions}
+        closing={exp.group === 'nuit' ? 'Et le port qui s’endort autour de vous.' : 'Rien à prévoir, rien à porter.'}
+        tone={exp.group === 'nuit' ? 'deep' : 'ocean'}
+      />
+
       {/* Formules */}
       {exp.formules ? (
         <section className="section" style={{ background: 'var(--white)' }}>
@@ -95,40 +144,7 @@ export default function ExperiencePage({ slug }: Props) {
             </motion.div>
             <motion.div className="formules" {...formulesGrid}>
               {exp.formules.map((f) => (
-                <article className="formule" key={f.num}>
-                  <div className="formule__top">
-                    <span className="formule__num">{f.num}</span>
-                    {f.highlight ? <span className="formule__badge">{f.highlight}</span> : null}
-                  </div>
-                  <h3 className="mixed formule__name">
-                    {f.name}
-                    {f.name.endsWith('-') ? null : ' '}
-                    <span className="it">{f.it}</span>
-                  </h3>
-                  <p className="formule__duration">{f.duration}</p>
-                  {f.season ? <p className="formule__season">{f.season}</p> : null}
-                  <p className="formule__price">
-                    <span className="offer__unit">
-                      {f.amountFlat ? 'tout compris' : f.amountSolo ? 'avec capitaine' : f.amountFrom ? 'dès' : 'à partir de'}
-                    </span>
-                    <span className="formule__amount">{f.amount}</span>
-                  </p>
-                  {exp.group === 'nuit' && f.desc ? <p className="formule__desc">{f.desc}</p> : null}
-                  {f.boldNote ? (
-                    <p className="formule__desc">
-                      <strong>{f.boldNote}</strong>
-                    </p>
-                  ) : null}
-                  <a
-                    href="#reservation"
-                    className="link-arrow"
-                    onClick={() =>
-                      window.dispatchEvent(new CustomEvent('preselect-formule', { detail: f.key }))
-                    }
-                  >
-                    Réserver cette formule
-                  </a>
-                </article>
+                <FormuleCard key={f.num} f={f} showDesc={exp.group === 'nuit'} />
               ))}
             </motion.div>
           </div>

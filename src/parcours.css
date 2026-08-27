@@ -7,9 +7,10 @@
 
 .pc-open {
   position: relative;
-  /* 1,4 et pas 1,9 : à 1,9 le plan tenait près de trois écrans pour une
-     poussée de 6 %, soit beaucoup de molette pour rien. */
-  height: 140svh;
+  /* Un écran de bateau, une courte tenue, et le choix arrive. Le tunnel veut
+     qu'on choisisse vite : chaque écran de plus ici est un écran de moins
+     passé à décider. */
+  height: 115svh;
   background: var(--ocean-ink);
 }
 
@@ -83,14 +84,14 @@
 
 .pc-choix {
   background: var(--foam);
-  padding-block: clamp(64px, 9vw, 120px) clamp(48px, 7vw, 96px);
+  padding-block: clamp(48px, 6vw, 84px) clamp(48px, 7vw, 96px);
 }
 
 .pc-choix__q {
   font-size: clamp(30px, 4.4vw, 60px);
   text-align: center;
   padding-inline: var(--gutter);
-  margin-bottom: clamp(36px, 5vw, 64px);
+  margin-bottom: clamp(26px, 3.4vw, 44px);
 }
 
 .pc-choix__panels {
@@ -105,8 +106,13 @@
   display: block;
   overflow: hidden;
   border-radius: var(--r-card);
-  aspect-ratio: 3 / 4;
-  max-height: 78svh;
+  /* Hauteur fixée, largeur libre — et surtout PAS d'aspect-ratio ici : couplé
+     à un plafond de hauteur, il dérive la largeur de la hauteur et la carte se
+     rétrécit, laissant un trou au milieu de la grille.
+     La carte entière, bouton compris, doit tenir dans l'écran : plus haut, le
+     « Voir la sortie en mer » passe sous la ligne de flottaison, et un tunnel
+     dont on ne voit pas la sortie n'en est pas un. */
+  height: min(64svh, 560px);
 }
 
 .pc-panel img {
@@ -166,6 +172,25 @@
   color: var(--white);
 }
 
+.pc-panel__cta {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 11px 20px;
+  border-radius: var(--r-btn);
+  background: var(--foam);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background var(--t-std) var(--ease);
+}
+
+.pc-panel:hover .pc-panel__cta {
+  background: var(--white);
+}
+
 .pc-panel__facts span + span::before {
   content: '·';
   margin-right: 14px;
@@ -177,282 +202,15 @@
     grid-template-columns: 1fr;
   }
   .pc-panel {
+    height: auto;
     aspect-ratio: 4 / 3;
   }
-}
-
-/* --- 3. Le jour ------------------------------------------------------------ */
-
-.pc-jour {
-  position: relative;
-  height: 340svh;
-  background: var(--ocean);
-}
-
-.pc-jour__stage {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: clip;
-  display: flex;
-  align-items: center;
-}
-
-/* Le rail parcourt exactement son débordement : 0 à p = 0, (écran - rail) à
-   p = 1. Le pourcentage d'un translateX se résout sur la largeur de l'élément
-   lui-même, ce qui permet de calculer le débordement sans mesure en JS. */
-.pc-jour__rail {
-  display: flex;
-  align-items: center;
-  gap: clamp(16px, 2.2vw, 32px);
-  padding-inline: var(--gutter);
-  transform: translateX(calc(var(--sc-p, 0) * (100vw - 100%)));
-  will-change: transform;
-}
-
-.pc-jour__lead {
-  flex: 0 0 auto;
-  width: clamp(260px, 32vw, 560px);
-  color: var(--white);
-}
-
-.pc-jour__lead h2 {
-  font-size: clamp(30px, 3.4vw, 52px);
-  margin-top: 14px;
-}
-
-.pc-jour__lead .kicker {
-  color: var(--white-muted);
-}
-
-.pc-jour__rail figure {
-  flex: 0 0 auto;
-  width: clamp(200px, 25vw, 460px);
-  margin: 0;
-}
-
-.pc-jour__rail figure img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  border-radius: var(--r-card);
-}
-
-.pc-jour__rail figcaption {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 13px;
-  color: var(--white-muted);
-}
-
-.pc-jour__rail figcaption strong {
-  color: var(--white);
-  font-weight: 500;
-  font-size: 15px;
-}
-
-/* Le souffle avant le pic : le rail se termine sur une ligne seule. */
-.pc-jour__end {
-  flex: 0 0 auto;
-  width: clamp(200px, 22vw, 340px);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(19px, 1.9vw, 27px);
-  color: var(--white);
-}
-
-/* --- 4. La nuit — le pic --------------------------------------------------- */
-
-.pc-nuit {
-  position: relative;
-  height: 300svh;
-  background: #050f1c;
-}
-
-.pc-nuit__stage {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: clip;
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 72px);
-  padding-inline: var(--gutter);
-  color: var(--white);
-}
-
-.pc-nuit__copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.28em;
-  /* En rem, jamais en em : sur un conteneur, `em` se résout sur SA taille de
-     police (16 px), pas sur celle du titre qu'il contient — 18em donnait une
-     colonne de 288 px et cassait « petit-déjeuner » en deux. */
-  max-width: min(100%, 30rem);
-}
-
-.pc-nuit__copy .kicker {
-  color: var(--white);
-  margin-bottom: 12px;
-}
-
-.pc-nuit__copy p:not(.kicker) {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(26px, 3.2vw, 46px);
-  line-height: 1.26;
-  color: var(--white);
-  text-wrap: balance;
-}
-
-/* La phrase se complète au lieu de se remplacer : la première ligne accueille
-   (présente dès p = 0, le plan est visible une hauteur d'écran avant que la
-   course commence), la seconde arrive avec le plateau du matin. */
-.pc-nuit__l2 {
-  opacity: clamp(0, calc((var(--sc-p, 0) - 0.3) / 0.1), 1);
-  transform: translateY(clamp(0px, calc((0.4 - var(--sc-p, 0)) / 0.1 * 12px), 12px));
-}
-
-.pc-nuit__link {
-  margin-top: 20px;
-  color: var(--white);
-  align-self: flex-start;
-  opacity: clamp(0, calc((var(--sc-p, 0) - 0.46) / 0.1), 1);
-}
-
-/* Deux plans portrait qui se chevauchent : le recouvrement crée plus de
-   profondeur que n'importe quelle ombre. */
-.pc-nuit__plates {
-  position: relative;
-  height: min(74svh, 620px);
-}
-
-.pc-nuit__plate {
-  position: absolute;
-  margin: 0;
-  overflow: hidden;
-  border-radius: var(--r-card);
-  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55), 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.pc-nuit__plate img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Le soir : le grand plan, déjà là, qui se pose. */
-.pc-nuit__plate--a {
-  top: 0;
-  right: 0;
-  width: min(58%, 420px);
-  height: 100%;
-  transform: translateY(calc(26px - 26px * min(1, var(--sc-p, 0) / 0.3)));
-}
-
-/* Le matin : arrive en second, décalé, devant. */
-.pc-nuit__plate--b {
-  left: 0;
-  bottom: 6%;
-  width: min(50%, 340px);
-  height: 62%;
-  z-index: 1;
-  opacity: clamp(0, calc((var(--sc-p, 0) - 0.28) / 0.14), 1);
-  transform: translateY(clamp(0px, calc((0.42 - var(--sc-p, 0)) / 0.14 * 40px), 40px));
-}
-
-@media (max-width: 860px) {
-  .pc-nuit {
-    height: 280svh;
-  }
-  .pc-nuit__stage {
-    grid-template-columns: 1fr;
-    align-content: center;
-    gap: clamp(20px, 4vh, 40px);
-  }
-  .pc-nuit__copy {
-    max-width: none;
-  }
-  .pc-nuit__plates {
-    height: min(46svh, 360px);
-  }
-  .pc-nuit__plate--a {
-    width: 56%;
-  }
-  .pc-nuit__plate--b {
-    width: 48%;
-    height: 66%;
-  }
-}
-
-/* --- 5. Les occasions ------------------------------------------------------ */
-
-.pc-occ {
-  background: var(--foam);
-  padding-block: clamp(64px, 9vw, 128px);
-}
-
-.pc-occ__q {
-  font-size: clamp(28px, 3.6vw, 50px);
-  margin-bottom: clamp(28px, 4vw, 52px);
-}
-
-.pc-occ__list {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 12px;
-}
-
-.pc-occ__list a {
-  display: inline-flex;
-  align-items: center;
-  padding: 13px 24px;
-  border: 1px solid var(--ink-faint);
-  border-radius: var(--r-pill, 999px);
-  font-size: 15px;
-  color: var(--ink);
-  transition: border-color var(--t-micro) ease-out, background var(--t-micro) ease-out;
-}
-
-.pc-occ__list a:hover {
-  border-color: var(--ocean);
-  background: var(--white);
 }
 
 /* --- Mouvement réduit ------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  /* Les plans ne bougent plus, mais rien ne disparaît : l'opacité porte la
-     compréhension, seul le déplacement saute. */
   .pc-open__media {
     transform: none;
-  }
-  /* Les deux plans et les deux lignes restent là, simplement posés : rien ne
-     disparaît, seul le déplacement saute. */
-  .pc-nuit__plate--a,
-  .pc-nuit__plate--b,
-  .pc-nuit__l2,
-  .pc-nuit__link {
-    opacity: 1;
-    transform: none;
-  }
-  /* Le rail est la navigation de l'étape, pas une décoration : sans mouvement,
-     il redevient une zone de défilement horizontale, sinon tout ce qui dépasse
-     l'écran devient inatteignable. */
-  .pc-jour__stage {
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
-  }
-  .pc-jour__rail {
-    transform: none;
-  }
-  .pc-jour__rail > * {
-    scroll-snap-align: center;
   }
 }

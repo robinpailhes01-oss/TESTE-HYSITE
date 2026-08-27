@@ -1,20 +1,15 @@
 import Parcours from '../components/Parcours'
 import Reviews from '../components/Reviews'
-import Booking from '../components/Booking'
 
-/* La page d'accueil suit le parcours du client : une étape par question qu'il
-   se pose, dans l'ordre où il se la pose (cf. Parcours.tsx), puis la preuve
-   (les vrais avis) et la réservation.
-
-   Le détail — déroulé heure par heure, spécifications du bateau, grille
-   tarifaire complète, galerie — vit sur les pages dédiées, qui restent les
-   cibles SEO. Une page de décision n'a pas à le répéter. */
+/* L'accueil est un aiguillage : on voit le bateau, on voit le choix, on part
+   sur la page de son choix. Les avis restent en dessous pour celui qui hésite
+   encore. L'immersion et la réservation vivent sur les deux pages
+   d'expérience — c'est là que le client sait déjà ce qu'il veut. */
 export default function Home() {
   return (
     <main>
       <Parcours />
       <Reviews />
-      <Booking />
     </main>
   )
 }

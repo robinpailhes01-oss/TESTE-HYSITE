@@ -28,6 +28,10 @@ export type Formule = {
   boldNote?: string
 }
 
+/* Ce à quoi le client a accès, en images : la matière de la section immersive
+   des pages d'expérience. Une photo, un nom, un fait — pas de prose. */
+export type Inclusion = { src: string; alt: string; label: string; note: string }
+
 export type Experience = {
   slug: string
   group: 'sortie' | 'nuit'
@@ -46,6 +50,7 @@ export type Experience = {
   formulesTitlePlain: string
   formulesTitleIt: string
   formules?: Formule[]
+  inclusions: Inclusion[]
   gallery: { src: string; alt: string }[]
 }
 
@@ -122,6 +127,50 @@ export const EXPERIENCES: Experience[] = [
         boldNote: 'Efoil & barbecue à bord',
       },
     ],
+    inclusions: [
+      {
+        src: '/images/sortie-bateau.jpg',
+        alt: 'Le yacht Harmonie au mouillage sur une eau turquoise',
+        label: 'Le yacht, privatisé',
+        note: 'Personne d’autre à bord que vous',
+      },
+      {
+        src: '/images/sortie-amis-coucher-soleil.jpg',
+        alt: 'Entre amis à la proue du yacht, face au soleil couchant',
+        label: 'Jusqu’à 10 invités',
+        note: 'Anniversaires, EVJF, familles',
+      },
+      {
+        src: '/images/sortie-paddle.jpg',
+        alt: 'Paddle depuis la plateforme de bain du yacht',
+        label: 'Le paddle',
+        note: 'À bord, en libre usage',
+      },
+      {
+        src: '/images/sortie-efoil-jour.jpg',
+        alt: 'Baignade et jeux d’eau depuis le bateau, en pleine journée',
+        label: 'La baignade',
+        note: 'Masque et tuba fournis',
+      },
+      {
+        src: '/images/sortie-plateau-fruits-de-mer.jpg',
+        alt: 'Plateau de fruits de mer servi à bord, en famille',
+        label: 'La table',
+        note: 'Plateau sur demande',
+      },
+      {
+        src: '/images/sortie-efoil-coucher-soleil.jpg',
+        alt: 'Efoil au coucher de soleil, face à Carnon',
+        label: 'L’efoil',
+        note: 'Formule Ultra Premium',
+      },
+      {
+        src: '/images/sortie-coucher-soleil-poupe.jpg',
+        alt: 'Vue depuis le pont au coucher de soleil, face à Carnon',
+        label: 'Le couchant',
+        note: 'Carburant et mouillage compris',
+      },
+    ],
     gallery: [
       { src: '/images/sortie-coucher-soleil-poupe.jpg', alt: 'Vue depuis le pont au coucher de soleil, face à Carnon' },
       { src: '/images/sortie-efoil-jour.jpg', alt: 'Efoil en pleine journée, à la demande' },
@@ -178,6 +227,44 @@ export const EXPERIENCES: Experience[] = [
         amount: '380 €',
         desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
         highlight: 'La plus demandée',
+      },
+    ],
+    inclusions: [
+      {
+        src: '/images/nuit-yacht-de-nuit.jpg',
+        alt: 'Le yacht amarré au ponton, de nuit',
+        label: 'Le yacht pour vous seuls',
+        note: '18 h → 12 h le lendemain',
+      },
+      {
+        src: '/images/sortie-coucher-soleil-poupe.jpg',
+        alt: 'Le soleil se couche sur Carnon, vu depuis le pont',
+        label: 'La sortie au couchant',
+        note: 'Formule Nuit Prestige',
+      },
+      {
+        src: '/images/nuit-table-ambiance.jpg',
+        alt: 'Ambiance cocooning à bord, bougies et diffuseur sur la table du salon',
+        label: 'Le salon, le soir',
+        note: 'Bougies et plaids à bord',
+      },
+      {
+        src: '/images/nuit-salon-amour.jpg',
+        alt: 'Le salon du yacht, table dressée et décor « Amour »',
+        label: 'La table dressée',
+        note: 'Tapas Una Mas en Prestige',
+      },
+      {
+        src: '/images/nuit-petit-dejeuner-plateau.jpg',
+        alt: 'Petit-déjeuner sur plateau : viennoiseries, jus de fruits et confitures',
+        label: 'Le petit-déjeuner',
+        note: 'Hôtel Neptune, jusqu’à 10 h',
+      },
+      {
+        src: '/images/nuit-petit-dejeuner-pont.jpg',
+        alt: 'Petit-déjeuner servi sur le pont au réveil, face au port de Carnon',
+        label: 'Le réveil sur le pont',
+        note: 'Checkout à midi',
       },
     ],
     gallery: [
