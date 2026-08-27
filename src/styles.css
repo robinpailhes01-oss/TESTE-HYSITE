@@ -37,7 +37,11 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  /* clip, pas hidden : `hidden` fait de <html> un conteneur de défilement, ce
+     qui casse silencieusement position:sticky (le plan tenu de « Le moment »
+     se décolle et laisse un écran vide). `clip` coupe le débordement sans
+     créer ce conteneur. */
+  overflow-x: clip;
 }
 
 body {
@@ -49,7 +53,7 @@ body {
   background: var(--foam);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
 }
 

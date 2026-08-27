@@ -8,6 +8,8 @@ import '@fontsource/instrument-sans/600.css'
 import '@fontsource/instrument-serif/400.css'
 import '@fontsource/instrument-serif/400-italic.css'
 import './styles.css'
+import './calme.css'
+import { useBreath } from './breath'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
@@ -104,6 +106,14 @@ function useSmoothScroll() {
 
 export default function Root() {
   useSmoothScroll()
+  useBreath()
+
+  /* Signal de disponibilité lu par le harnais de captures (scrollcraft) : il
+     attend cette classe avant de commencer à échantillonner, pour ne pas
+     photographier la page avant que le défilement soit câblé. */
+  useEffect(() => {
+    document.documentElement.classList.add('sc-ready')
+  }, [])
 
   return (
     <>

@@ -40,7 +40,10 @@ export default function Hero() {
 
   return (
     <section className="hero" ref={ref}>
-      <div className="hero__media">
+      {/* data-breathe est posé sur le conteneur, pas sur l'image : celle-ci
+          porte déjà une transformation en ligne (la parallaxe), qui gagnerait
+          contre la mise à l'échelle CSS du souffle. */}
+      <div className="hero__media" data-breathe>
         <motion.img
           src="/images/hero-bateau.jpg"
           alt="Le yacht Harmonie vu de loin au soleil couchant, reflets dorés sur une mer calme"

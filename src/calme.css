@@ -1,0 +1,178 @@
+/* ---------------------------------------------------------------------------
+   Passe « calme » — raffinement minimaliste de la page d'accueil.
+   Trois choses seulement :
+     1. « Le moment » : le seul plan tenu de la page (remplace la bande citation)
+     2. « Le souffle » : la respiration au repos (signature, cf. src/breath.ts)
+     3. Quelques réglages typographiques du plancher de goût (veuves, césures)
+--------------------------------------------------------------------------- */
+
+/* --- 1. Le moment ---------------------------------------------------------- */
+
+.moment {
+  position: relative;
+  /* 2,6 hauteurs d'écran : la course épinglée fait 1,6 (hauteur - écran). */
+  height: 260svh;
+  background: var(--ocean-ink);
+}
+
+.moment__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+}
+
+.moment__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  will-change: transform;
+  /* La photo se pose : 1.08 -> 1 sur la course. Taux volontairement bas —
+     au-delà, ça ne lit plus comme un plan qui se cale mais comme un zoom. */
+  transform: scale(calc(1.08 - 0.08 * var(--sc-p, 0)));
+}
+
+.moment__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 46%;
+}
+
+/* Densité là où le texte se pose (coin bas gauche), pas sur tout le cadre :
+   un voile plein écran aplatirait le couchant pour corriger un seul coin. */
+.moment__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top right,
+    rgba(12, 43, 69, 0.94) 0%,
+    rgba(12, 43, 69, 0.76) 28%,
+    rgba(12, 43, 69, 0.34) 52%,
+    rgba(12, 43, 69, 0) 74%
+  );
+}
+
+.moment__copy {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(72px, 14vh, 132px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  max-width: 22em;
+}
+
+.moment__copy p {
+  will-change: opacity, transform;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(26px, 3.4vw, 46px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+/* La phrase se complète au lieu de se remplacer : la première ligne accueille
+   (présente dès p = 0) et ne bouge plus, la seconde vient se poser dessous vers
+   la moitié de la course, et les deux tiennent jusqu'à la sortie du plan.
+   Un fondu croisé de deux textes empilés donnait une bouillie illisible à
+   mi-chemin — et c'est précisément là qu'un lecteur s'arrête. */
+.moment__l2 {
+  opacity: clamp(0, calc((var(--sc-p, 0) - 0.42) / 0.16), 1);
+  transform: translateY(clamp(0px, calc((0.58 - var(--sc-p, 0)) / 0.16 * 14px), 14px));
+}
+
+/* La légende n'arrive qu'au repos, avec le souffle. */
+.moment__detail {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  bottom: clamp(34px, 6vh, 56px);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 1.4s var(--ease), transform 1.4s var(--ease);
+}
+
+.is-still .moment__detail {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 860px) {
+  /* La copie occupe toute la largeur ici : le coin devient une bande basse,
+     sinon la fin des lignes tombe sur le ciel clair. */
+  .moment__scrim {
+    background: linear-gradient(
+      to top,
+      rgba(12, 43, 69, 0.95) 0%,
+      rgba(12, 43, 69, 0.82) 24%,
+      rgba(12, 43, 69, 0.4) 46%,
+      rgba(12, 43, 69, 0) 64%
+    );
+  }
+  .moment__copy {
+    max-width: none;
+    bottom: clamp(84px, 16vh, 140px);
+  }
+}
+
+/* --- 2. Le souffle --------------------------------------------------------- */
+
+[data-breathe] {
+  transform-origin: 50% 50%;
+  /* Retour au calme : court et souple. */
+  transition: transform 1.2s var(--ease);
+}
+
+.is-still [data-breathe] {
+  transform: scale(1.035);
+  /* Aller : long et linéaire, pour qu'aucune image ne trahisse le mouvement. */
+  transition: transform 9s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-breathe],
+  .is-still [data-breathe] {
+    transform: none;
+    transition: none;
+  }
+  /* Le plan ne se cale plus, mais les deux phrases restent lisibles : on garde
+     l'opacité (elle porte la compréhension), on retire le mouvement. */
+  .moment__media {
+    transform: none;
+  }
+  .moment__detail {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- 3. Plancher typographique --------------------------------------------- */
+
+/* Gratuit, et supprime le mot orphelin qui fait paraître un titre accidentel. */
+h1,
+h2,
+h3,
+.mixed {
+  text-wrap: balance;
+}
+
+p,
+.offer__desc,
+.exp__desc,
+.manifesto__text {
+  text-wrap: pretty;
+}

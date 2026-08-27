@@ -3,7 +3,7 @@ import Experiences from '../components/Experiences'
 import Manifesto from '../components/Manifesto'
 import Route from '../components/Route'
 import Yacht from '../components/Yacht'
-import Band from '../components/Band'
+import Moment from '../components/Moment'
 import Reviews from '../components/Reviews'
 import GallerySection from '../components/GallerySection'
 import Offers from '../components/Offers'
@@ -17,7 +17,7 @@ export default function Home() {
       <Manifesto />
       <Route />
       <Yacht />
-      <Band />
+      <Moment />
       <Reviews />
       <GallerySection />
       <Offers />
