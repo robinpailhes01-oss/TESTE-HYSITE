@@ -9,7 +9,9 @@ import '@fontsource/instrument-serif/400.css'
 import '@fontsource/instrument-serif/400-italic.css'
 import './styles.css'
 import './calme.css'
+import './craft.css'
 import { useBreath } from './breath'
+import { setLenis } from './lenisRef'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
@@ -70,6 +72,9 @@ function useSmoothScroll() {
       duration: 1.25,
       easing: (t) => 1 - Math.pow(1 - t, 3),
     })
+    /* Partagée : un geste direct doit pouvoir lui dire « la cible c'est ici,
+       maintenant », sinon il continue d'animer vers l'ancienne. */
+    setLenis(lenis)
 
     let raf = 0
     const loop = (time: number) => {
@@ -98,6 +103,7 @@ function useSmoothScroll() {
     return () => {
       document.removeEventListener('click', onClick)
       cancelAnimationFrame(raf)
+      setLenis(null)
       lenis.destroy()
       document.documentElement.style.scrollBehavior = ''
     }

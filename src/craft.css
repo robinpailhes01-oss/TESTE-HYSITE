@@ -1,0 +1,234 @@
+/* ---------------------------------------------------------------------------
+   Couche « métier » — les détails qui séparent un site correct d'un site cher,
+   et qu'on ne remarque jamais consciemment.
+
+   Trois chantiers, tous issus d'un audit mesuré, pas d'une intuition :
+     1. typographie optique (tracking et interlignage variant AVEC la taille) ;
+     2. réponse à l'appui sur tout ce qui se presse ;
+     3. matériaux, profondeur, et les trois préférences système.
+--------------------------------------------------------------------------- */
+
+/* === 1. TYPOGRAPHIE OPTIQUE ================================================
+   Mesuré avant correction : les titres de 30 px et ceux de 84 px portaient le
+   même -0,02em et le même interlignage 1,04. C'est faux dans les deux sens —
+   les lettres d'un grand titre paraissent trop espacées, celles d'un petit
+   trop serrées, et 1,04 étouffe un titre de carte.
+
+   Règle : le tracking se resserre quand la taille grandit, l'interlignage
+   s'ouvre quand elle diminue. Des paliers plutôt qu'une formule, parce qu'un
+   palier se relit et se défend ; une formule en calc() ne se relit pas.       */
+
+:root {
+  --track-display: -0.035em; /* 64 px et plus */
+  --track-xl: -0.028em; /*  44 → 64 px */
+  --track-lg: -0.022em; /*  30 → 44 px */
+  --track-md: -0.014em; /*  22 → 30 px */
+  --track-sm: -0.006em; /*  18 → 22 px */
+
+  --lead-display: 0.98;
+  --lead-xl: 1.02;
+  --lead-lg: 1.07;
+  --lead-md: 1.16;
+}
+
+/* Les faces variables savent adapter leur dessin à la taille : on le demande. */
+h1, h2, h3, .mixed {
+  font-optical-sizing: auto;
+}
+
+/* Grands titres de plan : héro d'accueil et héro de page. */
+.pc-open__title,
+.page-hero__title {
+  letter-spacing: var(--track-display);
+  line-height: var(--lead-display);
+}
+
+/* Titres de section. */
+.pc-choix__q,
+.section-head .mixed,
+.rail__lead h2,
+.booking__title,
+.yacht__title,
+.legal-hero__title {
+  letter-spacing: var(--track-xl);
+  line-height: var(--lead-xl);
+}
+
+/* Sous-titres et noms de cartes. */
+.pc-panel__name,
+.exp__title,
+.offer__name,
+.pc-occ__q {
+  letter-spacing: var(--track-lg);
+  line-height: var(--lead-lg);
+}
+
+/* Petits titres : à cette taille, -0,02em serrait déjà trop. */
+.formule__name,
+.review__name,
+.rail__track figcaption strong {
+  letter-spacing: var(--track-md);
+  line-height: var(--lead-md);
+}
+
+/* Les chiffres alignent leurs colonnes et ne dansent pas quand ils changent. */
+.formule__amount,
+.offer__amount,
+.page-price__value,
+.price-recap__amount,
+.rail__count,
+.endirect__sun strong {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--track-sm);
+}
+
+/* En dessous de 700 px, les clamp() ramènent ces titres à 30-40 px : le
+   tracking le plus serré y devient illisible. On desserre d'un cran. */
+@media (max-width: 700px) {
+  .pc-open__title,
+  .page-hero__title {
+    letter-spacing: var(--track-xl);
+    line-height: var(--lead-xl);
+  }
+  .pc-choix__q,
+  .section-head .mixed,
+  .rail__lead h2,
+  .booking__title,
+  .yacht__title,
+  .legal-hero__title {
+    letter-spacing: var(--track-lg);
+    line-height: var(--lead-lg);
+  }
+}
+
+/* === 2. RÉPONSE À L'APPUI ==================================================
+   « Le retour vit sur l'appui, et il est instantané. » Attendre le
+   relâchement pour montrer quoi que ce soit donne une interface morte.
+
+   L'appui est plus rapide que le relâchement (90 ms contre 260 ms) : c'est
+   ainsi que réagit un objet réel — il cède vite sous le doigt, il revient
+   plus doucement.                                                             */
+
+.pc-panel,
+.link-arrow,
+.nav__link,
+.pc-occ__list a,
+.formule .link-arrow,
+.review__card {
+  transition: transform 260ms var(--ease), opacity 260ms var(--ease);
+}
+
+.pc-panel:active,
+.link-arrow:active,
+.pc-occ__list a:active,
+.review__card:active {
+  transition-duration: 90ms;
+}
+
+/* La carte du choix est le clic le plus important du site. Il n'avait aucun
+   retour tactile : sur mobile, rien ne se passait entre le doigt et la page
+   suivante. */
+.pc-panel:active {
+  transform: scale(0.985);
+}
+
+.link-arrow:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.pc-occ__list a:active {
+  transform: scale(0.97);
+}
+
+.nav__link:active {
+  opacity: 0.6;
+  transition-duration: 80ms;
+}
+
+/* === 3. MATÉRIAUX ET PROFONDEUR ============================================
+   « Un fondu de bord, pas un filet dur. » Le filet d'1 px sous la barre
+   annonce une frontière ; un dégradé annonce une matière sous laquelle le
+   contenu passe.                                                              */
+
+.nav--solid {
+  /* L'arête qui capte la lumière, sur le bord bas — celui qu'on voit. */
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.nav--solid::after {
+  content: '';
+  position: absolute;
+  inset: 100% 0 auto 0;
+  height: 22px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(18, 58, 92, 0.5), rgba(18, 58, 92, 0));
+}
+
+/* Le menu ouvert est un panneau opaque : pas de fondu de bord sous lui. */
+.nav--open::after {
+  display: none;
+  content: none;
+}
+
+/* === LES TROIS PRÉFÉRENCES SYSTÈME =========================================
+   Le site n'en gérait qu'une sur trois. Les deux autres ne sont pas des
+   options de confort : sans elles, une interface translucide devient
+   illisible pour qui a réglé son système pour l'éviter.                       */
+
+@media (prefers-reduced-transparency: reduce) {
+  /* La matière devient opaque : on monte le fond et on retire le flou. */
+  .nav--solid {
+    background: var(--ocean-deep);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .nav--solid::after {
+    display: none;
+  }
+  .imm-clock,
+  .toast,
+  .whatsapp-btn {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Fonds quasi opaques et bordures franches, partout où l'on posait du
+     translucide ou un simple filet. */
+  .nav--solid {
+    background: var(--ocean-ink);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .pc-occ__list a,
+  .endirect__dates a {
+    border-color: var(--ink);
+  }
+  .pc-panel__veil {
+    background: linear-gradient(
+      to top,
+      rgba(12, 43, 69, 0.97) 0%,
+      rgba(12, 43, 69, 0.88) 30%,
+      rgba(12, 43, 69, 0.4) 55%,
+      transparent 70%
+    );
+  }
+  :focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Le mouvement réduit ne veut pas dire « aucun retour » : on garde le
+     changement d'opacité, qui porte la compréhension, et on retire les
+     déplacements. */
+  .pc-panel:active,
+  .link-arrow:active,
+  .pc-occ__list a:active,
+  .review__card:active {
+    transform: none;
+    opacity: 0.75;
+  }
+}

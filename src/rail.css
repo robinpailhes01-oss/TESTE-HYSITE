@@ -22,6 +22,21 @@
   overflow: clip;
   display: flex;
   align-items: center;
+  /* Le geste horizontal nous revient, le vertical reste à la page — et le
+     navigateur n'a pas à attendre notre décision pour faire défiler. */
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.rail__stage[data-drag='true'] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* Une photo qu'on saisit ne doit pas se décoller comme un fichier. */
+.rail__stage img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* Le rail parcourt exactement son débordement : 0 à p = 0, (écran - rail) à
@@ -97,6 +112,10 @@
     position: static;
     height: auto;
     padding-block: clamp(48px, 7vw, 96px);
+    /* Ici c'est le navigateur qui gère le défilement horizontal : on lui rend
+       le geste entier, sans quoi `pan-y` le lui interdirait. */
+    touch-action: auto;
+    cursor: auto;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;

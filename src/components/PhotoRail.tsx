@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useActProgress } from '../useActProgress'
+import { useDragRail } from '../useDragRail'
 import '../rail.css'
 
 /* ---------------------------------------------------------------------------
@@ -53,6 +54,11 @@ export default function PhotoRail({
     el.dataset.complete = n === items.length ? 'true' : 'false'
   })
 
+  /* Le rail se saisit aussi à la main. Le geste ne déplace pas le rail : il
+     déplace le défilement de la page, dont le rail découle déjà. Une seule
+     source de vérité, donc rien à resynchroniser au relâchement. */
+  useDragRail(ref)
+
   const height = span ?? Math.min(5.2, 1 + items.length * 0.55)
 
   return (
@@ -78,7 +84,7 @@ export default function PhotoRail({
 
           {items.map((it) => (
             <figure key={it.src + it.label}>
-              <img src={it.src} alt={it.alt} loading="lazy" />
+              <img src={it.src} alt={it.alt} loading="lazy" draggable={false} />
               <figcaption>
                 <strong>{it.label}</strong>
                 <span>{it.note}</span>
