@@ -23,8 +23,11 @@
   display: flex;
   align-items: center;
   /* Le geste horizontal nous revient, le vertical reste à la page — et le
-     navigateur n'a pas à attendre notre décision pour faire défiler. */
-  touch-action: pan-y;
+     navigateur n'a pas à attendre notre décision pour faire défiler.
+     `pinch-zoom` est explicite : sans lui, `pan-y` seul interdit d'agrandir
+     les photos à deux doigts. Prendre un geste au visiteur pour lui en
+     donner un autre n'est pas un échange acceptable. */
+  touch-action: pan-y pinch-zoom;
   cursor: grab;
 }
 

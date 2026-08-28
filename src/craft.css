@@ -107,21 +107,22 @@ h1, h2, h3, .mixed {
 
    L'appui est plus rapide que le relâchement (90 ms contre 260 ms) : c'est
    ainsi que réagit un objet réel — il cède vite sous le doigt, il revient
-   plus doucement.                                                             */
+   plus doucement.
+
+   Ne portent un état d'appui que les éléments réellement cliquables : une
+   carte d'avis qui s'enfonce sous le doigt promet un lien qui n'existe pas. */
 
 .pc-panel,
 .link-arrow,
 .nav__link,
 .pc-occ__list a,
-.formule .link-arrow,
-.review__card {
+.formule .link-arrow {
   transition: transform 260ms var(--ease), opacity 260ms var(--ease);
 }
 
 .pc-panel:active,
 .link-arrow:active,
-.pc-occ__list a:active,
-.review__card:active {
+.pc-occ__list a:active {
   transition-duration: 90ms;
 }
 
@@ -226,8 +227,7 @@ h1, h2, h3, .mixed {
      déplacements. */
   .pc-panel:active,
   .link-arrow:active,
-  .pc-occ__list a:active,
-  .review__card:active {
+  .pc-occ__list a:active {
     transform: none;
     opacity: 0.75;
   }
