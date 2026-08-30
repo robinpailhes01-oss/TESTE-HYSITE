@@ -6,6 +6,7 @@ import { EXPERIENCES } from '../experiences'
 import type { Formule } from '../experiences'
 import RevealImage from '../components/RevealImage'
 import PhotoRail from '../components/PhotoRail'
+import Descente from '../components/Descente'
 import EnDirect from '../components/EnDirect'
 import BookingForm from '../components/BookingForm'
 import { WHATSAPP_URL } from '../whatsapp'
@@ -102,6 +103,12 @@ export default function ExperiencePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* La descente — on vient de voir le bateau du dehors, on entre.
+          Réservée à la nuit : c'est la page où la question du visiteur est
+          « où est-ce que je dors ? », et une photo de lit n'y répond pas
+          aussi bien que le chemin qui y mène. */}
+      {exp.group === 'nuit' ? <Descente /> : null}
+
       {/* Présentation + inclusions */}
       <section className="section">
         <div className="container page-grid">
@@ -131,6 +138,9 @@ export default function ExperiencePage({ slug }: Props) {
         items={exp.inclusions}
         closing={exp.group === 'nuit' ? 'Et le port qui s’endort autour de vous.' : 'Rien à prévoir, rien à porter.'}
         tone={exp.group === 'nuit' ? 'deep' : 'ocean'}
+        /* La nuit porte déjà la descente : le rail y est resserré pour que la
+           page ne demande pas deux longues courses épinglées à la suite. */
+        span={exp.group === 'nuit' ? 3.2 : undefined}
       />
 
       {/* Le monde réel : le couchant de ce soir, et les vraies dates libres.

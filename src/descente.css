@@ -1,0 +1,247 @@
+/* ---------------------------------------------------------------------------
+   La descente — un monde continu traversé par le défilement.
+
+   Tout le rendu vient d'une seule variable, --sc-p, publiée sur la section au
+   défilement. Chaque plan porte sa fenêtre (--a, --b) et ses échelles de
+   travelling (--s0, --s1) ; le CSS en déduit son opacité et son avancée. Rien
+   n'est animé en JS, et aucun second moteur d'animation n'arrive sur la page.
+--------------------------------------------------------------------------- */
+
+.desc {
+  position: relative;
+  height: calc(var(--desc-h, 7) * 100svh);
+  background: #0b0705; /* le noir chaud sous lequel les plans se croisent */
+}
+
+.desc__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* --- Les plans ------------------------------------------------------------
+
+   Opacité : fondu d'entrée sur --f avant --a, fondu de sortie sur --f après
+   --b, et le minimum des deux entre les deux. Un plan hors de sa fenêtre vaut
+   exactement 0, donc il ne coûte rien à composer.
+
+   Échelle : travelling avant, interpolé sur la fenêtre du plan seulement. Le
+   plan qui suit reprend là où celui-ci s'arrête, ce qui fait que le fondu ne se
+   lit pas comme une coupe mais comme une avancée continue.                    */
+
+/* <picture> ne doit rien peser dans la mise en page épinglée : c'est l'image
+   qu'il contient qui est positionnée. En mode sans mouvement il redevient un
+   bloc, et c'est lui la brique de la grille. */
+.desc__pic {
+  display: contents;
+}
+
+.desc__plate {
+  /* Court, et pour une raison mesurée : à 0,05 le croisement durait un tiers
+     d'écran et deux plans dissemblables passaient plusieurs secondes à 50 %
+     l'un sur l'autre — une double exposition illisible, pile sur la phrase du
+     pic. À 0,022 le passage tient en une centaine de pixels de défilement :
+     on le traverse, on ne s'y installe pas. Chaque plan peut raccourcir le
+     sien : le passage de la porte est le plus bref de tous.
+
+     Et le travelling ne s'arrête PAS au bord de la fenêtre — il court jusqu'à
+     --b + --f, donc pendant tout l'effacement. C'est ce qui règle le vrai
+     problème : un fondu entre deux pièces lisibles donne une double exposition,
+     quelle que soit sa durée. Ici, à l'instant où le plan sortant devient
+     translucide, il est déjà tellement agrandi qu'il n'a plus de structure —
+     on lit le montant de porte qui passe, pas deux chambres superposées. */
+  --f: 0.022;
+  --y0: 0%;
+  --y1: 0%;
+  --z: 1;
+  position: absolute;
+  inset: 0;
+  /* Empilement DÉCROISSANT : le plan qui s'en va reste au-dessus et s'efface,
+     découvrant le suivant déjà entier. Dans l'autre sens, deux plans à demi
+     opaques s'additionnent et on obtient une double exposition. Ici on ne voit
+     jamais qu'un fondu sur une image formée. */
+  z-index: var(--z);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform, opacity;
+
+  opacity: min(
+    clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1),
+    clamp(0, calc((var(--b) + var(--f) - var(--sc-p, 0)) / var(--f)), 1)
+  );
+
+  transform: translateY(
+      calc(
+        var(--y0) + (var(--y1) - var(--y0)) *
+          clamp(0, calc((var(--sc-p, 0) - var(--a)) / (var(--b) + var(--f) - var(--a))), 1)
+      )
+    )
+    scale(
+      calc(
+        var(--s0) + (var(--s1) - var(--s0)) *
+          clamp(0, calc((var(--sc-p, 0) - var(--a)) / (var(--b) + var(--f) - var(--a))), 1)
+      )
+    );
+}
+
+/* --- Le voile -------------------------------------------------------------
+   Un dégradé seulement là où le texte se pose, pas un voile plein cadre : les
+   bois et le saumon du bateau sont ce qu'on est venu voir.                    */
+
+.desc__scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  /* Au-dessus des plans, qui portent désormais un z-index explicite. */
+  z-index: 10;
+  height: 46%;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(8, 5, 3, 0.78) 0%, rgba(8, 5, 3, 0.42) 42%, transparent 100%);
+}
+
+/* --- Les quatre lignes ---------------------------------------------------- */
+
+.desc__cue {
+  --f: 0.035;
+  position: absolute;
+  z-index: 11;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(84px, 13vh, 150px);
+  margin: 0;
+  max-width: min(100%, 16em);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(28px, 4.4vw, 62px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-wrap: balance;
+
+  opacity: min(
+    clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1),
+    clamp(0, calc((var(--b) + var(--f) - var(--sc-p, 0)) / var(--f)), 1)
+  );
+
+  /* La ligne monte de quelques pixels en paraissant : le mouvement dit
+     « ceci arrive » là où un simple fondu dit « ceci était déjà là ». */
+  transform: translateY(
+    calc(
+      14px * (1 - clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1))
+    )
+  );
+}
+
+/* --- La signature : les marches qui restent ------------------------------- */
+
+.desc__steps {
+  position: absolute;
+  z-index: 11;
+  left: var(--gutter);
+  top: clamp(84px, 12vh, 128px);
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+}
+
+.desc__steps > span:first-child {
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.desc__steps-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+}
+
+/* En bas de l'escalier le compteur n'a plus rien à compter : il s'efface au
+   lieu de rester à 1 comme un décor. */
+.desc__steps[data-done='true'] {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* --- Téléphone ------------------------------------------------------------
+   Les plans sont en 16:9 et l'écran est en portrait : le recadrage par le
+   centre garde le sujet (l'escalier, la porte, le lit sont tous centrés), mais
+   la course est raccourcie — sept écrans au doigt, c'est long.                */
+
+@media (max-width: 700px) {
+  .desc {
+    height: calc(var(--desc-h-m, 5.4) * 100svh);
+  }
+  .desc__cue {
+    bottom: clamp(72px, 16vh, 132px);
+    max-width: 12em;
+  }
+  .desc__scrim {
+    height: 54%;
+  }
+}
+
+/* --- Animations réduites --------------------------------------------------
+   Le trajet ne disparaît pas, il cesse de bouger : la section se replie en une
+   suite de plans dans le même ordre, sans course épinglée. Garder la hauteur
+   reviendrait à faire défiler sept écrans sans que rien ne change.            */
+
+@media (prefers-reduced-motion: reduce) {
+  .desc {
+    height: auto;
+    background: var(--ocean-ink);
+    padding-block: clamp(40px, 6vw, 80px);
+  }
+  .desc__stage {
+    position: static;
+    height: auto;
+    display: grid;
+    gap: clamp(10px, 1.6vw, 20px);
+    padding-inline: var(--gutter);
+  }
+  .desc__plate {
+    position: static;
+    opacity: 1;
+    transform: none;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--r-card);
+  }
+  .desc__scrim,
+  .desc__steps {
+    display: none;
+  }
+  .desc__cue {
+    position: static;
+    opacity: 1;
+    transform: none;
+    max-width: none;
+    text-align: left;
+    margin-block: clamp(8px, 1.4vw, 18px);
+  }
+  /* L'ordre de lecture reste celui du trajet : chaque ligne se range après le
+     plan qu'elle commente. L'ordre est porté par chaque élément, pas déduit
+     d'un nth-of-type : avec un <picture> autour de chaque image, la position
+     dans le type ne distingue plus les plans. */
+  .desc__plate,
+  .desc__cue {
+    order: var(--order, 0);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .desc__scrim {
+    background: linear-gradient(to top, rgba(8, 5, 3, 0.95) 0%, rgba(8, 5, 3, 0.75) 50%, transparent 100%);
+  }
+}
