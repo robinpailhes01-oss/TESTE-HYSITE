@@ -1,16 +1,18 @@
 import { useRef } from 'react'
 import { useActProgress } from '../useActProgress'
-import '../descente.css'
+import '../visite.css'
 
 /* ---------------------------------------------------------------------------
    La visite — page « Nuit à bord ».
 
-   Un seul trajet, sans coupure : du haut des marches jusqu'à la cabine. Six
-   plans réels du bateau, nettoyés et relevés en lumière de fin de journée, que
-   le défilement traverse en travelling avant. Chaque pièce arrive en plein
-   écran, avec une légende courte qui la nomme et donne un fait vrai — pas une
-   phrase d'ambiance. Le client veut qu'on montre les pièces ; la petite
-   écriture les présente sans jamais couvrir l'image.
+   Une visite virtuelle : dix plans en plein écran qui se remplacent au
+   défilement, sans jamais quitter le bateau. L'ordre est celui d'une vraie
+   nuit à bord — on descend, on visite, on sort au couchant, la table se
+   dresse, le soir tombe, et le petit-déjeuner arrive. Chaque plan porte une
+   légende courte qui nomme le lieu ou le moment et donne un fait vrai.
+
+   Le rail de photos qui servait ici a disparu : le client veut chaque image en
+   plein écran, et une vignette de 200 px dans un rail est l'inverse de ça.
 
    Aucune vidéo, et c'est un choix mesuré, pas une économie. Le device évident
    pour une descente serait un clip scrubbé ; ce site se consulte surtout au
@@ -49,6 +51,9 @@ type Plate = {
   cb: number
 }
 
+/* La partition. Chaque plan reçoit sa part de la course ; le seuil de la
+   cabine garde la plus grande d'un seul tenant (0,155 contre 0,125 pour le
+   plus long des autres) parce que c'est le pic du parcours. */
 const PLATES: Plate[] = [
   {
     src: '/images/descente-1-haut.webp',
@@ -57,7 +62,7 @@ const PLATES: Plate[] = [
     room: 'L’escalier',
     note: 'Quatre marches, et le port disparaît derrière vous.',
     a: -1,
-    b: 0.26,
+    b: 0.115,
     /* On commence en regardant ses pieds, sur les marches, puis le regard se
        relève vers la pièce. C'est ce que fait un corps qui descend un escalier
        de bateau, et c'est ce qui rend « quatre marches » vrai à l'écran. */
@@ -65,8 +70,8 @@ const PLATES: Plate[] = [
     s1: 1.4,
     y0: '5.5%',
     y1: '-3%',
-    ca: 0.02,
-    cb: 0.22,
+    ca: 0.012,
+    cb: 0.093,
   },
   {
     src: '/images/descente-2-carre.webp',
@@ -74,15 +79,15 @@ const PLATES: Plate[] = [
     alt: 'Le carré du yacht : la banquette en cuir crème, la table ovale, et le couloir vers la cabine.',
     room: 'Le carré',
     note: 'Banquette en cuir, table ovale. On y dîne, on y traîne.',
-    a: 0.26,
-    b: 0.41,
+    a: 0.115,
+    b: 0.2,
     /* Le silence avant le pic : le cadre respire, il n'avance pas. Plus ample,
        il volerait au passage de la porte ce qui fait sa force — être le seul
        endroit où l'on avance vraiment. */
     s0: 1.06,
     s1: 1.12,
-    ca: 0.285,
-    cb: 0.385,
+    ca: 0.133,
+    cb: 0.178,
   },
   {
     src: '/images/descente-3-cuisine.webp',
@@ -90,12 +95,12 @@ const PLATES: Plate[] = [
     alt: 'Le coin cuisine du yacht : plan de travail, évier inox et rangements en acajou.',
     room: 'Le coin cuisine',
     note: 'Évier, plan de travail et rangements. Le petit-déjeuner arrive sur plateau.',
-    a: 0.41,
-    b: 0.53,
+    a: 0.2,
+    b: 0.28,
     s0: 1.02,
     s1: 1.14,
-    ca: 0.435,
-    cb: 0.51,
+    ca: 0.218,
+    cb: 0.258,
   },
   {
     src: '/images/descente-4-couloir.webp',
@@ -103,12 +108,12 @@ const PLATES: Plate[] = [
     alt: 'Le couloir sous le pont, la porte de la cabine ouverte au fond sur le lit.',
     room: 'Le couloir',
     note: 'Penderie d’un côté, la cabine au fond.',
-    a: 0.53,
-    b: 0.64,
+    a: 0.28,
+    b: 0.355,
     s0: 1,
     s1: 1.18,
-    ca: 0.555,
-    cb: 0.62,
+    ca: 0.298,
+    cb: 0.333,
   },
   {
     src: '/images/descente-5-seuil.webp',
@@ -116,11 +121,11 @@ const PLATES: Plate[] = [
     alt: 'Le seuil de la cabine : l’encadrement en acajou verni s’ouvre sur le lit.',
     room: 'Le seuil',
     note: 'La porte se referme sur vous deux.',
-    a: 0.64,
+    a: 0.355,
     /* Le pic : la plus grande course d'un seul plan de la page. Il tient bien
        après que sa légende se soit effacée — le passage dans la cabine ne doit
        croiser aucun texte. */
-    b: 0.88,
+    b: 0.51,
     /* Le montant de porte passe de part et d'autre du regard et sort du cadre :
        à 1,78 il ne reste que du bois flou, ce qui est exactement ce qu'on voit
        en franchissant une porte. Et l'effacement est le plus court de la page —
@@ -128,20 +133,72 @@ const PLATES: Plate[] = [
     s0: 1.05,
     s1: 1.78,
     f: 0.013,
-    ca: 0.665,
-    cb: 0.855,
+    ca: 0.373,
+    cb: 0.488,
   },
   {
     src: '/images/descente-6-cabine.webp',
     srcP: '/images/descente-6-cabine-p.webp',
     alt: 'La cabine du yacht : le lit rond fait, les boiseries, le hublot.',
     room: 'La cabine',
-    note: 'Lit double, hublots, rangements sous le lit. Jusqu’à 12 h le lendemain.',
-    a: 0.88,
-    b: 2,
+    note: 'Lit double, hublots, rangements sous le lit.',
+    a: 0.51,
+    b: 0.61,
     s0: 1.16,
+    s1: 1.04,
+    ca: 0.528,
+    cb: 0.588,
+  },
+  {
+    src: '/images/soir-1-couchant.webp',
+    srcP: '/images/sortie-coucher-soleil-poupe.jpg',
+    alt: 'Le soleil se couche sur la mer, vu depuis le pont arrière du yacht.',
+    room: 'La sortie au couchant',
+    note: 'En Nuit Prestige : une sortie en mer au coucher du soleil.',
+    a: 0.61,
+    b: 0.705,
+    s0: 1.04,
+    s1: 1.14,
+    ca: 0.628,
+    cb: 0.683,
+  },
+  {
+    src: '/images/soir-2-amour.webp',
+    srcP: '/images/nuit-salon-amour.jpg',
+    alt: 'Le salon du yacht, table ronde dressée en blanc sous les lettres « Amour ».',
+    room: 'La table dressée',
+    note: 'Tapas de notre partenaire Una Mas, en Nuit Prestige.',
+    a: 0.705,
+    b: 0.79,
+    s0: 1.03,
+    s1: 1.12,
+    ca: 0.723,
+    cb: 0.768,
+  },
+  {
+    src: '/images/soir-3-bougies.webp',
+    srcP: '/images/nuit-table-ambiance.jpg',
+    alt: 'La table du salon au soir : nappe blanche, pétales, bougies allumées.',
+    room: 'Le salon, le soir',
+    note: 'Bougies et plaids à bord.',
+    a: 0.79,
+    b: 0.875,
+    s0: 1.03,
+    s1: 1.12,
+    ca: 0.808,
+    cb: 0.853,
+  },
+  {
+    src: '/images/soir-4-dejeuner.webp',
+    srcP: '/images/nuit-petit-dejeuner-plateau.jpg',
+    alt: 'Le petit-déjeuner servi sur plateau : viennoiseries, pain, confitures, fruits et jus d’orange.',
+    room: 'Le petit-déjeuner',
+    note: 'Sur plateau, servi jusqu’à 10 h. Vous repartez à midi.',
+    a: 0.875,
+    b: 2,
+    s0: 1.14,
     s1: 1,
-    ca: 0.905,
+    ca: 0.893,
     cb: 1.02,
   },
 ]
@@ -150,10 +207,21 @@ const PLATES: Plate[] = [
    n'a aucune raison d'exister. */
 const MARCHES = 4
 /* Passé ce point on est en bas : le compteur n'a plus rien à dire. */
-const AU_SOL = 0.25
+const AU_SOL = 0.105
 
-export default function Descente() {
+/* L'opacité d'un plan, calculée exactement comme le fait le CSS. Sert à
+   publier l'état visuel pour la vérification — pas au rendu, qui reste
+   entièrement en CSS. */
+function opacityOf(pl: Plate, p: number) {
+  const f = pl.f ?? 0.022
+  const inn = Math.min(1, Math.max(0, (p - pl.a + f) / f))
+  const out = Math.min(1, Math.max(0, (pl.b + f - p) / f))
+  return Math.min(inn, out)
+}
+
+export default function Visite() {
   const ref = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
   const stepRef = useRef<HTMLParagraphElement>(null)
 
   /* « On descend vraiment » — la signature. Le défilement ne fait pas défiler
@@ -162,26 +230,52 @@ export default function Descente() {
      transformerait un repère en décoration. */
   useActProgress(ref, (p) => {
     const el = stepRef.current
-    if (!el) return
-    const reste = Math.max(1, Math.ceil((1 - p / AU_SOL) * MARCHES))
-    el.firstElementChild!.textContent = String(reste)
-    el.dataset.done = p >= AU_SOL ? 'true' : 'false'
+    if (el) {
+      const reste = Math.max(1, Math.ceil((1 - p / AU_SOL) * MARCHES))
+      el.firstElementChild!.textContent = String(reste)
+      el.dataset.done = p >= AU_SOL ? 'true' : 'false'
+    }
+
+    /* L'état visuel, publié pour le harnais de vérification.
+
+       Le mouvement de cette section ne passe par aucun device du moteur
+       (ni pan, ni scrub) : ce sont des plans empilés qui se fondent et
+       avancent en CSS. Sans cette publication, la vérification de « scroll
+       mort » ne voit qu'une scène collée en haut de l'écran qui ne bouge
+       jamais, et déclare morte la totalité de la visite. Le harnais prévoit
+       exactement ce cas : une page dont le mouvement lui est étranger publie
+       une représentation compacte de ce qu'on voit réellement. */
+    const stage = stageRef.current
+    if (!stage) return
+    let top = 0
+    for (let i = 0; i < PLATES.length; i++) {
+      if (opacityOf(PLATES[i], p) > 0.002) { top = i; break }
+    }
+    const pl = PLATES[top]
+    const local = Math.min(1, Math.max(0, (p - pl.a) / (pl.b + (pl.f ?? 0.022) - pl.a)))
+    const scale = pl.s0 + (pl.s1 - pl.s0) * local
+    const cap = PLATES.findIndex((q) => p >= q.ca - 0.014 && p <= q.cb + 0.014)
+    stage.setAttribute(
+      'data-sc-verify-state',
+      `plan=${top + 1}/${PLATES.length} op=${opacityOf(pl, p).toFixed(2)} ` +
+        `zoom=${scale.toFixed(3)} legende=${cap >= 0 ? cap + 1 : '-'}`,
+    )
   })
 
   return (
     <section
-      className="desc"
+      className="vis"
       ref={ref}
       data-sc-act="pin"
-      data-sc-span="7"
-      aria-label="Visite du bateau, du haut de l’escalier jusqu’à la cabine"
+      data-sc-span="9.5"
+      aria-label="Visite du bateau : les pièces, la soirée et le matin"
     >
-      <div className="desc__stage">
+      <div className="vis__stage" data-sc-stage ref={stageRef}>
         {PLATES.map((pl, i) => (
-          <picture className="desc__pic" key={pl.src}>
+          <picture className="vis__pic" key={pl.src}>
             <source media="(max-width: 700px)" srcSet={pl.srcP} />
             <img
-              className="desc__plate"
+              className="vis__plate"
               src={pl.src}
               alt={pl.alt}
               draggable={false}
@@ -207,14 +301,14 @@ export default function Descente() {
           </picture>
         ))}
 
-        <div className="desc__scrim" aria-hidden="true" />
+        <div className="vis__scrim" aria-hidden="true" />
 
         {/* Une légende par pièce : le nom, puis un fait. Petite, en bas à
             gauche, toujours du même côté — on sait où regarder sans chercher. */}
         {PLATES.map((pl, i) => (
           <div
             key={`c-${pl.src}`}
-            className="desc__cap"
+            className="vis__cap"
             style={
               {
                 '--a': String(pl.ca),
@@ -223,14 +317,14 @@ export default function Descente() {
               } as React.CSSProperties
             }
           >
-            <p className="desc__room">{pl.room}</p>
-            <p className="desc__note">{pl.note}</p>
+            <p className="vis__room">{pl.room}</p>
+            <p className="vis__note">{pl.note}</p>
           </div>
         ))}
 
-        <p className="desc__steps" ref={stepRef} data-done="false" aria-hidden="true">
+        <p className="vis__steps" ref={stepRef} data-done="false" aria-hidden="true">
           <span>{MARCHES}</span>
-          <span className="desc__steps-label">marches</span>
+          <span className="vis__steps-label">marches</span>
         </p>
       </div>
     </section>

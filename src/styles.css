@@ -1476,6 +1476,14 @@ section {
   overflow: hidden;
 }
 
+/* Le héro plein écran : sur la page nuit la visite commence dès l'arrivée, et
+   une image coupée aux deux tiers de l'écran annonce un document, pas un lieu.
+   Deux classes plutôt qu'une : à spécificité égale, c'est la règle déclarée en
+   dernier qui gagne, et `.page-hero` est juste au-dessus. */
+.page-hero.page-hero--full {
+  min-height: 100svh;
+}
+
 .page-hero__media {
   position: absolute;
   inset: 0;

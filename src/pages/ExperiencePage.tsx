@@ -6,7 +6,7 @@ import { EXPERIENCES } from '../experiences'
 import type { Formule } from '../experiences'
 import RevealImage from '../components/RevealImage'
 import PhotoRail from '../components/PhotoRail'
-import Descente from '../components/Descente'
+import Visite from '../components/Visite'
 import EnDirect from '../components/EnDirect'
 import BookingForm from '../components/BookingForm'
 import { WHATSAPP_URL } from '../whatsapp'
@@ -73,7 +73,7 @@ export default function ExperiencePage({ slug }: Props) {
   return (
     <main className="page">
       {/* En-tête visuel */}
-      <section className="page-hero">
+      <section className={`page-hero${exp.group === 'nuit' ? ' page-hero--full' : ''}`}>
         <div className="page-hero__media">
           <motion.img
             src={exp.hero}
@@ -103,11 +103,12 @@ export default function ExperiencePage({ slug }: Props) {
         </div>
       </section>
 
-      {/* La descente — on vient de voir le bateau du dehors, on entre.
-          Réservée à la nuit : c'est la page où la question du visiteur est
-          « où est-ce que je dors ? », et une photo de lit n'y répond pas
-          aussi bien que le chemin qui y mène. */}
-      {exp.group === 'nuit' ? <Descente /> : null}
+      {/* La visite — on vient de voir le bateau du dehors en plein écran, on
+          entre. Réservée à la nuit : c'est la page où la question du visiteur
+          est « où est-ce que je dors, et à quoi ressemble la soirée ? », et
+          une grille de vignettes n'y répond pas aussi bien qu'un lieu qu'on
+          traverse. Elle remplace ici le rail de photos. */}
+      {exp.group === 'nuit' ? <Visite /> : null}
 
       {/* Présentation + inclusions */}
       <section className="section">
@@ -130,18 +131,18 @@ export default function ExperiencePage({ slug }: Props) {
         </div>
       </section>
 
-      {/* Tout ce qui est à bord, en images — l'immersion. */}
+      {/* Tout ce qui est à bord, en images. La nuit n'en a plus besoin : sa
+          visite plein écran montre déjà tout, et bien plus grand. */}
+      {exp.group === 'nuit' ? null : (
       <PhotoRail
         kicker="Tout est à bord"
         titlePlain="Ce que vous"
         titleIt="avez avec vous"
         items={exp.inclusions}
-        closing={exp.group === 'nuit' ? 'Et le port qui s’endort autour de vous.' : 'Rien à prévoir, rien à porter.'}
-        tone={exp.group === 'nuit' ? 'deep' : 'ocean'}
-        /* La nuit porte déjà la descente : le rail y est resserré pour que la
-           page ne demande pas deux longues courses épinglées à la suite. */
-        span={exp.group === 'nuit' ? 3.2 : undefined}
+        closing="Rien à prévoir, rien à porter."
+        tone="ocean"
       />
+      )}
 
       {/* Le monde réel : le couchant de ce soir, et les vraies dates libres.
           Placé juste après l'immersion, au moment exact où le visiteur

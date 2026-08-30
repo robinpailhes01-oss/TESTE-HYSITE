@@ -7,13 +7,13 @@
    n'est animé en JS, et aucun second moteur d'animation n'arrive sur la page.
 --------------------------------------------------------------------------- */
 
-.desc {
+.vis {
   position: relative;
-  height: calc(var(--desc-h, 7) * 100svh);
+  height: calc(var(--vis-h, 9.5) * 100svh);
   background: #0b0705; /* le noir chaud sous lequel les plans se croisent */
 }
 
-.desc__stage {
+.vis__stage {
   position: sticky;
   top: 0;
   height: 100svh;
@@ -34,11 +34,11 @@
 /* <picture> ne doit rien peser dans la mise en page épinglée : c'est l'image
    qu'il contient qui est positionnée. En mode sans mouvement il redevient un
    bloc, et c'est lui la brique de la grille. */
-.desc__pic {
+.vis__pic {
   display: contents;
 }
 
-.desc__plate {
+.vis__plate {
   /* Court, et pour une raison mesurée : à 0,05 le croisement durait un tiers
      d'écran et deux plans dissemblables passaient plusieurs secondes à 50 %
      l'un sur l'autre — une double exposition illisible, pile sur la phrase du
@@ -93,7 +93,7 @@
    Un dégradé seulement là où le texte se pose, pas un voile plein cadre : les
    bois et le saumon du bateau sont ce qu'on est venu voir.                    */
 
-.desc__scrim {
+.vis__scrim {
   position: absolute;
   inset: auto 0 0 0;
   /* Au-dessus des plans, qui portent désormais un z-index explicite. */
@@ -115,8 +115,12 @@
    nomme et s'efface. Une grande phrase italique par plan, c'était l'inverse :
    le texte devenait le sujet et l'image son fond.                             */
 
-.desc__cap {
-  --f: 0.03;
+.vis__cap {
+  /* Court, et calculé : dix légendes sur la course, 0,040 d'écart entre la fin
+     de l'une et le début de la suivante. À 0,03 les fondus se recouvraient et
+     deux légendes se superposaient au même endroit — illisible, et invisible
+     en lisant le code. À 0,014 il reste 0,012 de silence net entre chacune. */
+  --f: 0.014;
   position: absolute;
   z-index: 11;
   left: var(--gutter);
@@ -136,7 +140,7 @@
   );
 }
 
-.desc__room {
+.vis__room {
   margin: 0 0 8px;
   font-size: 11px;
   font-weight: 500;
@@ -145,7 +149,7 @@
   color: var(--white-muted);
 }
 
-.desc__note {
+.vis__note {
   margin: 0;
   font-size: clamp(15px, 1.35vw, 19px);
   line-height: 1.42;
@@ -156,7 +160,7 @@
 
 /* --- La signature : les marches qui restent ------------------------------- */
 
-.desc__steps {
+.vis__steps {
   position: absolute;
   z-index: 11;
   left: var(--gutter);
@@ -170,14 +174,14 @@
   transition: opacity 420ms var(--ease), transform 420ms var(--ease);
 }
 
-.desc__steps > span:first-child {
+.vis__steps > span:first-child {
   font-size: clamp(34px, 5vw, 64px);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 
-.desc__steps-label {
+.vis__steps-label {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.26em;
@@ -187,7 +191,7 @@
 
 /* En bas de l'escalier le compteur n'a plus rien à compter : il s'efface au
    lieu de rester à 1 comme un décor. */
-.desc__steps[data-done='true'] {
+.vis__steps[data-done='true'] {
   opacity: 0;
   transform: translateY(-8px);
 }
@@ -198,10 +202,10 @@
    la course est raccourcie — sept écrans au doigt, c'est long.                */
 
 @media (max-width: 700px) {
-  .desc {
-    height: calc(var(--desc-h-m, 5.4) * 100svh);
+  .vis {
+    height: calc(var(--vis-h-m, 7.2) * 100svh);
   }
-  .desc__cap {
+  .vis__cap {
     bottom: clamp(84px, 15vh, 136px);
     /* Le bouton WhatsApp flottant coupait la fin de la légende : on lui laisse
        sa place plutôt que d'écrire dessous. */
@@ -211,7 +215,7 @@
      le voile local doit y porter davantage. */
   /* Plus haut et plus dense au téléphone : les cadrages portrait sont bien
      plus lumineux dans le bas, et la petite écriture y tombait à 2 : 1. */
-  .desc__scrim {
+  .vis__scrim {
     height: 56%;
     background: linear-gradient(
       to top,
@@ -229,19 +233,19 @@
    reviendrait à faire défiler sept écrans sans que rien ne change.            */
 
 @media (prefers-reduced-motion: reduce) {
-  .desc {
+  .vis {
     height: auto;
     background: var(--ocean-ink);
     padding-block: clamp(40px, 6vw, 80px);
   }
-  .desc__stage {
+  .vis__stage {
     position: static;
     height: auto;
     display: grid;
     gap: clamp(10px, 1.6vw, 20px);
     padding-inline: var(--gutter);
   }
-  .desc__plate {
+  .vis__plate {
     position: static;
     opacity: 1;
     transform: none;
@@ -249,11 +253,11 @@
     aspect-ratio: 16 / 9;
     border-radius: var(--r-card);
   }
-  .desc__scrim,
-  .desc__steps {
+  .vis__scrim,
+  .vis__steps {
     display: none;
   }
-  .desc__cap {
+  .vis__cap {
     position: static;
     opacity: 1;
     transform: none;
@@ -264,14 +268,14 @@
      plan qu'elle commente. L'ordre est porté par chaque élément, pas déduit
      d'un nth-of-type : avec un <picture> autour de chaque image, la position
      dans le type ne distingue plus les plans. */
-  .desc__plate,
-  .desc__cap {
+  .vis__plate,
+  .vis__cap {
     order: var(--order, 0);
   }
 }
 
 @media (prefers-contrast: more) {
-  .desc__scrim {
+  .vis__scrim {
     background: linear-gradient(to top, rgba(8, 5, 3, 0.95) 0%, rgba(8, 5, 3, 0.75) 50%, transparent 100%);
   }
 }
