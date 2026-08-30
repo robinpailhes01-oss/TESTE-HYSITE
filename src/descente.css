@@ -98,42 +98,60 @@
   inset: auto 0 0 0;
   /* Au-dessus des plans, qui portent désormais un z-index explicite. */
   z-index: 10;
-  height: 46%;
+  height: 44%;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(8, 5, 3, 0.78) 0%, rgba(8, 5, 3, 0.42) 42%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(6, 4, 3, 0.9) 0%,
+    rgba(6, 4, 3, 0.66) 34%,
+    rgba(6, 4, 3, 0.24) 66%,
+    transparent 100%
+  );
 }
 
-/* --- Les quatre lignes ---------------------------------------------------- */
+/* --- Les légendes de pièce ------------------------------------------------
+   Petite écriture, toujours au même endroit : le nom de la pièce en capitales
+   espacées, puis un fait sur une ligne. La pièce est le sujet ; le texte la
+   nomme et s'efface. Une grande phrase italique par plan, c'était l'inverse :
+   le texte devenait le sujet et l'image son fond.                             */
 
-.desc__cue {
-  --f: 0.035;
+.desc__cap {
+  --f: 0.03;
   position: absolute;
   z-index: 11;
   left: var(--gutter);
   right: var(--gutter);
-  bottom: clamp(84px, 13vh, 150px);
-  margin: 0;
-  max-width: min(100%, 16em);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(28px, 4.4vw, 62px);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  text-wrap: balance;
+  bottom: clamp(96px, 13vh, 148px);
+  max-width: min(100%, 30rem);
 
   opacity: min(
     clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1),
     clamp(0, calc((var(--b) + var(--f) - var(--sc-p, 0)) / var(--f)), 1)
   );
 
-  /* La ligne monte de quelques pixels en paraissant : le mouvement dit
+  /* La légende monte de quelques pixels en paraissant : le mouvement dit
      « ceci arrive » là où un simple fondu dit « ceci était déjà là ». */
   transform: translateY(
-    calc(
-      14px * (1 - clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1))
-    )
+    calc(10px * (1 - clamp(0, calc((var(--sc-p, 0) - var(--a) + var(--f)) / var(--f)), 1)))
   );
+}
+
+.desc__room {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+}
+
+.desc__note {
+  margin: 0;
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.42;
+  letter-spacing: -0.006em;
+  color: var(--white);
+  text-wrap: pretty;
 }
 
 /* --- La signature : les marches qui restent ------------------------------- */
@@ -183,12 +201,25 @@
   .desc {
     height: calc(var(--desc-h-m, 5.4) * 100svh);
   }
-  .desc__cue {
-    bottom: clamp(72px, 16vh, 132px);
-    max-width: 12em;
+  .desc__cap {
+    bottom: clamp(84px, 15vh, 136px);
+    /* Le bouton WhatsApp flottant coupait la fin de la légende : on lui laisse
+       sa place plutôt que d'écrire dessous. */
+    right: calc(var(--gutter) + 74px);
   }
+  /* En portrait les plans sont nettement plus lumineux dans le bas du cadre :
+     le voile local doit y porter davantage. */
+  /* Plus haut et plus dense au téléphone : les cadrages portrait sont bien
+     plus lumineux dans le bas, et la petite écriture y tombait à 2 : 1. */
   .desc__scrim {
-    height: 54%;
+    height: 56%;
+    background: linear-gradient(
+      to top,
+      rgba(6, 4, 3, 0.94) 0%,
+      rgba(6, 4, 3, 0.78) 30%,
+      rgba(6, 4, 3, 0.36) 62%,
+      transparent 100%
+    );
   }
 }
 
@@ -222,20 +253,19 @@
   .desc__steps {
     display: none;
   }
-  .desc__cue {
+  .desc__cap {
     position: static;
     opacity: 1;
     transform: none;
     max-width: none;
-    text-align: left;
-    margin-block: clamp(8px, 1.4vw, 18px);
+    margin-block: clamp(6px, 1.2vw, 14px);
   }
   /* L'ordre de lecture reste celui du trajet : chaque ligne se range après le
      plan qu'elle commente. L'ordre est porté par chaque élément, pas déduit
      d'un nth-of-type : avec un <picture> autour de chaque image, la position
      dans le type ne distingue plus les plans. */
   .desc__plate,
-  .desc__cue {
+  .desc__cap {
     order: var(--order, 0);
   }
 }
