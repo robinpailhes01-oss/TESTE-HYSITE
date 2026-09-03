@@ -51,19 +51,13 @@ export function meta() {
 export function links() {
   return [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-    /* Les deux photos du premier écran de l'accueil sont les plus grands
-       éléments peints : on les demande avant même que le CSS les découvre. */
+    /* La photo d'accroche est le plus grand élément peint : on la demande
+       avant même que le CSS l'ait découverte. */
     {
       rel: 'preload',
       as: 'image',
-      imageSrcSet: srcSet('/images/sortie-bateau.jpg'),
-      imageSizes: '(max-width: 860px) 100vw, 60vw',
-    },
-    {
-      rel: 'preload',
-      as: 'image',
-      imageSrcSet: srcSet('/images/soir-3-bougies.webp'),
-      imageSizes: '(max-width: 860px) 100vw, 60vw',
+      imageSrcSet: srcSet('/images/soir-1-couchant.webp'),
+      imageSizes: '100vw',
     },
   ]
 }

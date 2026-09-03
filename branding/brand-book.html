@@ -224,7 +224,7 @@
   .apps { display: grid; gap: 40px; margin-top: 8px; }
   .app { border: 1px solid var(--rule); overflow: hidden; }
   .app__label { padding: 12px 16px; border-bottom: 1px solid var(--rule); }
-  .site { position: relative; height: 420px; display: grid; grid-template-columns: 1fr 1fr; font-family: var(--text); }
+  .site { position: relative; height: 480px; display: grid; grid-template-rows: 1fr 1fr; font-family: var(--text); }
   .site__day { background: #f3f1eb; color: #12151a; padding: 26px 28px; display: grid; align-content: space-between; }
   .site__night { background: #0a0e12; color: #efebe2; padding: 26px 28px; display: grid; align-content: space-between; }
   .site h4 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4.6vw, 64px); line-height: 0.96; letter-spacing: -0.025em; margin: 0; }
@@ -267,10 +267,6 @@
     .terr__row { grid-template-columns: 1fr; gap: 16px; }
     .spec { grid-template-columns: 1fr; gap: 6px; }
     .checks li { grid-template-columns: 1fr; gap: 4px; }
-    .site { height: 520px; grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-    .site__seam { left: 0; right: 0; top: 50%; bottom: auto; width: auto; height: 1px; transform: translateY(-50%); }
-    .site__crest { top: 50%; transform: translate(-50%, -50%); }
-    .site__prog { bottom: auto; top: 50%; left: auto; right: 12px; transform: translateY(-50%); }
     .post { grid-template-columns: 1fr; }
     .words ul { columns: 1; }
     .map__pt { max-width: 96px; font-size: 11px; }
@@ -417,7 +413,7 @@
     </tbody>
   </table>
   <h3>La décision signature</h3>
-  <p>Le site vit à l'heure de Carnon. Sa page d'accueil tient le jour et la nuit côte à côte, et se ferme du côté où en est le soleil : le jour avant le couchant, la nuit après. Elle dit l'heure exacte du couchant de ce soir. Un concurrent qui ne vend que l'un ou l'autre ne peut pas faire ce geste.</p>
+  <p>Le site vit à l'heure de Carnon. Sa page d'accueil raconte la journée à bord heure par heure, dit l'heure exacte du couchant de ce soir et tourne au noir en le passant ; le prix n'arrive qu'à la fin. Un concurrent qui ne vend que l'un ou l'autre ne peut pas faire ce geste.</p>
 </section>
 
 <section>
@@ -540,27 +536,22 @@
   <h2>La marque en situation.</h2>
   <div class="apps">
     <div class="app">
-      <div class="app__label k">L'accueil du site : le jour et la nuit côte à côte, le blason sur la couture</div>
+      <div class="app__label k">L'accueil du site : une histoire heure par heure, le prix en dernier</div>
       <div class="site" aria-label="Maquette de l'accueil">
-        <div class="site__day">
-          <div class="k" style="color:rgba(18,21,26,.7)">Le jour · Sorties en mer</div>
-          <h4>Le large,<br>à vous seuls.</h4>
+        <div class="site__day" style="grid-column:1/-1">
+          <div class="k" style="color:rgba(18,21,26,.7)">9 h</div>
+          <h4>Le large.</h4>
+          <p style="font-size:13px;color:rgba(18,21,26,.7);max-width:40ch;margin:0">Le yacht, privatisé. Personne d'autre à bord que vous.</p>
+        </div>
+        <div class="site__night" style="grid-column:1/-1">
+          <div class="k" style="color:rgba(239,235,226,.72)">Tout compris</div>
+          <h4 style="font-size:clamp(22px,3vw,36px)">Le yacht, le capitaine, le carburant, le mouillage.</h4>
           <div>
-            <div class="facts"><span>2 h à 8 h</span><span>10 invités</span><span>dès 380 €</span></div>
-            <span class="cta" style="margin-top:16px">Voir les sorties</span>
+            <div class="facts"><span>Deux heures · 380 €</span><span>Nuit à quai · 250 €</span></div>
+            <span class="cta" style="margin-top:16px">Réserver une nuit</span>
           </div>
         </div>
-        <div class="site__night">
-          <div class="k" style="color:rgba(239,235,226,.72)">La nuit · Nuits à bord</div>
-          <h4>La suite<br>qui s'endort au port.</h4>
-          <div>
-            <div class="facts"><span>18 h → 12 h</span><span>à deux</span><span>dès 250 €</span></div>
-            <span class="cta" style="margin-top:16px">Voir les nuits</span>
-          </div>
-        </div>
-        <div class="site__seam" aria-hidden="true"></div>
-        <div class="site__crest" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 4c1.6 6 3.2 9 6 12-2 1-4 1.4-6 1.4S28 17 26 16c2.8-3 4.4-6 6-12Zm0 16.4c2.4 0 4.6-.4 7-1.4 4 3.6 9.6 5.2 17 3.6-4.8 5.4-10.6 8.4-16.4 8.6 1.2 2.4 1 5-.6 7.6 4.6-.6 10-3.6 15.6-9.4-1.2 9.2-8.2 15.2-18 16.4L32 60l-4.6-13.8c-9.8-1.2-16.8-7.2-18-16.4 5.6 5.8 11 8.8 15.6 9.4-1.6-2.6-1.8-5.2-.6-7.6-5.8-.2-11.6-3.2-16.4-8.6 7.4 1.6 13-.1 17-3.6 2.4 1 4.6 1.4 7 1.4Z"/></svg></div>
-        <div class="site__prog num" aria-hidden="true">Couchant 20 h 09</div>
+        <div class="site__seam" style="left:28px;transform:none" aria-hidden="true"></div>
       </div>
     </div>
     <div class="app">

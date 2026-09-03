@@ -99,8 +99,8 @@ a été écartée par le client au profit de Jost, géométrique fine.
 - **Personnalité.** Précis, mais jamais administratif. Discret, mais jamais
   absent. Sûr, mais jamais vantard.
 - **La décision signature.** Le site vit à l'heure de Carnon : sa page d'accueil
-  se ferme du côté où en est le soleil (le jour avant le couchant, la nuit
-  après), et il dit l'heure exacte du couchant de ce soir. Un concurrent qui
+  raconte la journée à bord heure par heure, dit l'heure exacte du couchant de
+  ce soir et tourne au noir en le passant ; le prix n'arrive qu'à la fin. Un concurrent qui
   vend l'un ou l'autre ne peut pas faire ce geste.
 - **Ce que ce territoire refuse.** Le bleu. Les adjectifs. Les icônes. Les
   cartes. Les ombres. Le mot « expérience » employé seul.

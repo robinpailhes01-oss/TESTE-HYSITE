@@ -89,29 +89,25 @@ coexistent sur l'accueil dans deux colonnes qui portent chacune leur sol.
 
 ## Élément signature
 
-**« Le rideau. »** L'accueil tient le jour et la nuit côte à côte, séparés
-par une couture de laiton qui porte le blason. La couture se saisit (souris
-ou doigt) et se tire ; relâchée, elle revient où l'argument en est. Au bout
-du défilement, elle se range d'elle-même du côté où en est le soleil à
-Carnon : le jour avant le couchant, la nuit après, et une ligne dit l'heure
-exacte. Choisir un côté emporte sa photographie dans la page choisie (View
-Transitions). Tout le reste est calme.
+**« Le fil et l'heure. »** L'accueil est un récit qui se lit en défilant,
+comme le site d'un hôtel : une accroche, un message, puis la journée à bord
+heure par heure (9 h, 11 h, 13 h, 19 h), le couchant à l'heure vraie de ce
+soir, la nuit (21 h, 23 h, 10 h), trois voix, et les prix en toute fin. Un
+fil de laiton descend le long du récit et s'allonge avec la lecture ; chaque
+chapitre y accroche son heure ; le sol tourne au noir quand on passe le
+couchant. On parle peu, on montre. Rien n'est épinglé.
 
 ## Mobile
 
-Une passe, pas un redimensionnement. La couture devient horizontale (le jour
-en haut, la nuit en bas), les deux titres restent lisibles sur le premier
-écran, la couture se tire au doigt. La course épinglée est raccourcie (4,6
-écrans contre 6), pas d'effet au pointeur, `100svh` sur la scène (stable
-quand la barre de Safari se replie), pas de travelling sur les photos, pas
-de Lenis au doigt, la poignée du rideau limitée au blason pour laisser le
-pouce faire défiler, cibles tactiles ≥ 44 px. Le rail de la page sortie et la visite de la page nuit
-gardent leurs versions portrait.
+Une passe, pas un redimensionnement. Le fil disparaît (les heures restent
+en repère), les paires de photos passent l'une sous l'autre, le parallaxe et
+Lenis ne se chargent pas, seules les arrivées en fondu restent. Cibles
+tactiles ≥ 44 px, boutons pleine largeur sur la carte des tarifs.
 
 ## Ce qui change par rapport à la refonte précédente (« Papier de palace »)
 
 Le crème et le brun laissent place au blanc de coque et à l'eau du port ;
 Fraunces laisse place à Jost, géométrique fine choisie par le client ; la pilule devient un
-filet à angles vifs ; la pile de plaques qui se recouvrent devient la scène
-partagée ; la tombée du jour au défilement devient la fermeture au soleil,
-qui lit l'heure réelle au lieu de la simuler.
+filet à angles vifs ; la pile de plaques qui se recouvrent, puis la scène partagée « le rideau »
+(refusée par le client sur téléphone), deviennent un récit en flux ; la
+tombée du jour reste, à l'heure réelle, au passage du couchant.

@@ -1,8 +1,7 @@
-import Rideau from '../components/Rideau'
+import Histoire from '../components/Histoire'
 
-/* L'accueil : la scène partagée. Le jour et la nuit côte à côte, la couture
-   qu'on tire, et la fermeture du côté du soleil. On ne réserve pas ici : on
-   choisit d'abord, on réserve sur la page choisie. */
+/* L'accueil : une histoire qui se lit en défilant, du large au réveil, les
+   prix en dernier. On réserve sur la page choisie. */
 export default function Home() {
-  return <Rideau />
+  return <Histoire />
 }

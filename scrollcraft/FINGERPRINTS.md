@@ -179,3 +179,21 @@ en texte courant, et l'heure du couchant comme ligne de bascule.
 **Pris par ce build, à ne pas rejouer :** la scène partagée, la couture comme
 chrome, le 50/50 à deux titres, la fermeture décidée par le soleil, la porte
 étroite du côté perdant, et la couture qu'on tire.
+
+## harmonie-histoire — 2026-09-03
+| Dimension | Valeur |
+|---|---|
+| Grammaire | **Récit d'hôtel** (nommée ici) : un document en flux, un chapitre par heure de la journée à bord, rien d'épinglé, le sol change une fois au couchant |
+| Nav | Nav fixe existante du site *(partagé)* |
+| Héro | Photo plein écran (le couchant vu du pont) et une ligne, rien d'autre |
+| Forme de séquence | accroche 1,0 → message 0,9 → 4 chapitres du jour 4,2 → passage 1,2 → 3 chapitres de nuit 3,0 → voix 1,0 → prix 1,2 ; ~12,5 vh, aucun pin |
+| Clôture | **La carte des tarifs**, tout compris, deux portes (sortie / nuit), sur la nuit |
+| Signature | **« Le fil et l'heure »** : un fil de laiton qui s'allonge avec la lecture, une heure accrochée à chaque chapitre, le couchant à l'heure vraie, le prix au bout du fil |
+| Monde | Photographique, réel uniquement ; identité « La carte d'invitation » en Jost |
+| Port | React Router SSG, un seul lecteur de défilement (fil, sol, parallaxe 6 % au pointeur fin), arrivées par IntersectionObserver |
+
+Écarte `harmonie-rideau` 6/6, les autres 4 à 5/6 (nav partagée ; photo fixe
+en héro voisine de `harmonie-calme` ; l'heure voisine de `harmonie-home`).
+
+**Pris par ce build :** le récit heure par heure, la carte des tarifs en
+clôture, le fil de laiton.

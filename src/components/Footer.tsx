@@ -31,7 +31,7 @@ export default function Footer() {
             <li>
               {/* On ne réserve pas depuis l'accueil : il faut d'abord choisir
                   entre la sortie et la nuit. */}
-              <a href="/#choix">Réserver</a>
+              <a href="/#tarifs">Réserver</a>
             </li>
             <li>
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">

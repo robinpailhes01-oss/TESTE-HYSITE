@@ -48,48 +48,10 @@ export default function Nav() {
     setOpen(false)
   }, [pathname])
 
-  /* Sur l'accueil, il n'y a pas de barre : la scène partagée fait de la
-     couture le chrome. Il reste « Menu », qui ouvre le panneau, et il ne se
-     cache pas au défilement (la scène est épinglée, le geste n'a pas de sens). */
-  if (onHome) {
-    return (
-      <header className={`nav nav--seam ${open ? 'nav--open' : ''}`}>
-        <div className="container nav__inner">
-          <nav aria-label="Navigation principale" id="menu">
-            <ul className="nav__links">
-              {LINKS.map((l) => (
-                <li key={l.label}>
-                  <Link to={l.to} className="nav__link" onClick={() => setOpen(false)}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-              <li className="nav__item--mobile">
-                <Link to="/contact" className="nav__link" onClick={() => setOpen(false)}>
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <button
-            className="nav__menu"
-            aria-expanded={open}
-            aria-controls="menu"
-            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? 'Fermer' : 'Menu'}
-            <span />
-          </button>
-        </div>
-      </header>
-    )
-  }
-
   /* On réserve sur la page de l'expérience choisie ; ailleurs, « Réserver »
      ramène au choix, c'est-à-dire à l'accueil. */
   const onExperience = /^\/(sortie-en-mer-carnon|nuit-a-bord-yacht-carnon)\/?$/.test(pathname)
-  const reserveHref = onExperience ? '#reservation' : '/'
+  const reserveHref = onExperience ? '#reservation' : onHome ? '#tarifs' : '/#tarifs'
 
   return (
     <header
