@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import { INSTAGRAM_URL } from '../seo'
 
 /* Le menu suit le tunnel : les deux expériences d'abord, le reste ensuite.
    `to` = vraie page, `hash` = ancre sur l'accueil. */
+const PHOTO_HERO = new Set(['/', '/sortie-en-mer-carnon', '/nuit-a-bord-yacht-carnon'])
+
 const LINKS: { to?: string; hash?: string; label: string }[] = [
   { to: '/sortie-en-mer-carnon', label: 'Sorties en mer' },
   { to: '/nuit-a-bord-yacht-carnon', label: 'Nuits à bord' },
   { to: '/galerie', label: 'Galerie' },
-  { hash: '#avis', label: 'Avis' },
   { to: '/tarifs', label: 'Tarifs' },
 ]
 
@@ -18,6 +18,10 @@ export default function Nav() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const onHome = pathname === '/'
+  /* En haut des pages qui ouvrent sur une photo, la nav est posée SUR la
+     photo : elle prend la couleur os, pas celle du sol. Décidé depuis le
+     chemin, donc identique au serveur et au client — pas de sursaut. */
+  const overPhoto = PHOTO_HERO.has(pathname.replace(/\/$/, '') || '/')
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -56,7 +60,7 @@ export default function Nav() {
     <header
       className={`nav ${solid || open ? 'nav--solid' : ''} ${
         hidden && !open ? 'nav--hidden' : ''
-      } ${open ? 'nav--open' : ''}`}
+      } ${open ? 'nav--open' : ''} ${overPhoto && !solid && !open ? 'nav--over' : ''}`}
     >
       <div className="container nav__inner">
         <nav aria-label="Navigation principale">
@@ -74,11 +78,6 @@ export default function Nav() {
                 )}
               </li>
             ))}
-            <li>
-              <a href={INSTAGRAM_URL} className="nav__link" target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-            </li>
             <li className="nav__item--mobile">
               <a href={reserveHref} className="nav__link" onClick={() => setOpen(false)}>
                 Réserver
@@ -89,11 +88,13 @@ export default function Nav() {
 
         {onHome ? (
           <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__day" src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__night" src="/images/logo-bone.png" alt="" aria-hidden="true" />
           </a>
         ) : (
           <Link to="/" className="monogram" aria-label="Harmonie Yacht — retour à l’accueil">
-            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__day" src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__night" src="/images/logo-bone.png" alt="" aria-hidden="true" />
           </Link>
         )}
 

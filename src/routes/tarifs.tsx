@@ -30,7 +30,7 @@ export default function TarifsRoute() {
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container legal-body" style={{ maxWidth: 720 }}>
           <p className="legal-intro">
             Un acompte de 30&nbsp;% est réglé en ligne à la réservation, le solde à bord (carte

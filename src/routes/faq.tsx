@@ -83,7 +83,7 @@ export default function FaqRoute() {
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container legal-body" style={{ maxWidth: 720 }}>
           {FAQ.map((f) => (
             <div key={f.question}>

@@ -1,15 +1,8 @@
-import Parcours from '../components/Parcours'
-import Reviews from '../components/Reviews'
+import Chapitres from '../components/Chapitres'
 
-/* L'accueil est un aiguillage : on voit le bateau, on voit le choix, on part
-   sur la page de son choix. Les avis restent en dessous pour celui qui hésite
-   encore. L'immersion et la réservation vivent sur les deux pages
-   d'expérience — c'est là que le client sait déjà ce qu'il veut. */
+/* L'accueil : une page de titre, puis les chapitres qui se recouvrent — le
+   jour, la tombée du jour, la nuit — puis les voix, puis le choix. On ne
+   réserve pas ici : on choisit d'abord, on réserve sur la page choisie. */
 export default function Home() {
-  return (
-    <main>
-      <Parcours />
-      <Reviews />
-    </main>
-  )
+  return <Chapitres />
 }

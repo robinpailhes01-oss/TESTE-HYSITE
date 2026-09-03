@@ -151,7 +151,7 @@ export default function ExperiencePage({ slug }: Props) {
 
       {/* Formules */}
       {exp.formules ? (
-        <section className="section" style={{ background: 'var(--white)' }}>
+        <section className="section" style={{ background: 'var(--ground)' }}>
           <div className="container">
             <motion.div className="section-head" {...formulesHead}>
               <p className="kicker">{exp.formulesKicker}</p>
@@ -214,7 +214,7 @@ export default function ExperiencePage({ slug }: Props) {
       ) : null}
 
       {/* Galerie de la prestation */}
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container">
           <motion.div className="page-gallery" {...galleryReveal}>
             {exp.gallery.map((g) => (

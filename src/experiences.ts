@@ -113,7 +113,7 @@ export const EXPERIENCES: Experience[] = [
         duration: '4 h — la demi-journée',
         amount: '750 €',
         amountSolo: '640 €',
-        boldNote: 'Apéritif dînatoire à bord',
+        boldNote: 'Barbecue à disposition',
       },
       {
         key: '8h',

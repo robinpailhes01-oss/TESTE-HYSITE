@@ -9,7 +9,8 @@ export default function Footer() {
       <div className="container">
         <div className="footer__inner">
           <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            <img src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__day" src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
+            <img className="monogram__night" src="/images/logo-bone.png" alt="" aria-hidden="true" />
           </a>
           <ul className="footer__nav">
             <li>

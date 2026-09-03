@@ -49,10 +49,10 @@
   pointer-events: none;
   background: linear-gradient(
     to top right,
-    rgba(12, 43, 69, 0.94) 0%,
-    rgba(12, 43, 69, 0.76) 28%,
-    rgba(12, 43, 69, 0.34) 52%,
-    rgba(12, 43, 69, 0) 74%
+    rgba(11, 9, 7, 0.94) 0%,
+    rgba(11, 9, 7, 0.76) 28%,
+    rgba(11, 9, 7, 0.34) 52%,
+    rgba(11, 9, 7, 0) 74%
   );
 }
 
@@ -116,10 +116,10 @@
   .moment__scrim {
     background: linear-gradient(
       to top,
-      rgba(12, 43, 69, 0.95) 0%,
-      rgba(12, 43, 69, 0.82) 24%,
-      rgba(12, 43, 69, 0.4) 46%,
-      rgba(12, 43, 69, 0) 64%
+      rgba(11, 9, 7, 0.95) 0%,
+      rgba(11, 9, 7, 0.82) 24%,
+      rgba(11, 9, 7, 0.4) 46%,
+      rgba(11, 9, 7, 0) 64%
     );
   }
   .moment__copy {

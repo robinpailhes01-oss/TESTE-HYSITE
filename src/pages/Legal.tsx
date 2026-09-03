@@ -23,7 +23,7 @@ function LegalShell({ kicker, title, children }: { kicker: string; title: ReactN
           <h1 className="mixed legal-hero__title">{title}</h1>
         </div>
       </section>
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container legal-body">{children}</div>
       </section>
     </main>

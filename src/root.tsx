@@ -1,17 +1,22 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router'
 import Lenis from 'lenis'
 import '@fontsource/instrument-sans/400.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/600.css'
-import '@fontsource/instrument-serif/400.css'
-import '@fontsource/instrument-serif/400-italic.css'
+/* Fraunces, variable, avec son axe optique : dense à 16 px, gravée à 120 px.
+   Les deux fichiers (droit, italique) couvrent tout ce que le site affiche. */
+import '@fontsource-variable/fraunces/opsz.css'
+import '@fontsource-variable/fraunces/opsz-italic.css'
 import './styles.css'
 import './calme.css'
 import './craft.css'
 import { useBreath } from './breath'
 import { setLenis } from './lenisRef'
+/* Le sol de chaque page, posé sur <html> au rendu — donc pré-rendu dans le HTML
+   statique : la page nuit arrive noire, sans flash de papier. */
+import { groundFor } from './ground'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
@@ -36,7 +41,7 @@ export function meta() {
     { property: 'og:image', content: `${SITE_URL}/images/og-yacht.jpg` },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    { name: 'theme-color', content: '#1A4C74' },
+    { name: 'theme-color', content: '#F4EFE6' },
   ]
 }
 
@@ -45,8 +50,9 @@ export function links() {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
   return (
-    <html lang="fr">
+    <html lang="fr" data-ground={groundFor(pathname)} data-page={pathname === '/' ? 'home' : undefined}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

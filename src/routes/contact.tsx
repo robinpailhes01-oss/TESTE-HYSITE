@@ -33,7 +33,7 @@ export default function ContactRoute() {
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container legal-body" style={{ maxWidth: 720 }}>
           <h2>WhatsApp — la voie la plus rapide</h2>
           <p>

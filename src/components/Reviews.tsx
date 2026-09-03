@@ -19,7 +19,7 @@ export default function Reviews() {
   const grid = useReveal(0.1)
 
   return (
-    <section className="section" id="avis" style={{ background: 'var(--white)' }}>
+    <section className="section" id="avis" style={{ background: 'var(--ground)' }}>
       <div className="container">
         <motion.div className="section-head" {...head}>
           <p className="kicker">Ils ont embarqué</p>

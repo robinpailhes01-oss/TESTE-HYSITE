@@ -1,0 +1,499 @@
+/* ---------------------------------------------------------------------------
+   L'accueil en chapitres — « Papier de palace, écran de cinéma ».
+   Tout mouvement vient de deux variables publiées au défilement :
+     --dusk  (0 → 1, sur <html>)   la tombée du jour
+     --cover (0 → 1, par plaque)   la plaque suivante qui recouvre celle-ci
+--------------------------------------------------------------------------- */
+
+/* --- Le sol de l'accueil : interpolé, pas commuté ------------------------ */
+
+:root {
+  --paper: #f4efe6;
+  --noir: #0b0907;
+}
+
+html[data-page='home'] {
+  background: color-mix(in srgb, var(--noir) calc(var(--dusk, 0) * 100%), var(--paper));
+  transition: none;
+}
+
+html[data-page='home'] body {
+  background: transparent;
+  transition: color 600ms var(--tide);
+}
+
+/* --- Le folio ------------------------------------------------------------- */
+
+.ch__folio {
+  position: fixed;
+  left: var(--gutter);
+  bottom: clamp(20px, 3vh, 32px);
+  z-index: 30;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  pointer-events: none;
+  transition: color 600ms var(--tide);
+}
+
+.ch__folio-n {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ch__folio-sep {
+  opacity: 0.5;
+}
+
+/* Sur une plaque, le folio est posé sur la photo : os. */
+html[data-ground='day'] .ch__folio {
+  color: var(--ink-2);
+}
+
+/* --- 00 · La page de titre ----------------------------------------------- */
+
+.ch__title {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: clamp(120px, 16vh, 168px) clamp(48px, 8vh, 96px);
+}
+
+.ch__title-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: end;
+  width: 100%;
+}
+
+.ch__title-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 32px);
+  padding-bottom: clamp(8px, 2vh, 24px);
+}
+
+.ch__h1 {
+  font-size: clamp(52px, 8.6vw, 136px);
+  font-weight: 320;
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  max-width: 9.5em;
+}
+
+.ch__h1 em {
+  font-style: italic;
+  font-weight: 280;
+  letter-spacing: -0.03em;
+}
+
+.ch__lede {
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 34ch;
+}
+
+.ch__title-doors {
+  display: flex;
+  gap: 28px;
+  margin-top: 8px;
+}
+
+.ch__title-fig {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ch__title-fig img {
+  width: 100%;
+  height: min(72svh, 760px);
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+.ch__title-fig figcaption {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+}
+
+/* --- La pile de plaques -------------------------------------------------- */
+
+.ch__stack {
+  position: relative;
+  /* La première plaque doit recouvrir la page de titre : on la laisse glisser
+     par-dessus en donnant à la pile un empilement au-dessus. */
+  z-index: 2;
+}
+
+.ch__hold {
+  position: relative;
+  height: 100svh;
+}
+
+/* Le pic tient deux écrans : c'est là que se joue la bascule. */
+.ch__hold--dusk {
+  height: 230svh;
+}
+
+.ch__plate {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* La plaque recule et s'assombrit à mesure qu'on la recouvre : la page qu'on
+   tourne s'éloigne, elle ne disparaît pas d'un coup. */
+.ch__plate-in {
+  position: absolute;
+  inset: 0;
+  transform: scale(calc(1 - var(--cover, 0) * 0.06));
+  transform-origin: center 40%;
+  filter: brightness(calc(1 - var(--cover, 0) * 0.5));
+  will-change: transform, filter;
+  transition: none;
+}
+
+.ch__plate-in img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mesuré : sur la mer turquoise, le titre du jour tombait à 3,5 : 1. Le voile
+   monte plus haut et plus dense là où le texte se pose ; il reste transparent
+   sur la moitié haute, qui est la photo. */
+.ch__veil {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 66%;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(11, 9, 7, 0.9) 0%, rgba(11, 9, 7, 0.68) 34%, rgba(11, 9, 7, 0.3) 62%, transparent 100%);
+}
+
+.ch__cap {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(56px, 9vh, 104px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 34rem;
+}
+
+.ch__cap .kicker {
+  color: var(--over-2);
+}
+
+.ch__h2 {
+  font-size: clamp(40px, 5.4vw, 84px);
+  font-weight: 330;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--over);
+}
+
+.ch__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 18px;
+  font-size: 13.5px;
+  color: var(--over-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.ch__facts span + span::before {
+  content: '·';
+  margin-right: 18px;
+  opacity: 0.55;
+}
+
+.ch__cap .btn {
+  margin-top: 8px;
+}
+
+/* --- 02 · La tombée du jour ---------------------------------------------- */
+
+/* La photo du couchant s'enfonce dans la nuit avec le sol. */
+.ch__dusk-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(11, 9, 7, calc(var(--dusk, 0) * 0.78));
+}
+
+.ch__dusk-line {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  /* La ligne paraît une fois le jour vraiment tombé (0,42 → 0,7), quand le
+     voile a assombri le ciel : mesuré plus tôt, elle arrivait sur la partie
+     la plus claire du couchant et se lisait mal. */
+  opacity: clamp(0, calc((var(--dusk, 0) - 0.42) / 0.28), 1);
+}
+
+/* Un souffle d'ombre sous la ligne — large, plumé, ancré sur le texte, jamais
+   un rectangle. */
+.ch__dusk-line::before {
+  content: '';
+  position: absolute;
+  inset: -40% -30% -40% -20%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(60% 70% at 30% 50%, rgba(11, 9, 7, 0.55), rgba(11, 9, 7, 0) 70%);
+}
+
+.ch__dusk-rule {
+  width: calc(clamp(0, calc((var(--dusk, 0) - 0.42) / 0.28), 1) * 100%);
+  max-width: 120px;
+  border: 0;
+  border-top: 1px solid var(--accent);
+  margin: 0;
+}
+
+.ch__dusk-p {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 44px);
+  font-weight: 320;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--over);
+}
+
+.ch__dusk-p strong {
+  font-weight: 320;
+  font-style: italic;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ch__dusk-s {
+  font-size: 14px;
+  color: var(--over-2);
+  /* Une seconde plus tard, littéralement : elle arrive après la première. */
+  opacity: clamp(0, calc((var(--dusk, 0) - 0.62) / 0.22), 1);
+}
+
+/* --- 04 · Les voix --------------------------------------------------------- */
+
+.ch__voix {
+  position: relative;
+  z-index: 3;
+  background: var(--ground);
+  color: var(--ink);
+  padding-block: var(--section);
+}
+
+.ch__voice {
+  min-height: 62svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  max-width: 44rem;
+  margin: 0;
+}
+
+.ch__voice + .ch__voice {
+  border-top: 1px solid var(--rule);
+}
+
+.ch__voice-t {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1.26;
+  letter-spacing: -0.015em;
+}
+
+.ch__voice-f {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ch__voice-f a {
+  border-bottom: 1px solid var(--rule);
+  transition: color var(--t-micro), border-color var(--t-micro);
+}
+
+.ch__voice-f a:hover {
+  color: var(--ink);
+  border-color: currentColor;
+}
+
+/* --- 05 · Le choix ---------------------------------------------------------- */
+
+.ch__choix {
+  position: relative;
+  z-index: 3;
+  background: var(--ground);
+  color: var(--ink);
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: var(--section);
+}
+
+.ch__doors {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+
+.ch__door {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  align-items: baseline;
+  gap: 24px;
+  padding-block: clamp(28px, 4vh, 44px);
+  border-bottom: 1px solid var(--rule);
+  transition: padding-left 600ms var(--ease);
+}
+
+.ch__door-k {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.ch__door-t {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 96px);
+  font-weight: 320;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.ch__door-t em {
+  font-style: italic;
+  font-weight: 280;
+  transition: color 400ms var(--ease);
+}
+
+.ch__door-t::after {
+  content: '→';
+  font-size: 0.5em;
+  font-style: normal;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease);
+}
+
+.ch__door:hover .ch__door-t em,
+.ch__door:focus-visible .ch__door-t em {
+  color: var(--accent);
+}
+
+.ch__door:hover .ch__door-t::after,
+.ch__door:focus-visible .ch__door-t::after {
+  opacity: 1;
+  transform: none;
+}
+
+.ch__door:hover {
+  padding-left: 12px;
+}
+
+/* --- Téléphone --------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .ch__title-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .ch__title {
+    padding-top: 104px;
+  }
+  .ch__title-fig img {
+    height: min(52svh, 520px);
+  }
+  .ch__door {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .ch__h1 {
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .ch__folio {
+    bottom: 16px;
+  }
+  .ch__hold--dusk {
+    height: 190svh;
+  }
+  .ch__cap {
+    bottom: clamp(72px, 12vh, 112px);
+    right: calc(var(--gutter) + 72px);
+  }
+  .ch__dusk-line {
+    top: auto;
+    bottom: clamp(96px, 16vh, 140px);
+    transform: none;
+  }
+  .ch__voice {
+    min-height: 0;
+    padding-block: 40px;
+  }
+}
+
+/* --- Animations réduites ---------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Le recouvrement reste (c'est une position, pas une animation), mais la
+     plaque recouverte ne recule plus : elle s'assombrit seulement. */
+  .ch__plate-in {
+    transform: none;
+  }
+  .ch__door,
+  .ch__door-t em,
+  .ch__door-t::after {
+    transition: none;
+  }
+  .ch__door:hover {
+    padding-left: 0;
+  }
+}

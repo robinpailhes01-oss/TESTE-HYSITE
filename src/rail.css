@@ -12,8 +12,9 @@
   position: relative;
   height: calc(var(--rail-h, 3) * 100svh);
 }
-.rail--ocean { background: var(--ocean); }
-.rail--deep { background: var(--ocean-ink); }
+/* Le rail vit sur le second sol de sa page : il se distingue sans changer de monde. */
+.rail--ocean { background: var(--ground-2); }
+.rail--deep { background: var(--ground-2); }
 
 .rail__stage {
   position: sticky;

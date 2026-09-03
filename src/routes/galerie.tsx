@@ -35,7 +35,7 @@ export default function GalerieRoute() {
         </div>
       </section>
 
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section" style={{ background: 'var(--ground)' }}>
         <div className="container">
           <p className="legal-intro" style={{ maxWidth: 720, marginBottom: 32 }}>
             L’Atlantis 42 « Harmonie », 12 mètres, amarré au port de Carnon — au mouillage dans
