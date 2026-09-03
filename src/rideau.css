@@ -274,8 +274,8 @@
 
 .rd__title {
   font-size: clamp(34px, 3.9vw, 62px);
-  letter-spacing: -0.02em;
-  line-height: 0.98;
+  letter-spacing: -0.018em;
+  line-height: 1.02;
   margin: 0 0 14px;
 }
 
@@ -510,6 +510,14 @@
     transform: translateY(calc(-1 * var(--seam) * 100%));
   }
 
+  /* Téléphone : pas de cadre, donc pas de clip à recalculer ; pas de
+     travelling avant (quatre images plein écran remises à l'échelle à chaque
+     image, c'est ce qui saccade sur iPhone) ; et la scène en svh, stable
+     quand la barre de Safari se replie. */
+  .rd__stage {
+    height: 100svh;
+  }
+
   .rd__frame,
   .rd__side--jour .rd__frame,
   .rd__side--nuit .rd__frame {
@@ -517,6 +525,12 @@
     --fb: 0px;
     --fl: 0px;
     --fr: 0px;
+    clip-path: none;
+  }
+
+  .rd__ph {
+    transform: none;
+    will-change: opacity;
   }
 
   /* Le jour montre le haut de son volet, la nuit le bas du sien : on
@@ -662,13 +676,17 @@
     transform: scaleX(var(--p));
   }
 
+  /* La poignée n'est plus une bande sur toute la largeur : un pouce qui se
+     posait dessus tirait le rideau au lieu de faire défiler la page. Elle se
+     limite au blason. */
   .rd__handle {
-    top: -22px;
+    top: -30px;
     bottom: auto;
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 44px;
+    left: 50%;
+    right: auto;
+    width: 88px;
+    height: 60px;
+    margin-left: -44px;
     cursor: row-resize;
     transform: translateY(calc(var(--seam) * var(--H)));
   }
@@ -679,6 +697,10 @@
     width: 48px;
     height: 48px;
     transform: translate(-50%, -50%);
+  }
+
+  .rd {
+    height: calc(var(--rd-span) * 100svh);
   }
 
   .rd__crest img {

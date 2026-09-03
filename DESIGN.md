@@ -51,8 +51,8 @@ la couleur.
 | Pilier « on vous reçoit » | Les prénoms, les partenaires nommés, le message de confirmation signé |
 | Pilier « exact » | Chiffres tabulaires, heures et prix écrits, l'heure du couchant réelle, dates libres réelles |
 | Peur « bateau conforme » | Photos réelles uniquement, le bateau en entier une fois par page |
-| Contre le secteur (navy, sans bold) | Blanc de coque et eau du port, Didone fine, laiton sous 10 % |
-| Le logo (capitales romaines) | Bodoni Moda en affichage ; petites capitales espacées pour les mots-marque |
+| Contre le secteur (navy, sans bold) | Blanc de coque et eau du port, géométrique fine, laiton sous 10 % |
+| Le logo (blason géométrique, capitales espacées) | Jost en affichage, fine et construite au compas ; capitales espacées pour les mots-marque |
 
 Ce que ça interdit : le bleu dans l'interface ; les ombres ; tout rayon
 d'angle (boutons compris) ; les cartes à icône ; le carrousel d'avis ; le
@@ -73,8 +73,9 @@ coexistent sur l'accueil dans deux colonnes qui portent chacune leur sol.
 | `--accent` (texte) | Laiton profond `#7A5A24` (5,6 : 1) | Laiton de nuit `#D6B67C` (9,9 : 1) |
 | `--accent-surface` | Laiton `#9C7435` | Laiton de nuit `#D6B67C` |
 
-- **Affichage : Bodoni Moda** (variable, opsz 6–96, graisse 400 seule,
-  italiques vraies). **Texte : Instrument Sans** 400/500/600.
+- **Affichage : Jost** (variable, graisse 300 en titres, 340 sur la nuit,
+  italiques vraies), retenue par le client contre la Didone. **Texte :
+  Instrument Sans** 400/500/600.
 - Échelle : `11,5 · 13,5 · 16 · 19 · 24 · 32 · 44 · 64 · 96 · 144`. Tracking
   −0,015 em à 44, −0,025 à 96, −0,03 à 144 ; +0,22 em sur les repères en
   capitales. Interlignage 0,92 à 144, 1,6 en texte. Chiffres tabulaires sur
@@ -101,14 +102,16 @@ Transitions). Tout le reste est calme.
 Une passe, pas un redimensionnement. La couture devient horizontale (le jour
 en haut, la nuit en bas), les deux titres restent lisibles sur le premier
 écran, la couture se tire au doigt. La course épinglée est raccourcie (4,6
-écrans contre 6), pas d'effet au pointeur, `100dvh` sur la scène, cibles
-tactiles ≥ 44 px. Le rail de la page sortie et la visite de la page nuit
+écrans contre 6), pas d'effet au pointeur, `100svh` sur la scène (stable
+quand la barre de Safari se replie), pas de travelling sur les photos, pas
+de Lenis au doigt, la poignée du rideau limitée au blason pour laisser le
+pouce faire défiler, cibles tactiles ≥ 44 px. Le rail de la page sortie et la visite de la page nuit
 gardent leurs versions portrait.
 
 ## Ce qui change par rapport à la refonte précédente (« Papier de palace »)
 
 Le crème et le brun laissent place au blanc de coque et à l'eau du port ;
-Fraunces laisse place à Bodoni Moda, dictée par le logo ; la pilule devient un
+Fraunces laisse place à Jost, géométrique fine choisie par le client ; la pilule devient un
 filet à angles vifs ; la pile de plaques qui se recouvrent devient la scène
 partagée ; la tombée du jour au défilement devient la fermeture au soleil,
 qui lit l'heure réelle au lieu de la simuler.

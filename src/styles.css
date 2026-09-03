@@ -6,7 +6,7 @@
 --------------------------------------------------------------------------- */
 
 :root {
-  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, Georgia, serif;
+  --font-display: 'Jost Variable', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
   --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   /* Ancien nom, conservé : partout où le site posait de l'italique serif, c'est
      désormais la face d'affichage qui parle. */
@@ -200,18 +200,17 @@ section {
   margin-inline: auto;
 }
 
-/* Les titres : Bodoni Moda à sa graisse la plus fine, l'axe optique qui suit
-   la taille (à 96 px les déliés sont un cheveu). L'italique porte le mot
-   d'émotion — jamais la phrase entière. */
+/* Les titres : Jost à sa graisse fine (300), géométrique et régulière. Un peu
+   de resserrement en grand corps, sinon la géométrique paraît lâche.
+   L'italique porte le mot d'émotion — jamais la phrase entière. */
 .mixed,
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-optical-sizing: auto;
-  letter-spacing: -0.015em;
-  line-height: 1.02;
+  font-weight: 300;
+  letter-spacing: -0.012em;
+  line-height: 1.06;
   text-wrap: balance;
 }
 
@@ -219,7 +218,7 @@ h3 {
 .it {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.005em;
 }
 
@@ -231,13 +230,14 @@ h3 {
   text-transform: uppercase;
 }
 
-/* Sur la nuit, un peu plus d'air : le cheveu de la Didone se perd sinon. */
+/* Sur la nuit, un cran de graisse : le trait fin se perd sur le noir. */
 html[data-ground='night'] .mixed,
 html[data-ground='night'] h1,
 html[data-ground='night'] h2,
 html[data-ground='night'] h3,
 .ground-night .mixed {
-  letter-spacing: -0.01em;
+  font-weight: 340;
+  letter-spacing: -0.008em;
 }
 
 /* Toute heure et tout prix s'alignent. */
@@ -468,16 +468,11 @@ p {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
-  /* Le mot est posé tantôt sur Voile, tantôt sur l'eau du port, et la
-     couture passe dessous : en différence, il est toujours l'inverse. Le
-     mélange est porté par l'en-tête lui-même : posé sur le bouton, il ne
-     verrait que le fond transparent de l'en-tête. */
-  color: #fff;
-  mix-blend-mode: difference;
-}
-
-.nav--seam.nav--open {
-  mix-blend-mode: normal;
+  /* Os : le mot est posé sur l'eau du port (bureau), sur la photo voilée
+     (téléphone) ou sur la bande haute du voile à la fermeture. Pas de mode de
+     fusion : sur iOS, un élément fixe en `difference` fait recomposer toute
+     la page à chaque image. */
+  color: var(--over);
 }
 
 .nav--seam .nav__inner {
@@ -2900,5 +2895,10 @@ html:active-view-transition .page-in {
   .btn,
   .wa-fab {
     transform: none !important;
+  }
+
+  /* Sans mouvement, l'accueil commence sur Voile : le menu passe à l'encre. */
+  .nav--seam:not(.nav--open) {
+    color: var(--ink);
   }
 }

@@ -5,11 +5,11 @@ import Lenis from 'lenis'
 import '@fontsource/instrument-sans/400.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/600.css'
-/* Bodoni Moda, variable, avec son axe optique : dense à 16 px, un cheveu à
-   144 px. Dictée par le logo (capitales romaines à empattements fins) ; voir
-   branding/brand.md. Les deux fichiers (droit, italique) couvrent tout. */
-import '@fontsource-variable/bodoni-moda/opsz.css'
-import '@fontsource-variable/bodoni-moda/opsz-italic.css'
+/* Jost, variable : une géométrique fine, façon Futura, le registre des
+   chantiers navals. Retenue par le client contre la Didone, jugée trop
+   « mode » ; voir branding/brand.md. Droit et italique. */
+import '@fontsource-variable/jost/wght.css'
+import '@fontsource-variable/jost/wght-italic.css'
 import './styles.css'
 import './calme.css'
 import './craft.css'
@@ -91,6 +91,9 @@ export function Layout({ children }: { children: ReactNode }) {
 function useSmoothScroll() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    /* Au doigt, le défilement natif est déjà inertiel : Lenis n'y ajoute
+       qu'une boucle par image, et la scène de l'accueil en a déjà une. */
+    if (window.matchMedia('(pointer: coarse)').matches) return
 
     document.documentElement.style.scrollBehavior = 'auto'
     const lenis = new Lenis({

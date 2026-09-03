@@ -82,7 +82,8 @@ modèle.
 
 Trois territoires ont été posés (voir le brand book : « La maison du port »,
 « La carte d'invitation », « Le ciel à l'heure »). Le second est retenu, et
-le troisième lui a donné sa décision signature.
+le troisième lui a donné sa décision signature. La Didone proposée d'abord
+a été écartée par le client au profit de Jost, géométrique fine.
 
 - **La tension.** La rareté d'un seul bateau ↔ l'exactitude d'un service qui
   dit ses heures, ses dates et ses prix.
@@ -143,15 +144,19 @@ Les encres secondaires sont des opacités de l'encre courante, jamais un gris :
 ## 4. Typographie
 
 Deux familles, toutes deux sous licence OFL (gratuites, auto-hébergées via
-`@fontsource-variable/bodoni-moda` et `@fontsource/instrument-sans`).
+`@fontsource-variable/jost` et `@fontsource/instrument-sans`).
 
-**Bodoni Moda** (variable : graisse 400–900, axe optique 6–96, italiques vraies).
-Face d'affichage. Elle sert l'effet *rare* parce que son contraste de trait est
-le plus fort du répertoire libre (pleins épais, déliés en cheveu), et l'effet
-*exact* parce que ses capitales prolongent celles du logo : empattements fins,
-O rond, proportions classiques. Réglages : graisse 400 seule (à 96 px, elle
-est déjà un trait) ; italique pour un mot d'émotion, jamais une phrase ;
-capitales espacées (0,18 em) pour les mots-marque.
+**Jost** (variable : graisse 100–900, italiques vraies). Face d'affichage,
+retenue par le client contre la Didone proposée d'abord (jugée trop « mode »).
+Une géométrique fine, façon Futura : le registre des chantiers navals
+italiens et des cartons d'invitation modernes. Elle sert l'effet *exact*
+parce que ses formes sont construites au compas (O rond, traits d'égale
+épaisseur), et l'effet *rare* parce qu'à la graisse 300 elle reste un trait
+fin sans être fragile sur téléphone. Ses capitales espacées prolongent le
+rythme du logo. Réglages : graisse 300 en titres (340 sur la nuit), −0,012 em
+en corps courant, −0,02 em au-delà de 96 px ; italique pour un mot d'émotion,
+jamais une phrase ; capitales espacées (0,18 em, graisse 400) pour les
+mots-marque.
 
 **Instrument Sans** (400, 500, 600). Face de texte. Elle disparaît : hauteur
 d'x moyenne, formes larges et calmes, chiffres tabulaires. Petites capitales
@@ -162,19 +167,19 @@ toute heure et tout prix.
 
 | Niveau | Taille | Famille | Graisse | Interlignage | Interlettrage |
 |---|---|---|---|---|---|
-| Affiche (héro) | 144 | Bodoni Moda, opsz 96 | 400 | 0,92 | −0,03 em |
-| Titre 1 | 96 | Bodoni Moda | 400 | 0,96 | −0,025 em |
-| Titre 2 | 64 | Bodoni Moda | 400 | 1,00 | −0,02 em |
-| Titre 3 | 44 | Bodoni Moda | 400 | 1,05 | −0,015 em |
-| Titre 4 | 32 | Bodoni Moda | 400 | 1,1 | −0,01 em |
-| Intertitre | 24 | Bodoni Moda | 400 | 1,2 | 0 |
+| Affiche (héro) | 144 | Jost | 300 | 0,96 | −0,02 em |
+| Titre 1 | 96 | Jost | 300 | 1,00 | −0,02 em |
+| Titre 2 | 64 | Jost | 300 | 1,04 | −0,018 em |
+| Titre 3 | 44 | Jost | 300 | 1,08 | −0,015 em |
+| Titre 4 | 32 | Jost | 300 | 1,12 | −0,012 em |
+| Intertitre | 24 | Jost | 300 | 1,2 | −0,01 em |
 | Texte | 16 | Instrument Sans | 400 | 1,6 | 0 |
 | Texte grand | 19 | Instrument Sans | 400 | 1,55 | −0,005 em |
 | Légende | 13,5 | Instrument Sans | 400 | 1,5 | 0 |
 | Repère | 11,5 | Instrument Sans, capitales | 500 | 1 | 0,22 em |
 
-Sur la nuit : +0,004 em d'interlettrage et +0,04 d'interlignage sur le texte,
-graisse 500 sur les repères. Mesure de texte : 60 ch. Sous 700 px, le héro
+Sur la nuit : graisse 340 sur les titres, +0,004 em d'interlettrage et +0,04
+d'interlignage sur le texte, graisse 500 sur les repères. Mesure de texte : 60 ch. Sous 700 px, le héro
 descend d'un cran (96).
 
 ## 5. Logo (règles)
@@ -260,7 +265,7 @@ compte.
 
 ```css
 :root {
-  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', 'Didot', Georgia, serif;
+  --font-display: 'Jost Variable', 'Futura', 'Avenir Next', 'Helvetica Neue', sans-serif;
   --font-text: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
 
   --color-signature: #9c7435;        /* Laiton : surfaces, filets */
