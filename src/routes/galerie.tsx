@@ -1,3 +1,4 @@
+import { pic, SIZES } from '../pic'
 import { Link } from 'react-router'
 import JsonLd from '../components/JsonLd'
 import { pageMeta, breadcrumbSchema } from '../seo'
@@ -44,7 +45,7 @@ export default function GalerieRoute() {
           <div className="gal">
             {SHOTS.map((s) => (
               <span className={`gal__item ${s.cls}`} key={s.src}>
-                <img src={s.src} alt={s.alt} loading="lazy" />
+                <img {...pic(s.src, SIZES.third)} alt={s.alt} loading="lazy" />
               </span>
             ))}
           </div>

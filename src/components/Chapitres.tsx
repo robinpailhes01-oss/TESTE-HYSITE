@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { GOOGLE_REVIEWS_URL, REVIEWS } from '../reviews'
 import { formatCarnonTime, sunsetAt } from '../sun'
 import { groundFor } from '../ground'
+import { pic, srcSet, SIZES } from '../pic'
 import '../chapitres.css'
 
 /* ---------------------------------------------------------------------------
@@ -164,7 +165,7 @@ export default function Chapitres() {
           </div>
           <figure className="ch__title-fig">
             <img
-              src="/images/hero-bateau.jpg"
+              {...pic('/images/hero-bateau.jpg', SIZES.column)}
               alt="Le yacht Harmonie au large de Carnon, au soleil couchant"
               fetchPriority="high"
             />
@@ -179,9 +180,9 @@ export default function Chapitres() {
           <section className="ch__plate on-photo" ref={reg(1)} data-plate aria-label="Le jour">
             <div className="ch__plate-in">
               <picture>
-                <source media="(max-width: 700px)" srcSet="/images/sortie-paddle.jpg" />
+                <source media="(max-width: 700px)" srcSet={srcSet('/images/sortie-paddle.jpg')} sizes="100vw" />
                 <img
-                  src="/images/sortie-bateau.jpg"
+                  {...pic('/images/sortie-bateau.jpg')}
                   alt="Le yacht au mouillage sur une eau turquoise"
                   loading="lazy"
                 />
@@ -215,9 +216,9 @@ export default function Chapitres() {
           >
             <div className="ch__plate-in">
               <picture>
-                <source media="(max-width: 700px)" srcSet="/images/sortie-coucher-soleil-poupe.jpg" />
+                <source media="(max-width: 700px)" srcSet={srcSet('/images/sortie-coucher-soleil-poupe.jpg')} sizes="100vw" />
                 <img
-                  src="/images/soir-1-couchant.webp"
+                  {...pic('/images/soir-1-couchant.webp')}
                   alt="Le soleil se couche sur la mer, vu du pont arrière"
                   loading="lazy"
                 />
@@ -245,9 +246,9 @@ export default function Chapitres() {
           <section className="ch__plate on-photo" ref={reg(3)} data-plate aria-label="La nuit">
             <div className="ch__plate-in">
               <picture>
-                <source media="(max-width: 700px)" srcSet="/images/descente-6-cabine-p.webp" />
+                <source media="(max-width: 700px)" srcSet={srcSet('/images/descente-6-cabine-p.webp')} sizes="100vw" />
                 <img
-                  src="/images/descente-6-cabine.webp"
+                  {...pic('/images/descente-6-cabine.webp')}
                   alt="La cabine du yacht, le lit fait, en lumière de fin de journée"
                   loading="lazy"
                 />

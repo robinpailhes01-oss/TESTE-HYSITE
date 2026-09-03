@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/build-seo-files.mjs && react-router dev",
-    "build": "node scripts/build-seo-files.mjs && react-router build",
+    "build": "node scripts/images.mjs && node scripts/build-seo-files.mjs && react-router build",
     "lint": "oxlint",
     "typecheck": "react-router typegen && tsc -b",
-    "preview": "vite preview --outDir build/client"
+    "preview": "vite preview --outDir build/client",
+    "images": "node scripts/images.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",

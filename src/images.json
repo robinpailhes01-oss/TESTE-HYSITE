@@ -1,0 +1,244 @@
+{
+"/images/descente-1-haut-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-1-haut.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/descente-2-carre-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-2-carre.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/descente-3-cuisine-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-3-cuisine.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/descente-4-couloir-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-4-couloir.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/descente-5-seuil-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-5-seuil.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/descente-6-cabine-p.webp": {
+"w": 1500,
+"v": [
+480,
+800,
+1200
+]
+},
+"/images/descente-6-cabine.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/hero-bateau.jpg": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/hero-coucher-soleil-proue.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/nuit-petit-dejeuner-plateau.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/nuit-petit-dejeuner-pont.jpg": {
+"w": 585,
+"v": [
+480
+]
+},
+"/images/nuit-salon-amour.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/nuit-table-ambiance.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/nuit-yacht-de-nuit.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/soir-1-couchant.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/soir-2-amour.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/soir-3-bougies.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/soir-4-dejeuner.webp": {
+"w": 2200,
+"v": [
+480,
+800,
+1200,
+1600
+]
+},
+"/images/sortie-amis-coucher-soleil.jpg": {
+"w": 960,
+"v": [
+480,
+800
+]
+},
+"/images/sortie-bateau.jpg": {
+"w": 1170,
+"v": [
+480,
+800
+]
+},
+"/images/sortie-coucher-soleil-poupe.jpg": {
+"w": 900,
+"v": [
+480,
+800
+]
+},
+"/images/sortie-efoil-coucher-soleil.jpg": {
+"w": 1200,
+"v": [
+480,
+800
+]
+},
+"/images/sortie-efoil-jour.jpg": {
+"w": 738,
+"v": [
+480
+]
+},
+"/images/sortie-paddle.jpg": {
+"w": 1200,
+"v": [
+480,
+800
+]
+},
+"/images/sortie-plateau-fruits-de-mer.jpg": {
+"w": 1069,
+"v": [
+480,
+800
+]
+},
+"/images/yacht-salon-interieur.jpg": {
+"w": 720,
+"v": [
+480
+]
+}
+}

@@ -160,15 +160,28 @@ html[data-ground='day'] .ch__folio {
 }
 
 /* La plaque recule et s'assombrit à mesure qu'on la recouvre : la page qu'on
-   tourne s'éloigne, elle ne disparaît pas d'un coup. */
+   tourne s'éloigne, elle ne disparaît pas d'un coup.
+
+   L'assombrissement est un voile en opacité, pas un filter: brightness() —
+   un filtre recalcule toute l'image à chaque frame, ce qui saccade sur
+   téléphone ; un voile se compose sur le GPU sans toucher aux pixels. */
 .ch__plate-in {
   position: absolute;
   inset: 0;
   transform: scale(calc(1 - var(--cover, 0) * 0.06));
   transform-origin: center 40%;
-  filter: brightness(calc(1 - var(--cover, 0) * 0.5));
-  will-change: transform, filter;
+  will-change: transform;
   transition: none;
+}
+
+.ch__plate-in::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: #0b0907;
+  opacity: calc(var(--cover, 0) * 0.55);
 }
 
 .ch__plate-in img {

@@ -512,7 +512,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       </div>
 
       <div className="form__footer">
-        <button type="submit" className="btn btn--light" disabled={loading}>
+        <button type="submit" className="btn" disabled={loading}>
           {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
         </button>
         <span className="form__hint">Paiement sécurisé · Stripe</span>

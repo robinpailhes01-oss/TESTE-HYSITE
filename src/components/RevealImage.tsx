@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { ease } from '../motion'
+import { pic, SIZES } from '../pic'
 
 type Props = {
   src: string
@@ -41,7 +42,7 @@ export default function RevealImage({ src, alt, className }: Props) {
   if (reduced) {
     return (
       <div className={className}>
-        <img src={src} alt={alt} loading="lazy" />
+        <img {...pic(src, SIZES.third)} alt={alt} loading="lazy" />
       </div>
     )
   }
@@ -55,7 +56,7 @@ export default function RevealImage({ src, alt, className }: Props) {
         style={{ width: '100%', height: '100%' }}
       >
         <motion.img
-          src={src}
+          {...pic(src, SIZES.third)}
           alt={alt}
           loading="lazy"
           initial={false}

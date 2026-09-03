@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useActProgress } from '../useActProgress'
 import { useDragRail } from '../useDragRail'
+import { pic, SIZES } from '../pic'
 import '../rail.css'
 
 /* ---------------------------------------------------------------------------
@@ -84,7 +85,7 @@ export default function PhotoRail({
 
           {items.map((it) => (
             <figure key={it.src + it.label}>
-              <img src={it.src} alt={it.alt} loading="lazy" draggable={false} />
+              <img {...pic(it.src, SIZES.rail)} alt={it.alt} loading="lazy" draggable={false} />
               <figcaption>
                 <strong>{it.label}</strong>
                 <span>{it.note}</span>

@@ -112,10 +112,10 @@ export default function Confirmation() {
             ) : null}
 
             <div className="confirm__actions">
-              <Link to="/" className="btn btn--ghost-light">
+              <Link to="/" className="btn btn--ghost">
                 Retour à l’accueil
               </Link>
-              <a href="mailto:harmonieyacht@gmail.com" className="btn btn--light">
+              <a href="mailto:harmonieyacht@gmail.com" className="btn">
                 Nous écrire
               </a>
             </div>
@@ -133,10 +133,10 @@ export default function Confirmation() {
               s’agit d’une erreur, écrivez-nous directement.
             </p>
             <div className="confirm__actions">
-              <Link to="/" className="btn btn--ghost-light">
+              <Link to="/" className="btn btn--ghost">
                 Retour à l’accueil
               </Link>
-              <a href="mailto:harmonieyacht@gmail.com" className="btn btn--light">
+              <a href="mailto:harmonieyacht@gmail.com" className="btn">
                 Nous écrire
               </a>
             </div>
@@ -154,7 +154,7 @@ export default function Confirmation() {
               c’est par ici.
             </p>
             <div className="confirm__actions">
-              <Link to="/" className="btn btn--light">
+              <Link to="/" className="btn">
                 Retour à l’accueil
               </Link>
             </div>

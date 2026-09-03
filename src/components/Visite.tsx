@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useActProgress } from '../useActProgress'
+import { srcSet } from '../pic'
 import '../visite.css'
 
 /* ---------------------------------------------------------------------------
@@ -273,10 +274,13 @@ export default function Visite() {
       <div className="vis__stage" data-sc-stage ref={stageRef}>
         {PLATES.map((pl, i) => (
           <picture className="vis__pic" key={pl.src}>
-            <source media="(max-width: 700px)" srcSet={pl.srcP} />
+            <source media="(max-width: 700px)" srcSet={srcSet(pl.srcP) ?? pl.srcP} sizes="100vw" />
             <img
               className="vis__plate"
               src={pl.src}
+              srcSet={srcSet(pl.src)}
+              sizes="100vw"
+              decoding="async"
               alt={pl.alt}
               draggable={false}
               loading={i === 0 ? 'eager' : 'lazy'}

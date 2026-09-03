@@ -131,7 +131,7 @@ export default function LeadMagnet() {
                 <p className="lead-magnet__hint">
                   Il est déjà pré-rempli dans le formulaire de réservation, en bas de page.
                 </p>
-                <button type="button" className="btn btn--light" onClick={dismiss}>
+                <button type="button" className="btn" onClick={dismiss}>
                   Continuer
                 </button>
               </div>
@@ -156,7 +156,7 @@ export default function LeadMagnet() {
                 {status === 'error' ? (
                   <p className="form__error">Une erreur est survenue, réessayez.</p>
                 ) : null}
-                <button type="submit" className="btn btn--light" disabled={status === 'sending'}>
+                <button type="submit" className="btn" disabled={status === 'sending'}>
                   {status === 'sending' ? 'Envoi…' : 'Recevoir mon code'}
                 </button>
               </form>

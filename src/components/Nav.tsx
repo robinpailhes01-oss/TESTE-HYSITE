@@ -88,18 +88,18 @@ export default function Nav() {
 
         {onHome ? (
           <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            <img className="monogram__day" src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
-            <img className="monogram__night" src="/images/logo-bone.png" alt="" aria-hidden="true" />
+            <img className="monogram__day" src="/images/logo-s.png" alt="Harmonie Yacht" />
+            <img className="monogram__night" src="/images/logo-bone-s.png" alt="" aria-hidden="true" />
           </a>
         ) : (
           <Link to="/" className="monogram" aria-label="Harmonie Yacht — retour à l’accueil">
-            <img className="monogram__day" src="/images/logo-harmonie-yacht.png" alt="Harmonie Yacht" />
-            <img className="monogram__night" src="/images/logo-bone.png" alt="" aria-hidden="true" />
+            <img className="monogram__day" src="/images/logo-s.png" alt="Harmonie Yacht" />
+            <img className="monogram__night" src="/images/logo-bone-s.png" alt="" aria-hidden="true" />
           </Link>
         )}
 
         <div className="nav__actions">
-          <a href={reserveHref} className="btn btn--light">
+          <a href={reserveHref} className="btn">
             Réserver
           </a>
         </div>

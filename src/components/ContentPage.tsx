@@ -1,3 +1,4 @@
+import { pic } from '../pic'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 
@@ -20,7 +21,7 @@ export default function ContentPage({ kicker, h1, tagline, heroImg, heroAlt, cta
     <main className="page">
       <section className="page-hero">
         <div className="page-hero__media">
-          <img src={heroImg} alt={heroAlt} />
+          <img {...pic(heroImg)} alt={heroAlt} fetchPriority="high" />
         </div>
         <div className="container page-hero__content">
           <Link to="/" className="page-hero__back">

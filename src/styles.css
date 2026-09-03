@@ -240,6 +240,10 @@ p {
   background: var(--ink);
   color: var(--ground);
   border: 1px solid var(--ink);
+  /* L'aimant (--mx/--my, posés par src/magnet.ts) et l'appui (--press)
+     composent sur un seul transform : l'un ne peut pas écraser l'autre. */
+  --press: 1;
+  transform: translate(var(--mx, 0px), var(--my, 0px)) scale(var(--press));
   transition:
     background var(--t-std) var(--ease),
     color var(--t-std) var(--ease),
@@ -254,7 +258,7 @@ p {
 }
 
 .btn:active {
-  transform: scale(0.98);
+  --press: 0.97;
   transition-duration: 90ms;
 }
 
@@ -268,6 +272,24 @@ p {
 .btn--light:hover {
   background: var(--accent);
   border-color: var(--accent);
+}
+
+/* Sur photo, le fantôme est os. */
+.btn--ghost-light {
+  background: transparent;
+  color: var(--over);
+  border-color: var(--over-3);
+}
+
+.btn--ghost-light:hover {
+  border-color: var(--over);
+}
+
+/* Dans la nav posée sur une photo, la pilule est os sur sombre. */
+.nav--over .btn {
+  background: var(--over);
+  color: #0b0907;
+  border-color: var(--over);
 }
 
 /* Le bouton fantôme : un trait, pour la seconde action. */
@@ -1450,63 +1472,115 @@ html[data-ground='night'] .field select {
   color: var(--white-muted);
 }
 
-/* --- Bouton WhatsApp ---------------------------------------------------- */
+/* --- Le dock : WhatsApp, et « Réserver » au téléphone --------------------
+   Pas de pastille verte, pas d'ombre portée : une pilule inverse du sol, qui
+   se retourne avec lui. Elle paraît une fois le premier écran passé.          */
 
-.wa-fab {
+.dock {
   position: fixed;
   right: 16px;
   bottom: 16px;
   z-index: 55;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--white);
-  color: var(--ink);
-  border: 1px solid var(--ink-faint);
-  border-radius: 100px;
-  padding: 8px 16px 8px 8px;
-  box-shadow: 0 14px 44px rgba(11, 9, 7, 0.22);
+  gap: 8px;
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
-  transition: opacity var(--t-std) var(--ease), transform var(--t-std) var(--ease), box-shadow var(--t-micro);
+  transition: opacity var(--t-std) var(--ease), transform var(--t-std) var(--ease);
 }
 
-.wa-fab.is-visible {
+.dock.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
   pointer-events: auto;
 }
 
-.wa-fab:hover {
-  box-shadow: 0 18px 54px rgba(11, 9, 7, 0.3);
-  transform: translateY(-1px);
+.dock__book {
+  display: none;
 }
 
-.wa-fab__icon {
+.wa-fab {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #25d366;
-  color: var(--white);
-  flex-shrink: 0;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  border-radius: var(--r-btn);
+  background: var(--ink);
+  color: var(--ground);
+  border: 1px solid var(--ink);
+  --press: 1;
+  transform: translate(var(--mx, 0px), var(--my, 0px)) scale(var(--press));
+  transition:
+    background var(--t-slow) var(--tide),
+    color var(--t-slow) var(--tide),
+    border-color var(--t-slow) var(--tide),
+    transform var(--t-micro) ease-out;
+}
+
+.wa-fab:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0b0907;
+}
+
+.wa-fab:active {
+  --press: 0.97;
 }
 
 .wa-fab__label {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
-  font-size: 13px;
+  line-height: 1.15;
+  font-size: 12.5px;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .wa-fab__sub {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 400;
-  color: var(--ink-muted);
+  opacity: 0.72;
+}
+
+/* Au téléphone, le WhatsApp se réduit à son glyphe ; sur une page où l'on
+   réserve, il rejoint une barre basse avec « Réserver », les deux gestes à
+   portée de pouce. */
+@media (max-width: 700px) {
+  .wa-fab {
+    padding: 13px;
+  }
+  .wa-fab__label {
+    display: none;
+  }
+  .dock--reservable {
+    left: 16px;
+    right: 16px;
+    justify-content: space-between;
+  }
+  .dock--reservable .dock__book {
+    display: inline-flex;
+    flex: 1;
+    padding-block: 14px;
+  }
+}
+
+/* --- Le fondu entre pages ----------------------------------------------------
+   Passer d'une page de jour à une page de nuit se faisait par une coupe
+   sèche. Le contenu de la nouvelle page arrive par un fondu court ; le sol,
+   lui, change tout de suite — c'est le contenu qui se pose dessus.          */
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-in {
+  animation: page-in 520ms var(--ease) both;
 }
 
 /* --- Galerie + lightbox ----------------------------------------------------- */
@@ -2552,16 +2626,6 @@ html[data-ground='night'] .field select {
     bottom: auto;
   }
 
-  .wa-fab {
-    right: 12px;
-    bottom: 100px;
-    padding: 8px;
-  }
-
-  .wa-fab__label {
-    display: none;
-  }
-
   .toast {
     max-width: none;
   }
@@ -2658,4 +2722,5 @@ html[data-ground='night'] .field select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .btn,
 }

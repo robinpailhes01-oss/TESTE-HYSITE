@@ -17,6 +17,8 @@ import { setLenis } from './lenisRef'
 /* Le sol de chaque page, posé sur <html> au rendu — donc pré-rendu dans le HTML
    statique : la page nuit arrive noire, sans flash de papier. */
 import { groundFor } from './ground'
+import { useMagnet } from './magnet'
+import { srcSet } from './pic'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
@@ -46,7 +48,17 @@ export function meta() {
 }
 
 export function links() {
-  return [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+  return [
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    /* La photo de titre de l'accueil est le plus grand élément peint : on la
+       demande avant même que le CSS l'ait découverte. */
+    {
+      rel: 'preload',
+      as: 'image',
+      imageSrcSet: srcSet('/images/hero-bateau.jpg'),
+      imageSizes: '(max-width: 860px) 100vw, 42vw',
+    },
+  ]
 }
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -119,6 +131,8 @@ function useSmoothScroll() {
 export default function Root() {
   useSmoothScroll()
   useBreath()
+  useMagnet()
+  const { pathname } = useLocation()
 
   /* Signal de disponibilité lu par le harnais de captures (scrollcraft) : il
      attend cette classe avant de commencer à échantillonner, pour ne pas
@@ -130,7 +144,10 @@ export default function Root() {
   return (
     <>
       <Nav />
-      <Outlet />
+      {/* Clé sur le chemin : chaque page arrive par le même fondu court. */}
+      <div className="page-in" key={pathname}>
+        <Outlet />
+      </div>
       <Footer />
       <ReviewToast />
       <WhatsAppButton />

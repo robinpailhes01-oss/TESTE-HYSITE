@@ -10,6 +10,7 @@ import Visite from '../components/Visite'
 import EnDirect from '../components/EnDirect'
 import BookingForm from '../components/BookingForm'
 import { WHATSAPP_URL } from '../whatsapp'
+import { srcSet } from '../pic'
 
 type Props = { slug: string }
 
@@ -77,6 +78,9 @@ export default function ExperiencePage({ slug }: Props) {
         <div className="page-hero__media">
           <motion.img
             src={exp.hero}
+            srcSet={srcSet(exp.hero)}
+            sizes="100vw"
+            fetchPriority="high"
             alt={exp.heroAlt}
             initial={reduced ? undefined : { scale: 1.06, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
