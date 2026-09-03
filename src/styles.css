@@ -1,11 +1,12 @@
 /* ---------------------------------------------------------------------------
-   Harmonie Yacht — « Papier de palace, écran de cinéma »
-   Le système : deux sols (le jour, la nuit), une seule typographie, une seule
-   dorure. Tokens et raisons : DESIGN.md à la racine.
+   Harmonie Yacht — « La carte d'invitation »
+   Le système : deux sols (le blanc de coque, l'eau du port), une Didone
+   dictée par le logo, un seul laiton. Identité : branding/brand.md ;
+   tokens et raisons : DESIGN.md à la racine.
 --------------------------------------------------------------------------- */
 
 :root {
-  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, Georgia, serif;
   --font-sans: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   /* Ancien nom, conservé : partout où le site posait de l'italique serif, c'est
      désormais la face d'affichage qui parle. */
@@ -13,9 +14,17 @@
 
   /* Le texte posé SUR une photo ne suit pas le sol : il est toujours os, sur un
      voile sombre. */
-  --over: #f1e9dc;
-  --over-2: rgba(241, 233, 220, 0.74);
-  --over-3: rgba(241, 233, 220, 0.42);
+  --over: #efebe2;
+  --over-2: rgba(239, 235, 226, 0.74);
+  --over-3: rgba(239, 235, 226, 0.42);
+
+  /* Le laiton du logo, en trois valeurs : surfaces, texte sur Voile
+     (5,6 : 1), et sur la nuit (9,9 : 1). */
+  --brass: #9c7435;
+  --brass-deep: #7a5a24;
+  --brass-night: #d6b67c;
+  --ok: #2f6b50;
+  --error: #a3372e;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --tide: cubic-bezier(0.65, 0, 0.35, 1);
@@ -23,8 +32,8 @@
   --t-std: 240ms;
   --t-slow: 700ms;
 
-  /* Une seule règle de rayon : zéro, sauf la pilule. */
-  --r-btn: 999px;
+  /* Une seule règle de rayon : zéro. Partout, boutons compris. */
+  --r-btn: 0px;
   --r-card: 0px;
 
   --gutter: clamp(20px, 5vw, 80px);
@@ -38,28 +47,40 @@
    défilement. Tout ce qui est en dessous en découle.                           */
 
 html,
-html[data-ground='day'] {
-  --ground: #f4efe6;
-  --ground-2: #eae3d5;
-  --ink: #17130f;
-  --ink-2: rgba(23, 19, 15, 0.7);
-  --ink-3: rgba(23, 19, 15, 0.38);
-  --rule: rgba(23, 19, 15, 0.14);
-  --accent: #9c7435;
-  --veil: rgba(11, 9, 7, 0.5);
+html[data-ground='day'],
+.ground-day {
+  --ground: #f3f1eb; /* Voile : le blanc de la coque, légèrement froid */
+  --ground-2: #e8e5dd; /* Écume */
+  --ink: #12151a; /* Encre de bord */
+  --ink-2: rgba(18, 21, 26, 0.7);
+  --ink-3: rgba(18, 21, 26, 0.4);
+  --rule: rgba(18, 21, 26, 0.14);
+  --accent: var(--brass-deep);
+  --accent-surface: var(--brass);
+  --veil: rgba(10, 14, 18, 0.5);
   color-scheme: light;
 }
 
-html[data-ground='night'] {
-  --ground: #0b0907;
-  --ground-2: #15100c;
-  --ink: #f1e9dc;
-  --ink-2: rgba(241, 233, 220, 0.72);
-  --ink-3: rgba(241, 233, 220, 0.4);
-  --rule: rgba(241, 233, 220, 0.14);
-  --accent: #d4b27a;
-  --veil: rgba(11, 9, 7, 0.62);
+html[data-ground='night'],
+.ground-night {
+  --ground: #0a0e12; /* Eau du port : bleu-noir, jamais brun, jamais #000 */
+  --ground-2: #141a20; /* Fond de cale */
+  --ink: #efebe2; /* Os */
+  --ink-2: rgba(239, 235, 226, 0.72);
+  --ink-3: rgba(239, 235, 226, 0.42);
+  --rule: rgba(239, 235, 226, 0.14);
+  --accent: var(--brass-night);
+  --accent-surface: var(--brass-night);
+  --veil: rgba(10, 14, 18, 0.62);
   color-scheme: dark;
+}
+
+/* Un sol posé sur un sous-arbre (les deux colonnes de l'accueil) doit aussi
+   ré-encrer le texte : `color` s'hérite en valeur calculée. */
+.ground-day,
+.ground-night {
+  color: var(--ink);
+  background: var(--ground);
 }
 
 /* --- Les anciens noms, réorientés ------------------------------------------
@@ -95,7 +116,9 @@ html[data-ground='night'] {
   --ink: var(--over);
   --ink-2: var(--over-2);
   --ink-3: var(--over-3);
-  --rule: rgba(241, 233, 220, 0.18);
+  --rule: rgba(239, 235, 226, 0.18);
+  --accent: var(--brass-night);
+  --accent-surface: var(--brass-night);
   color: var(--over);
 }
 
@@ -156,7 +179,7 @@ button {
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--accent-surface);
   color: var(--ground);
 }
 
@@ -177,17 +200,18 @@ section {
   margin-inline: auto;
 }
 
-/* Les titres : Fraunces, léger, l'axe optique qui suit la taille. L'italique
-   porte le mot d'émotion — jamais la phrase entière. */
+/* Les titres : Bodoni Moda à sa graisse la plus fine, l'axe optique qui suit
+   la taille (à 96 px les déliés sont un cheveu). L'italique porte le mot
+   d'émotion — jamais la phrase entière. */
 .mixed,
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 340;
+  font-weight: 400;
   font-optical-sizing: auto;
-  letter-spacing: -0.02em;
-  line-height: 1.04;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -195,15 +219,31 @@ h3 {
 .it {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 300;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: -0.005em;
 }
 
+/* Les mots-marque : capitales espacées, comme sur le logo. */
+.caps {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Sur la nuit, un peu plus d'air : le cheveu de la Didone se perd sinon. */
 html[data-ground='night'] .mixed,
 html[data-ground='night'] h1,
 html[data-ground='night'] h2,
-html[data-ground='night'] h3 {
-  font-weight: 370;
+html[data-ground='night'] h3,
+.ground-night .mixed {
+  letter-spacing: -0.01em;
+}
+
+/* Toute heure et tout prix s'alignent. */
+time,
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
 p {
@@ -224,18 +264,21 @@ p {
   color: var(--ink-2);
 }
 
-/* Le bouton : une pilule, toujours l'inverse du sol. Noir sur papier, os sur
-   nuit. C'est le seul élément arrondi du site. */
+/* Le bouton : un rectangle à angles vifs, capitales espacées, toujours
+   l'inverse du sol. Encre sur Voile, os sur l'eau du port. Une invitation, pas
+   une pilule. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  padding: 15px 30px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 17px 28px;
+  min-height: 48px;
   border-radius: var(--r-btn);
   background: var(--ink);
   color: var(--ground);
@@ -252,9 +295,9 @@ p {
 }
 
 .btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #0b0907;
+  background: var(--accent-surface);
+  border-color: var(--accent-surface);
+  color: #0a0e12;
 }
 
 .btn:active {
@@ -265,13 +308,13 @@ p {
 /* Même pilule, et « light » garde son sens sur une photo : os sur sombre. */
 .btn--light {
   background: var(--over);
-  color: #0b0907;
+  color: #0a0e12;
   border-color: var(--over);
 }
 
 .btn--light:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--brass-night);
+  border-color: var(--brass-night);
 }
 
 /* Sur photo, le fantôme est os. */
@@ -288,7 +331,7 @@ p {
 /* Dans la nav posée sur une photo, la pilule est os sur sombre. */
 .nav--over .btn {
   background: var(--over);
-  color: #0b0907;
+  color: #0a0e12;
   border-color: var(--over);
 }
 
@@ -416,6 +459,101 @@ p {
   }
 }
 
+/* --- La nav de l'accueil : pas de barre ------------------------------------
+   La scène partagée interdit la barre : la couture est le chrome. Il reste un
+   seul mot en haut à droite, « Menu », qui ouvre le panneau des autres pages.
+   À toutes les largeurs.                                                     */
+.nav--seam {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  /* Le mot est posé tantôt sur Voile, tantôt sur l'eau du port, et la
+     couture passe dessous : en différence, il est toujours l'inverse. Le
+     mélange est porté par l'en-tête lui-même : posé sur le bouton, il ne
+     verrait que le fond transparent de l'en-tête. */
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.nav--seam.nav--open {
+  mix-blend-mode: normal;
+}
+
+.nav--seam .nav__inner {
+  grid-template-columns: 1fr auto;
+  padding-block: 14px;
+}
+
+.nav--seam .nav__links {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #0a0e12;
+  color: #efebe2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-std) var(--ease);
+}
+
+.nav--seam.nav--open .nav__links {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav--seam .nav__links .nav__link {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 56px);
+  letter-spacing: -0.01em;
+  text-transform: none;
+  padding: 8px;
+  color: #efebe2;
+}
+
+.nav--seam .nav__links .nav__link:hover {
+  color: var(--brass-night);
+}
+
+.nav--seam .nav__menu {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.nav--seam .nav__menu span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 6px 0 currentColor;
+  transition: transform var(--t-std) var(--ease), box-shadow var(--t-std) var(--ease);
+}
+
+.nav--seam.nav--open .nav__menu {
+  color: #efebe2;
+}
+
+.nav--seam.nav--open .nav__menu span {
+  transform: rotate(45deg) translateY(3px);
+  box-shadow: none;
+}
+
+.nav--seam .nav__item--mobile {
+  display: block;
+}
+
 /* La marque : deux versions du même fichier, dorure sur papier, os sur nuit.
    On affiche celle du sol courant. */
 .monogram {
@@ -429,14 +567,18 @@ p {
   display: block;
 }
 
-.monogram__night,
+/* Spécificité (0,2,0) pour passer devant `.monogram img` (0,1,1), sinon les
+   deux versions s'affichent l'une sous l'autre. */
+.monogram .monogram__night,
 html[data-ground='night'] .monogram__day,
-.on-photo .monogram__day {
+.on-photo .monogram__day,
+.nav--over .monogram__day {
   display: none;
 }
 
-html[data-ground='night'] .monogram__night,
-.on-photo .monogram__night {
+html[data-ground='night'] .monogram .monogram__night,
+.on-photo .monogram .monogram__night,
+.nav--over .monogram .monogram__night {
   display: block;
 }
 
@@ -1346,12 +1488,12 @@ html[data-ground='night'] .field select {
   align-items: flex-start;
   gap: 12px;
   max-width: 340px;
-  background: var(--white);
+  /* Un carton posé sur le sol : le second sol, un filet, pas d'ombre. */
+  background: var(--ground-2);
   color: var(--ink);
-  border: 1px solid var(--ink-faint);
-  border-radius: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 0;
   padding: 13px 14px;
-  box-shadow: 0 14px 44px rgba(11, 9, 7, 0.22);
 }
 
 .toast__avatar {
@@ -1519,9 +1661,9 @@ html[data-ground='night'] .field select {
 }
 
 .wa-fab:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #0b0907;
+  background: var(--accent-surface);
+  border-color: var(--accent-surface);
+  color: #0a0e12;
 }
 
 .wa-fab:active {
@@ -1581,6 +1723,38 @@ html[data-ground='night'] .field select {
 
 .page-in {
   animation: page-in 520ms var(--ease) both;
+}
+
+/* Quand une photo voyage d'une page à l'autre (View Transitions), c'est elle
+   qui fait la transition : le fondu de page ne doit pas la rendre
+   transparente au moment de la capture. */
+html:active-view-transition .page-in {
+  animation: none;
+}
+
+::view-transition-old(hero-jour),
+::view-transition-old(hero-nuit),
+::view-transition-new(hero-jour),
+::view-transition-new(hero-nuit) {
+  animation-duration: 720ms;
+  animation-timing-function: var(--tide);
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(hero-jour),
+::view-transition-group(hero-nuit) {
+  animation-duration: 720ms;
+  animation-timing-function: var(--tide);
+}
+
+/* Lecteur d'écran seulement. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 /* --- Galerie + lightbox ----------------------------------------------------- */
@@ -1798,7 +1972,7 @@ html[data-ground='night'] .field select {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(11, 9, 7, 0.45) 0%, rgba(11, 9, 7, 0.12) 40%, rgba(11, 9, 7, 0.66) 100%);
+  background: linear-gradient(to bottom, rgba(10, 14, 18, 0.45) 0%, rgba(10, 14, 18, 0.12) 40%, rgba(10, 14, 18, 0.66) 100%);
 }
 
 .page-hero__content {
@@ -2204,8 +2378,8 @@ html[data-ground='night'] .field select {
   text-transform: uppercase;
   color: var(--ocean);
   border: 1px solid currentColor;
-  border-radius: 100px;
-  padding: 4px 12px;
+  border-radius: 0;
+  padding: 5px 12px;
 }
 
 .formule__name {
@@ -2236,9 +2410,10 @@ html[data-ground='night'] .field select {
 
 .formule__amount {
   font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 36px;
-  color: var(--ocean);
+  font-size: 40px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
 }
 
 .formule__desc {

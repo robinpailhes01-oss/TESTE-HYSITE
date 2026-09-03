@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 
-/* Le menu suit le tunnel : les deux expériences d'abord, le reste ensuite.
-   `to` = vraie page, `hash` = ancre sur l'accueil. */
+/* Le menu suit le tunnel : les deux expériences d'abord, le reste ensuite. */
 const PHOTO_HERO = new Set(['/', '/sortie-en-mer-carnon', '/nuit-a-bord-yacht-carnon'])
 
-const LINKS: { to?: string; hash?: string; label: string }[] = [
+const LINKS: { to: string; label: string }[] = [
   { to: '/sortie-en-mer-carnon', label: 'Sorties en mer' },
   { to: '/nuit-a-bord-yacht-carnon', label: 'Nuits à bord' },
   { to: '/galerie', label: 'Galerie' },
@@ -49,12 +48,48 @@ export default function Nav() {
     setOpen(false)
   }, [pathname])
 
-  const href = (hash: string) => (onHome ? hash : `/${hash}`)
+  /* Sur l'accueil, il n'y a pas de barre : la scène partagée fait de la
+     couture le chrome. Il reste « Menu », qui ouvre le panneau, et il ne se
+     cache pas au défilement (la scène est épinglée, le geste n'a pas de sens). */
+  if (onHome) {
+    return (
+      <header className={`nav nav--seam ${open ? 'nav--open' : ''}`}>
+        <div className="container nav__inner">
+          <nav aria-label="Navigation principale" id="menu">
+            <ul className="nav__links">
+              {LINKS.map((l) => (
+                <li key={l.label}>
+                  <Link to={l.to} className="nav__link" onClick={() => setOpen(false)}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+              <li className="nav__item--mobile">
+                <Link to="/contact" className="nav__link" onClick={() => setOpen(false)}>
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <button
+            className="nav__menu"
+            aria-expanded={open}
+            aria-controls="menu"
+            aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? 'Fermer' : 'Menu'}
+            <span />
+          </button>
+        </div>
+      </header>
+    )
+  }
 
-  /* On ne réserve plus depuis l'accueil : il faut d'abord avoir choisi. Sur
-     l'accueil le bouton mène donc au choix, ailleurs au formulaire de la page
-     où l'on se trouve. */
-  const reserveHref = onHome ? '#choix' : '#reservation'
+  /* On réserve sur la page de l'expérience choisie ; ailleurs, « Réserver »
+     ramène au choix, c'est-à-dire à l'accueil. */
+  const onExperience = /^\/(sortie-en-mer-carnon|nuit-a-bord-yacht-carnon)\/?$/.test(pathname)
+  const reserveHref = onExperience ? '#reservation' : '/'
 
   return (
     <header
@@ -67,15 +102,9 @@ export default function Nav() {
           <ul className="nav__links">
             {LINKS.map((l) => (
               <li key={l.label}>
-                {l.to ? (
-                  <Link to={l.to} className="nav__link" onClick={() => setOpen(false)}>
-                    {l.label}
-                  </Link>
-                ) : (
-                  <a href={href(l.hash!)} className="nav__link" onClick={() => setOpen(false)}>
-                    {l.label}
-                  </a>
-                )}
+                <Link to={l.to} className="nav__link" onClick={() => setOpen(false)}>
+                  {l.label}
+                </Link>
               </li>
             ))}
             <li className="nav__item--mobile">
@@ -86,17 +115,10 @@ export default function Nav() {
           </ul>
         </nav>
 
-        {onHome ? (
-          <a href="#" className="monogram" aria-label="Harmonie Yacht — retour en haut">
-            <img className="monogram__day" src="/images/logo-s.png" alt="Harmonie Yacht" />
-            <img className="monogram__night" src="/images/logo-bone-s.png" alt="" aria-hidden="true" />
-          </a>
-        ) : (
-          <Link to="/" className="monogram" aria-label="Harmonie Yacht — retour à l’accueil">
-            <img className="monogram__day" src="/images/logo-s.png" alt="Harmonie Yacht" />
-            <img className="monogram__night" src="/images/logo-bone-s.png" alt="" aria-hidden="true" />
-          </Link>
-        )}
+        <Link to="/" className="monogram" aria-label="Harmonie Yacht — retour à l’accueil">
+          <img className="monogram__day" src="/images/logo-s.png" alt="Harmonie Yacht" />
+          <img className="monogram__night" src="/images/logo-bone-s.png" alt="" aria-hidden="true" />
+        </Link>
 
         <div className="nav__actions">
           <a href={reserveHref} className="btn">

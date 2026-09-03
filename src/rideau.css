@@ -1,0 +1,762 @@
+/* ---------------------------------------------------------------------------
+   Le rideau — la scène partagée de l'accueil.
+
+   Une scène épinglée, deux côtés : le jour à gauche sur Voile, la nuit à
+   droite sur l'Eau du port, séparés par une couture de laiton. Tout le rendu
+   vient de deux variables publiées sur la scène par un seul lecteur :
+     --p     la progression de l'argument (0 → 1)
+     --seam  la part de largeur laissée au jour (0 → 1)
+   et de --W / --H, la taille de la scène en pixels (pour la couture).
+
+   Chaque côté est un cadre de 100 % de large qui glisse d'un transform, et
+   dont le contenu glisse de l'inverse : le côté se rogne, le contenu ne
+   bouge pas. Deux transforms, aucune largeur animée, tout au compositeur.
+--------------------------------------------------------------------------- */
+
+.rd {
+  --rd-span: 6;
+  --gutter-rd: clamp(20px, 4vw, 64px);
+  position: relative;
+  height: calc(var(--rd-span) * 100vh);
+}
+
+.rd__stage {
+  --p: 0;
+  --seam: 0.5;
+  --W: 100vw;
+  --H: 100vh;
+  /* Le pic : la fermeture, de 0,80 à 0,92. */
+  --k4: clamp(0, calc((var(--p) - 0.8) / 0.12), 1);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--ground);
+}
+
+/* --- Les deux côtés --------------------------------------------------------- */
+
+.rd__side {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  will-change: transform;
+}
+
+.rd__side--jour {
+  transform: translateX(calc((var(--seam) - 1) * 100%));
+}
+
+.rd__side--nuit {
+  transform: translateX(calc(var(--seam) * 100%));
+}
+
+.rd__pane {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.rd__side--jour .rd__pane {
+  transform: translateX(calc((1 - var(--seam)) * 100%));
+}
+
+.rd__side--nuit .rd__pane {
+  transform: translateX(calc(-1 * var(--seam) * 100%));
+}
+
+/* --- La photo dans son cadre -------------------------------------------------
+   La photo est à la taille du volet ; c'est un clip qui la met dans un cadre
+   sur le sol, à sa moitié. À la fermeture, le clip du côté gagnant s'ouvre
+   jusqu'aux bords : la photo prend tout l'écran, et seulement à ce moment-là. */
+
+.rd__frame {
+  --bleed: 0;
+  --ft: 92px;
+  --fb: 44%;
+  --fl: var(--gutter-rd);
+  --fr: var(--gutter-rd);
+  position: absolute;
+  inset: 0;
+  clip-path: inset(
+    calc(var(--ft) * (1 - var(--bleed)))
+    calc(var(--fr) * (1 - var(--bleed)))
+    calc(var(--fb) * (1 - var(--bleed)))
+    calc(var(--fl) * (1 - var(--bleed)))
+  );
+}
+
+.rd__side--jour .rd__frame {
+  --fr: calc(50% + 12px);
+}
+
+.rd__side--nuit .rd__frame {
+  --fl: calc(50% + 12px);
+}
+
+.rd__stage[data-winner='jour'] .rd__side--jour .rd__frame,
+.rd__stage[data-winner='nuit'] .rd__side--nuit .rd__frame {
+  --bleed: var(--k4);
+}
+
+/* La photo est à la taille du volet, réduite dans son cadre par une échelle
+   et un décalage (--s0, --tx0, --ty0, mesurés en JS) ; à la fermeture les
+   deux reviennent à 1 et 0 et la photo prend le volet. Un seul transform,
+   au compositeur, plus un travelling avant très lent sur toute la course. */
+.rd__ph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 0 0;
+  transform: translate(
+      calc(var(--tx0, 0px) * (1 - var(--bleed))),
+      calc(var(--ty0, 0px) * (1 - var(--bleed)))
+    )
+    scale(calc((var(--s0, 1) + (1 - var(--s0, 1)) * var(--bleed)) * (1 + var(--p) * 0.04)));
+  will-change: transform, opacity;
+}
+
+/* La seconde photo arrive quand son côté penche, et reste. */
+.rd__ph--2 {
+  --a: 0.18;
+  opacity: clamp(0, calc((var(--p) - var(--a)) / 0.08), 1);
+}
+
+.rd__side--nuit .rd__ph--2 {
+  --a: 0.42;
+}
+
+/* Le voile sous le texte, seulement quand la photo prend tout l'écran. */
+.rd__scrim {
+  position: absolute;
+  inset: 0;
+  /* Une nappe en bas sous le texte, une bande en haut sous le repère et le
+     menu : mesuré à 3,9 : 1 sans elle sur la cabine, 5,4 avec. */
+  background:
+    linear-gradient(to bottom, rgba(10, 14, 18, 0.72) 0%, rgba(10, 14, 18, 0) 20%),
+    linear-gradient(to top, rgba(10, 14, 18, 0.78) 0%, rgba(10, 14, 18, 0.5) 34%, rgba(10, 14, 18, 0) 62%);
+  opacity: var(--bleed);
+  pointer-events: none;
+}
+
+/* --- Le texte ----------------------------------------------------------------- */
+
+.rd__kicker {
+  position: absolute;
+  top: 24px;
+  left: var(--gutter-rd);
+  width: calc(50% - var(--gutter-rd) - 12px);
+  margin: 0;
+  z-index: 2;
+}
+
+/* La nuit est le miroir du jour : tout y est aligné à droite. */
+.rd__side--nuit .rd__kicker {
+  left: auto;
+  right: calc(var(--gutter-rd) + 116px);
+  width: calc(50% - var(--gutter-rd) - 168px);
+  text-align: right;
+}
+
+.rd__kicker--m {
+  display: none;
+}
+
+.rd__copy {
+  position: absolute;
+  bottom: 40px;
+  left: var(--gutter-rd);
+  width: calc(50% - var(--gutter-rd) - 12px);
+  display: grid;
+  gap: 22px;
+  z-index: 2;
+  /* Sur Voile, l'encre ; dès que la photo arrive sous le texte, l'os. Le
+     passage est plus rapide que l'ouverture du cadre : le texte change de
+     couleur avant que la photo ne l'atteigne. */
+  --swap: clamp(0, calc((var(--bleed, 0) - 0.45) * 3.3), 1);
+  color: color-mix(in srgb, var(--over) calc(var(--swap) * 100%), var(--ink));
+}
+
+.rd__stage[data-winner='jour'] .rd__side--jour .rd__copy,
+.rd__stage[data-winner='nuit'] .rd__side--nuit .rd__copy {
+  --bleed: var(--k4);
+}
+
+/* Le repère du côté qui gagne passe à l'os avec le texte : mesuré à 2,15 : 1
+   en encre sur le ciel voilé, 8,4 en os. */
+.rd__stage[data-winner='jour'] .rd__side--jour .rd__kicker,
+.rd__stage[data-winner='nuit'] .rd__side--nuit .rd__kicker {
+  --swap: clamp(0, calc((var(--k4) - 0.45) * 3.3), 1);
+  color: color-mix(in srgb, var(--over) calc(var(--swap) * 100%), var(--ink-2));
+}
+
+/* Le côté qui perd range son texte : il ne lui reste qu'une porte. */
+.rd__stage[data-winner='jour'] .rd__side--nuit .rd__copy,
+.rd__stage[data-winner='nuit'] .rd__side--jour .rd__copy,
+.rd__stage[data-winner='jour'] .rd__side--nuit .rd__kicker,
+.rd__stage[data-winner='nuit'] .rd__side--jour .rd__kicker {
+  opacity: calc(1 - var(--k4));
+}
+
+.rd__side--nuit .rd__copy {
+  left: auto;
+  right: var(--gutter-rd);
+  width: calc(50% - var(--gutter-rd) - 12px);
+  justify-items: end;
+  text-align: right;
+}
+
+.rd__side--nuit .rd__facts {
+  justify-content: flex-end;
+}
+
+/* Les répliques se succèdent au même endroit : une fenêtre chacune. */
+.rd__cues {
+  position: relative;
+  min-height: min(232px, 27vh);
+  width: 100%;
+}
+
+.rd__cue {
+  --f: 0.04;
+  --k: clamp(0, min(calc((var(--p) - var(--a)) / var(--f)), calc((var(--b) - var(--p)) / var(--f))), 1);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  opacity: var(--k);
+  transform: translateY(calc((1 - var(--k)) * 12px));
+  pointer-events: none;
+}
+
+.rd__cue--title {
+  --a: -1;
+  --b: 0.16;
+}
+
+.rd__side--nuit .rd__cue--title {
+  --b: 0.4;
+}
+
+/* Un côté ne parle que quand la couture est de son côté : le jour pendant
+   qu'il penche, la nuit pendant qu'elle penche. Le texte n'est jamais coupé
+   par la couture. */
+.rd__cue--more {
+  --a: 0.2;
+  --b: 0.4;
+}
+
+.rd__side--nuit .rd__cue--more {
+  --a: 0.44;
+  --b: 0.62;
+}
+
+.rd__cue--voice {
+  --a: 0.66;
+  --b: 0.78;
+}
+
+/* La ligne du couchant arrive quand la photo a pris tout l'écran. */
+.rd__cue--sun {
+  --a: 0.92;
+  --b: 2;
+}
+
+/* La ligne du couchant n'existe que du côté qui gagne. */
+.rd__stage[data-winner='jour'] .rd__side--nuit .rd__cue--sun,
+.rd__stage[data-winner='nuit'] .rd__side--jour .rd__cue--sun {
+  display: none;
+}
+
+.rd__title {
+  font-size: clamp(34px, 3.9vw, 62px);
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  margin: 0 0 14px;
+}
+
+.rd__more {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  margin: 0 0 14px;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.rd__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.rd__facts span + span::before {
+  content: '·';
+  margin-right: 18px;
+  opacity: 0.5;
+}
+
+.rd__voice {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.3vw, 20px);
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  margin: 0;
+  max-width: 44ch;
+}
+
+.rd__side--nuit .rd__voice {
+  margin-left: auto;
+}
+
+.rd__side--nuit .rd__more,
+.rd__side--nuit .rd__sunline {
+  margin-left: auto;
+}
+
+.rd__voice footer {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  margin-top: 10px;
+  opacity: 0.72;
+}
+
+.rd__voice footer a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rd__sunline {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 24ch;
+  font-variant-numeric: tabular-nums;
+}
+
+.rd__sunline strong {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.rd__door {
+  justify-self: start;
+}
+
+/* --- La porte étroite : ce qui reste du côté perdant -------------------------- */
+
+.rd__slim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  opacity: var(--k4);
+  pointer-events: none;
+  color: var(--over);
+  background: linear-gradient(to right, rgba(10, 14, 18, 0.55), rgba(10, 14, 18, 0));
+}
+
+.rd__stage[data-temps='4'] .rd__slim {
+  pointer-events: auto;
+}
+
+/* Seul le côté qui perd devient une porte. */
+.rd__stage[data-winner='jour'] .rd__side--jour .rd__slim,
+.rd__stage[data-winner='nuit'] .rd__side--nuit .rd__slim {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rd__side--nuit .rd__slim {
+  left: 0;
+}
+
+.rd__side--jour .rd__slim {
+  right: 0;
+  background: linear-gradient(to left, rgba(10, 14, 18, 0.55), rgba(10, 14, 18, 0));
+}
+
+.rd__slim span {
+  writing-mode: vertical-rl;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rd__side--jour .rd__slim span {
+  transform: rotate(180deg);
+}
+
+/* --- La couture ---------------------------------------------------------------- */
+
+.rd__seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  z-index: 4;
+  background: rgba(156, 116, 53, 0.55);
+  transform: translateX(calc(var(--seam) * var(--W)));
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* La progression de l'argument, tracée le long de la couture. */
+.rd__seam-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--brass);
+  transform-origin: top;
+  transform: scaleY(var(--p));
+}
+
+.rd__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -22px;
+  width: 44px;
+  z-index: 5;
+  cursor: col-resize;
+  touch-action: none;
+  transform: translateX(calc(var(--seam) * var(--W)));
+  will-change: transform;
+  outline-offset: -4px;
+}
+
+/* Quand la couture se range au bord, la marque et la pastille se retirent
+   avec elle : au coin, elles gêneraient le menu. */
+.rd__crest,
+.rd__sun {
+  opacity: calc(1 - var(--k4));
+}
+
+.rd__crest {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  background: #f3f1eb;
+}
+
+.rd__crest img {
+  width: 44px;
+  height: auto;
+  display: block;
+}
+
+.rd__sun {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 6px 10px;
+  background: #f3f1eb;
+  color: #12151a;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Téléphone : la couture devient horizontale -------------------------------
+   Le jour en haut, la nuit en bas. La photo prend tout le volet (un cadre
+   n'a pas la place dans une moitié d'écran de 400 px) ; le texte est os sur
+   un voile ; le jour parle en haut de son volet, la nuit en bas du sien. */
+
+@media (max-width: 860px) {
+  .rd {
+    --rd-span: 4.6;
+  }
+
+  .rd__side--jour {
+    transform: translateY(calc((var(--seam) - 1) * 100%));
+  }
+
+  .rd__side--nuit {
+    transform: translateY(calc(var(--seam) * 100%));
+  }
+
+  .rd__side--jour .rd__pane {
+    transform: translateY(calc((1 - var(--seam)) * 100%));
+  }
+
+  .rd__side--nuit .rd__pane {
+    transform: translateY(calc(-1 * var(--seam) * 100%));
+  }
+
+  .rd__frame,
+  .rd__side--jour .rd__frame,
+  .rd__side--nuit .rd__frame {
+    --ft: 0px;
+    --fb: 0px;
+    --fl: 0px;
+    --fr: 0px;
+  }
+
+  /* Le jour montre le haut de son volet, la nuit le bas du sien : on
+     cadre chaque photo pour ce qu'on en verra. */
+  .rd__side--jour .rd__ph {
+    object-position: 50% 62%;
+  }
+
+  .rd__side--nuit .rd__ph {
+    object-position: 50% 40%;
+  }
+
+  /* Mesuré sur pixels composités : la nappe blanche du salon sous le repère
+     de la nuit tombait à 2,95 : 1 avec le voile du bureau. Plus dense et plus
+     haut sur téléphone, où la photo est le sol. */
+  .rd__scrim {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(10, 14, 18, 0.82) 0%, rgba(10, 14, 18, 0.62) 40%, rgba(10, 14, 18, 0) 70%);
+    /* (une seule nappe sur téléphone : le repère est dans le bloc de texte) */
+  }
+
+  .rd__side--jour .rd__scrim {
+    background: linear-gradient(to bottom, rgba(10, 14, 18, 0.8) 0%, rgba(10, 14, 18, 0.58) 40%, rgba(10, 14, 18, 0) 66%);
+  }
+
+  .rd__copy,
+  .rd__side--nuit .rd__copy {
+    color: var(--over);
+    left: var(--gutter-rd);
+    right: var(--gutter-rd);
+    width: auto;
+    gap: 16px;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .rd__side--nuit .rd__facts {
+    justify-content: flex-start;
+  }
+
+  .rd__side--nuit .rd__voice,
+  .rd__side--nuit .rd__more,
+  .rd__side--nuit .rd__sunline {
+    margin-left: 0;
+  }
+
+  .rd__side--jour .rd__copy {
+    top: 58px;
+    bottom: auto;
+  }
+
+  .rd__side--nuit .rd__copy {
+    bottom: 28px;
+  }
+
+  .rd__kicker {
+    display: none;
+  }
+
+  .rd__kicker--m {
+    display: block;
+    margin: 0;
+    color: var(--over-2);
+  }
+
+  .rd__cues {
+    min-height: 196px;
+  }
+
+  .rd__side--jour .rd__cue {
+    bottom: auto;
+    top: 0;
+  }
+
+  .rd__title {
+    font-size: clamp(30px, 9vw, 40px);
+  }
+
+  .rd__more {
+    font-size: 21px;
+  }
+
+  .rd__facts {
+    font-size: 12.5px;
+    gap: 4px 14px;
+  }
+
+  .rd__facts span + span::before {
+    margin-right: 14px;
+  }
+
+  .rd__voice {
+    font-size: 15.5px;
+    max-width: none;
+  }
+
+  .rd__sunline {
+    font-size: 21px;
+  }
+
+  .rd__slim {
+    width: auto;
+    height: 64px;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, rgba(10, 14, 18, 0.55), rgba(10, 14, 18, 0));
+  }
+
+  .rd__side--nuit .rd__slim {
+    top: 0;
+    bottom: auto;
+  }
+
+  .rd__side--jour .rd__slim {
+    top: auto;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(10, 14, 18, 0.55), rgba(10, 14, 18, 0));
+  }
+
+  .rd__slim {
+    justify-items: start;
+    padding-left: var(--gutter-rd);
+  }
+
+  .rd__slim span,
+  .rd__side--jour .rd__slim span {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .rd__seam {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+    transform: translateY(calc(var(--seam) * var(--H)));
+  }
+
+  .rd__seam-fill {
+    transform-origin: left;
+    transform: scaleX(var(--p));
+  }
+
+  .rd__handle {
+    top: -22px;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 44px;
+    cursor: row-resize;
+    transform: translateY(calc(var(--seam) * var(--H)));
+  }
+
+  .rd__crest {
+    top: 50%;
+    left: 50%;
+    width: 48px;
+    height: 48px;
+    transform: translate(-50%, -50%);
+  }
+
+  .rd__crest img {
+    width: 40px;
+  }
+
+  /* Sur téléphone l'heure du couchant n'est dite qu'une fois, dans la
+     ligne de fermeture : la pastille sur la couture chevaucherait le texte. */
+  .rd__sun {
+    display: none;
+  }
+}
+
+/* --- Mouvement réduit : deux pages, l'une sous l'autre, rien ne glisse ------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .rd {
+    height: auto;
+  }
+
+  .rd__stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: grid;
+  }
+
+  .rd__side,
+  .rd__pane,
+  .rd__frame,
+  .rd__copy,
+  .rd__cue,
+  .rd__kicker {
+    position: static;
+    transform: none !important;
+    clip-path: none;
+    opacity: 1;
+    width: auto;
+  }
+
+  .rd__side {
+    padding: 96px var(--gutter-rd) 64px;
+    display: grid;
+    gap: 28px;
+  }
+
+  .rd__frame {
+    aspect-ratio: 16 / 10;
+    max-height: 62vh;
+    position: relative;
+  }
+
+  .rd__ph {
+    transform: none;
+  }
+
+  .rd__ph--2,
+  .rd__scrim,
+  .rd__slim,
+  .rd__seam,
+  .rd__handle,
+  .rd__kicker--m {
+    display: none;
+  }
+
+  .rd__cues {
+    min-height: 0;
+    display: grid;
+    gap: 24px;
+  }
+
+  .rd__cue--sun {
+    display: none !important;
+  }
+
+  .rd__copy,
+  .rd__side--nuit .rd__copy {
+    color: var(--ink);
+    max-width: 60ch;
+  }
+}

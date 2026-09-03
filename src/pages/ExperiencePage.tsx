@@ -76,15 +76,16 @@ export default function ExperiencePage({ slug }: Props) {
       {/* En-tête visuel */}
       <section className={`page-hero${exp.group === 'nuit' ? ' page-hero--full' : ''}`}>
         <div className="page-hero__media">
-          <motion.img
+          {/* Pas d'animation d'entrée sur la photo : c'est elle qui voyage
+              depuis l'accueil (View Transitions, même nom des deux côtés), et
+              un fondu par-dessus casserait le mouvement. */}
+          <img
             src={exp.hero}
             srcSet={srcSet(exp.hero)}
             sizes="100vw"
             fetchPriority="high"
             alt={exp.heroAlt}
-            initial={reduced ? undefined : { scale: 1.06, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.8, ease }}
+            style={{ viewTransitionName: exp.group === 'nuit' ? 'hero-nuit' : 'hero-jour' }}
           />
         </div>
         <div className="container page-hero__content">

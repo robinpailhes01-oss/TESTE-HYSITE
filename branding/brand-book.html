@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmonie Yacht, la carte d'invitation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground: #f3f1eb;
+    --ground-2: #e8e5dd;
+    --ink: #12151a;
+    --ink-2: rgba(18, 21, 26, 0.7);
+    --ink-3: rgba(18, 21, 26, 0.42);
+    --rule: rgba(18, 21, 26, 0.14);
+    --accent: #7a5a24;
+    --accent-surface: #9c7435;
+    --night: #0a0e12;
+    --night-2: #141a20;
+    --bone: #efebe2;
+    --bone-2: rgba(239, 235, 226, 0.72);
+    --bone-rule: rgba(239, 235, 226, 0.14);
+    --brass-night: #d6b67c;
+    --display: 'Bodoni Moda', 'Bodoni 72', Didot, Georgia, serif;
+    --text: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --gutter: clamp(20px, 6vw, 96px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0a0e12;
+      --ground-2: #141a20;
+      --ink: #efebe2;
+      --ink-2: rgba(239, 235, 226, 0.72);
+      --ink-3: rgba(239, 235, 226, 0.42);
+      --rule: rgba(239, 235, 226, 0.14);
+      --accent: #d6b67c;
+      --accent-surface: #d6b67c;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0a0e12;
+    --ground-2: #141a20;
+    --ink: #efebe2;
+    --ink-2: rgba(239, 235, 226, 0.72);
+    --ink-3: rgba(239, 235, 226, 0.42);
+    --rule: rgba(239, 235, 226, 0.14);
+    --accent: #d6b67c;
+    --accent-surface: #d6b67c;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection { background: var(--accent-surface); color: var(--ground); }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  h1, h2, h3, .display {
+    font-family: var(--display);
+    font-weight: 400;
+    font-optical-sizing: auto;
+    line-height: 1;
+    text-wrap: balance;
+  }
+  h2 { font-size: clamp(40px, 6vw, 72px); letter-spacing: -0.02em; margin-bottom: 40px; }
+  h3 { font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.01em; margin: 48px 0 16px; }
+  p { text-wrap: pretty; max-width: 62ch; }
+  .lede { font-size: 19px; letter-spacing: -0.005em; line-height: 1.55; }
+  .muted { color: var(--ink-2); }
+  em { font-family: var(--display); font-style: italic; font-size: 1.08em; }
+  .k {
+    font-family: var(--text);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  section {
+    padding: clamp(72px, 11vw, 150px) var(--gutter);
+    border-top: 1px solid var(--rule);
+    break-before: page;
+  }
+  section > .k:first-child { display: block; margin-bottom: 28px; }
+  .cover {
+    min-height: 92svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border-top: 0;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .cover__crest {
+    width: 64px; height: 64px; display: block;
+  }
+  .cover__crest path { fill: var(--accent-surface); }
+  .cover__name {
+    font-family: var(--display);
+    font-size: clamp(56px, 12vw, 176px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    align-self: center;
+    max-width: none;
+  }
+  .cover__name span { display: block; }
+  .cover__name .it { font-style: italic; }
+  .cover__meta {
+    display: flex; flex-wrap: wrap; gap: 24px 56px;
+    border-top: 1px solid var(--accent-surface);
+    padding-top: 20px;
+  }
+  .cover__meta div { display: grid; gap: 6px; }
+  .cover__meta strong { font-weight: 500; font-size: 15px; }
+  .big {
+    font-family: var(--display);
+    font-size: clamp(30px, 4.2vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px 64px; align-items: start; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px 48px; align-items: start; }
+  .rowlist { list-style: none; padding: 0; }
+  .rowlist li {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px; padding: 14px 0; border-top: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .rowlist li:last-child { border-bottom: 1px solid var(--rule); }
+  .rowlist .num { color: var(--ink-2); font-size: 13.5px; white-space: nowrap; }
+  .quote { font-family: var(--display); font-size: clamp(22px, 2.4vw, 30px); line-height: 1.2; letter-spacing: -0.01em; max-width: 30ch; }
+  .quote small { display: block; font-family: var(--text); font-size: 13.5px; color: var(--ink-2); margin-top: 12px; letter-spacing: 0; }
+
+  /* Carte de positionnement : une grille, pas un dessin. */
+  .map { display: grid; grid-template-columns: 22px 1fr; grid-template-rows: 1fr 22px; gap: 10px; max-width: 760px; margin-top: 24px; }
+  .map__y { writing-mode: vertical-rl; transform: rotate(180deg); display: flex; justify-content: space-between; }
+  .map__x { grid-column: 2; display: flex; justify-content: space-between; }
+  .map__field {
+    position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--rule);
+    background:
+      linear-gradient(var(--rule), var(--rule)) 50% 0 / 1px 100% no-repeat,
+      linear-gradient(var(--rule), var(--rule)) 0 50% / 100% 1px no-repeat;
+  }
+  .map__pt {
+    position: absolute; transform: translate(-50%, -50%);
+    font-size: 12.5px; line-height: 1.25; text-align: center; max-width: 130px;
+    padding: 6px 8px; background: var(--ground);
+  }
+  .map__pt::before { content: ''; display: block; width: 8px; height: 8px; border: 1px solid var(--ink); margin: 0 auto 6px; }
+  .map__pt--us { font-weight: 600; }
+  .map__pt--us::before { background: var(--accent-surface); border-color: var(--accent-surface); width: 12px; height: 12px; }
+  .map__void {
+    position: absolute; right: 0; top: 0; width: 50%; height: 50%;
+    background: repeating-linear-gradient(-45deg, transparent 0 9px, var(--rule) 9px 10px);
+  }
+
+  /* Les territoires */
+  .terr { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .terr__row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .terr__row h3 { margin: 0 0 8px; }
+  .terr__row p { font-size: 14.5px; }
+  .terr__row .k { display: block; margin-bottom: 6px; }
+  .terr__row + .terr__row .k { margin-top: 0; }
+  .terr__pick { border-left: 2px solid var(--accent-surface); padding-left: 22px; }
+  .score { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 32px; }
+  .score th, .score td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .score th { font-weight: 500; color: var(--ink-2); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .score td.num { text-align: right; padding-right: 20px; }
+  .score tr.pick td { font-weight: 600; }
+
+  /* Couleurs : des aplats larges */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 8px; }
+  .sw { min-height: 200px; padding: 18px; display: grid; align-content: end; gap: 2px; font-size: 13px; line-height: 1.4; }
+  .sw b { font-family: var(--display); font-size: 24px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .sw--wide { grid-column: 1 / -1; min-height: 240px; }
+  .ratio { display: flex; height: 18px; margin-top: 40px; max-width: 760px; }
+  .ratio span { height: 100%; }
+  .ratio + p { margin-top: 10px; font-size: 13.5px; }
+
+  /* Typographie : des spécimens réels */
+  .spec { border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 16px; display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; }
+  .spec .k { padding-top: 6px; }
+  .spec .s { font-family: var(--display); line-height: 1; }
+  .spec .s--144 { font-size: clamp(64px, 9vw, 144px); letter-spacing: -0.03em; line-height: 0.92; }
+  .spec .s--96 { font-size: clamp(48px, 6.5vw, 96px); letter-spacing: -0.025em; line-height: 0.96; }
+  .spec .s--64 { font-size: clamp(36px, 4.5vw, 64px); letter-spacing: -0.02em; }
+  .spec .s--44 { font-size: clamp(28px, 3vw, 44px); letter-spacing: -0.015em; line-height: 1.05; }
+  .spec .s--24 { font-size: 24px; line-height: 1.2; }
+  .spec .t { font-family: var(--text); }
+  .spec .t--19 { font-size: 19px; line-height: 1.55; letter-spacing: -0.005em; }
+  .spec .t--16 { font-size: 16px; }
+  .spec .t--13 { font-size: 13.5px; color: var(--ink-2); }
+  .caps { font-family: var(--display); letter-spacing: 0.18em; text-transform: uppercase; }
+  .abc { font-family: var(--display); font-size: clamp(22px, 3vw, 40px); line-height: 1.25; letter-spacing: 0.01em; word-break: break-word; margin-top: 24px; }
+
+  /* Logo */
+  .logo-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; margin-top: 8px; }
+  .logo-cell { aspect-ratio: 16 / 10; display: grid; place-items: center; position: relative; }
+  .logo-cell .k { position: absolute; left: 16px; bottom: 14px; }
+  .crest { width: 120px; height: auto; display: block; }
+  .wordmark { font-family: var(--display); font-size: 30px; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1; text-align: center; margin-top: 18px; }
+  .wordmark small { display: block; font-size: 16px; letter-spacing: 0.32em; margin-top: 8px; }
+  .clear { position: absolute; inset: 24%; border: 1px dashed var(--accent-surface); pointer-events: none; }
+
+  /* Ton */
+  .slider { display: grid; grid-template-columns: 90px 1fr 90px; gap: 14px; align-items: center; margin: 14px 0; font-size: 13.5px; }
+  .slider .bar { height: 1px; background: var(--rule); position: relative; }
+  .slider .bar i { position: absolute; top: -5px; width: 11px; height: 11px; background: var(--accent-surface); transform: translateX(-50%); }
+  .words { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+  .words ul { list-style: none; padding: 0; columns: 2; font-size: 15px; }
+  .words li { padding: 4px 0; break-inside: avoid; }
+  .words .ban li { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--accent-surface); }
+
+  /* Applications */
+  .apps { display: grid; gap: 40px; margin-top: 8px; }
+  .app { border: 1px solid var(--rule); overflow: hidden; }
+  .app__label { padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+  .site { position: relative; height: 420px; display: grid; grid-template-columns: 1fr 1fr; font-family: var(--text); }
+  .site__day { background: #f3f1eb; color: #12151a; padding: 26px 28px; display: grid; align-content: space-between; }
+  .site__night { background: #0a0e12; color: #efebe2; padding: 26px 28px; display: grid; align-content: space-between; }
+  .site h4 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4.6vw, 64px); line-height: 0.96; letter-spacing: -0.025em; margin: 0; }
+  .site .facts { display: flex; gap: 18px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .site .facts span + span::before { content: '·'; margin-right: 18px; opacity: 0.5; }
+  .site__seam { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #9c7435; transform: translateX(-50%); }
+  .site__crest { position: absolute; left: 50%; top: 22px; transform: translateX(-50%); width: 40px; height: 40px; background: #f3f1eb; display: grid; place-items: center; }
+  .site__crest svg { width: 26px; height: 26px; }
+  .site__crest path { fill: #9c7435; }
+  .site__prog { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; background: #f3f1eb; color: #12151a; padding: 4px 8px; }
+  .site .cta { font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; padding: 12px 18px; border: 1px solid currentColor; display: inline-block; width: max-content; }
+  .site__night .cta { background: #efebe2; color: #0a0e12; border-color: #efebe2; }
+  .mail { background: #f3f1eb; color: #12151a; padding: 40px clamp(20px, 5vw, 56px); font-family: var(--text); }
+  .mail .k { color: rgba(18, 21, 26, 0.7); }
+  .mail h4 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4vw, 44px); letter-spacing: -0.015em; line-height: 1.05; margin: 14px 0 20px; }
+  .mail .line { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(18, 21, 26, 0.14); font-size: 15px; font-variant-numeric: tabular-nums; }
+  .mail .line:last-of-type { border-bottom: 1px solid rgba(18, 21, 26, 0.14); }
+  .mail .line span:first-child { color: rgba(18, 21, 26, 0.7); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; padding-top: 3px; }
+  .mail .sig { margin-top: 24px; font-family: var(--display); font-style: italic; font-size: 20px; }
+  .post { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .post__img {
+    aspect-ratio: 4 / 5; position: relative; overflow: hidden;
+    background:
+      radial-gradient(120% 70% at 50% 100%, #3a2410 0%, #0a0e12 60%),
+      linear-gradient(#e0a25a 0%, #b05f2f 35%, #35202a 70%, #0a0e12 100%);
+  }
+  .post__img::after { content: ''; position: absolute; left: 0; right: 0; top: 56%; height: 1px; background: rgba(239, 235, 226, 0.35); }
+  .post__img .k { position: absolute; left: 18px; bottom: 18px; color: #efebe2; }
+  .post__txt { padding: 28px; display: grid; align-content: start; gap: 12px; background: #0a0e12; color: #efebe2; font-size: 15px; }
+  .post__txt .name { font-family: var(--display); letter-spacing: 0.18em; text-transform: uppercase; font-size: 13px; color: #d6b67c; }
+  .post__txt p { color: rgba(239, 235, 226, 0.85); }
+
+  .checks { list-style: none; padding: 0; display: grid; gap: 0; }
+  .checks li { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+  .checks li:last-child { border-bottom: 1px solid var(--rule); }
+  .checks strong { font-weight: 500; }
+  .colophon { padding-top: 48px; padding-bottom: 48px; font-size: 13.5px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px 40px; break-before: auto; }
+
+  @media (max-width: 760px) {
+    .terr__row { grid-template-columns: 1fr; gap: 16px; }
+    .spec { grid-template-columns: 1fr; gap: 6px; }
+    .checks li { grid-template-columns: 1fr; gap: 4px; }
+    .site { height: 520px; grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .site__seam { left: 0; right: 0; top: 50%; bottom: auto; width: auto; height: 1px; transform: translateY(-50%); }
+    .site__crest { top: 50%; transform: translate(-50%, -50%); }
+    .site__prog { bottom: auto; top: 50%; left: auto; right: 12px; transform: translateY(-50%); }
+    .post { grid-template-columns: 1fr; }
+    .words ul { columns: 1; }
+    .map__pt { max-width: 96px; font-size: 11px; }
+  }
+  @media print {
+    :root { --ground: #f3f1eb; --ink: #12151a; }
+    * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    section { break-before: page; padding: 40px 32px; }
+    .cover { min-height: auto; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cover__name span { animation: rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .cover__name span:nth-child(2) { animation-delay: 90ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div>
+    <svg class="cover__crest" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4c1.6 6 3.2 9 6 12-2 1-4 1.4-6 1.4S28 17 26 16c2.8-3 4.4-6 6-12Zm0 16.4c2.4 0 4.6-.4 7-1.4 4 3.6 9.6 5.2 17 3.6-4.8 5.4-10.6 8.4-16.4 8.6 1.2 2.4 1 5-.6 7.6 4.6-.6 10-3.6 15.6-9.4-1.2 9.2-8.2 15.2-18 16.4L32 60l-4.6-13.8c-9.8-1.2-16.8-7.2-18-16.4 5.6 5.8 11 8.8 15.6 9.4-1.6-2.6-1.8-5.2-.6-7.6-5.8-.2-11.6-3.2-16.4-8.6 7.4 1.6 13-.1 17-3.6 2.4 1 4.6 1.4 7 1.4Z"/></svg>
+  </div>
+  <h1 class="cover__name">
+    <span>Le jour en mer,</span>
+    <span class="it">la nuit à bord.</span>
+  </h1>
+  <div class="cover__meta">
+    <div><span class="k">Marque</span><strong>Harmonie Yacht, port de Carnon</strong></div>
+    <div><span class="k">Territoire</span><strong>La carte d'invitation</strong></div>
+    <div><span class="k">Effet recherché</span><strong>Rare · exact · à vous</strong></div>
+    <div><span class="k">Édition</span><strong class="num">Septembre 2026</strong></div>
+  </div>
+</section>
+
+<section>
+  <span class="k">01 · Positionnement</span>
+  <p class="big">Pour ceux qui comparent avec un hôtel plutôt qu'avec un autre bateau, Harmonie Yacht est le seul yacht de Carnon qui se réserve comme une suite, le jour ou la nuit, parce qu'il n'y en a qu'un et que ses deux propriétaires vous y attendent à l'heure dite.</p>
+  <div class="grid-2" style="margin-top:56px">
+    <div>
+      <h3>La tension</h3>
+      <p>La rareté d'un seul bateau, tenue avec l'exactitude d'un service qui écrit ses heures, ses dates et ses prix. Le luxe du secteur cache les prix et multiplie les adjectifs. Ici, une invitation : un lieu, une heure, un montant.</p>
+    </div>
+    <div>
+      <h3>Le client</h3>
+      <p>Un couple ou un petit groupe de Montpellier, souvent pour une date : un anniversaire, une demande, un EVJF, un « on se fait un truc ». Ils réservent depuis un téléphone. Ce qu'ils craignent : que le bateau ne soit pas celui des photos, qu'on soit dix inconnus à bord, qu'un supplément arrive à la fin.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="k">02 · Ce que les clients disent</span>
+  <h2>« Aux petits soins. »</h2>
+  <p class="lede">Vingt avis Google, texte inchangé. La marque n'a pas été inventée : elle a été lue.</p>
+  <div class="grid-2" style="margin-top:48px">
+    <ul class="rowlist">
+      <li><span>« aux petits soins »</span><span class="num">6 avis sur 20</span></li>
+      <li><span>Robin, ou « Robin et Ludivine », nommés</span><span class="num">8 sur 20</span></li>
+      <li><span>« le coucher de soleil » (magnifique, à couper le souffle)</span><span class="num">5 sur 20</span></li>
+      <li><span>« gentillesse », « professionnalisme »</span><span class="num">5 sur 20</span></li>
+      <li><span>« je recommande à 100 % »</span><span class="num">4 sur 20</span></li>
+      <li><span>entre amis · anniversaire · en famille · EVJF</span><span class="num">5 · 3 · 3 · 1</span></li>
+    </ul>
+    <div>
+      <p class="quote">« Je me suis sentie en vacances à seulement 15 minutes de Montpellier. »<small>Sofia, avis Google</small></p>
+      <p class="quote" style="margin-top:32px">« Le petit-déjeuner était particulièrement généreux et délicieux. »<small>Jess, avis Google</small></p>
+    </div>
+  </div>
+  <h3>Ce qu'aucun client n'écrit</h3>
+  <p>« Insolite », « inoubliable », « haut de gamme », « expérience unique ». Ce sont les mots des sites du secteur, pas ceux des gens. Sur les places de marché, l'expression qui revient est « bateau conforme » : la peur d'acheter, c'est un bateau qui ne ressemble pas à l'annonce.</p>
+</section>
+
+<section>
+  <span class="k">03 · La carte</span>
+  <h2>La case vide.</h2>
+  <p class="lede">Deux axes qui pèsent dans l'achat, et cinq acteurs placés dessus. La zone hachurée est vide parce qu'elle exige un seul bateau, deux hôtes présents et deux métiers : naviguer, héberger.</p>
+  <div class="map" aria-label="Carte de positionnement">
+    <div class="map__y k"><span>On vous reçoit</span><span>Prestation nautique</span></div>
+    <div class="map__field">
+      <div class="map__void" aria-hidden="true"></div>
+      <div class="map__pt" style="left:62%;top:86%">Samboat, Click&amp;Boat</div>
+      <div class="map__pt" style="left:22%;top:72%">Captain Méditerranée</div>
+      <div class="map__pt" style="left:74%;top:50%">Infinity Yacht</div>
+      <div class="map__pt" style="left:88%;top:70%">Annonces Airbnb, Unicstay</div>
+      <div class="map__pt" style="left:30%;top:20%">Hôtel Neptune</div>
+      <div class="map__pt map__pt--us" style="left:80%;top:20%">Harmonie Yacht</div>
+    </div>
+    <div class="map__x k"><span>Partagé</span><span>À vous seuls</span></div>
+  </div>
+  <h3>Le cliché du secteur, refusé</h3>
+  <p>Le bleu marine avec du blanc, plus du doré chez ceux qui se disent luxe. La sans-serif géométrique en gras. Les verres levés vers l'objectif, le bateau vu du drone à midi. Les mots <em>inoubliable</em>, <em>insolite</em>, <em>embarquez</em>. La grille de cartes avec filtres, qui dit « comparez-nous ».</p>
+</section>
+
+<section>
+  <span class="k">04 · Trois territoires</span>
+  <h2>Trois paris, un retenu.</h2>
+  <div class="terr">
+    <div class="terr__row">
+      <div>
+        <h3>La maison du port</h3>
+        <p class="muted">L'hôtellerie de charme ↔ le large. La maison d'hôtes qui prend la mer, tenue par ses deux propriétaires.</p>
+      </div>
+      <div>
+        <span class="k">Effet</span><p>Accueilli, chaud, simple.</p>
+        <span class="k" style="margin-top:14px">Registre</span><p>Enduits chauds, teck, lin. Photos de mains et de tables. Serif humaniste.</p>
+      </div>
+      <div>
+        <span class="k">Risque</span><p>Le crème et la terre cuite de toutes les marques artisanales : le réflexe du secteur premium. Lit « chambre d'hôtes » et sous-vend le bateau et son prix.</p>
+      </div>
+    </div>
+    <div class="terr__row terr__pick">
+      <div>
+        <h3>La carte d'invitation</h3>
+        <p class="muted">La rareté d'un seul bateau ↔ l'exactitude d'un service. Le bristol d'un yacht-club : du blanc de coque, une ligne de laiton, des capitales espacées, une heure et une date.</p>
+      </div>
+      <div>
+        <span class="k">Effet</span><p>Rare, exact, à vous.</p>
+        <span class="k" style="margin-top:14px">Registre</span><p>Blanc de coque (froid, pas crème), encre bleu-noir, laiton sous 10 %. Didone en grand corps et en capitales espacées, chiffres tabulaires. Photos pleines, sans filtre. Aucune carte, aucune ombre.</p>
+      </div>
+      <div>
+        <span class="k">Risque</span><p>La froideur, et une Didone qui lirait « mode ». Parade : toute la chaleur est dans les photos et dans les mots vrais (les prénoms, les heures, le Neptune).</p>
+      </div>
+    </div>
+    <div class="terr__row">
+      <div>
+        <h3>Le ciel à l'heure</h3>
+        <p class="muted">Un site sans couleur à lui ↔ le ciel de Carnon qui la lui donne en direct, calculée sur la position réelle du soleil au moment de la visite. Pas de photo au-dessus du pli.</p>
+      </div>
+      <div>
+        <span class="k">Effet</span><p>Vivant, ici, maintenant.</p>
+        <span class="k" style="margin-top:14px">Registre</span><p>Le ciel comme héro, du type immense, rien d'autre.</p>
+      </div>
+      <div>
+        <span class="k">Risque</span><p>Une marque qui change de couleur toutes les heures ne se reconnaît pas ; contraste invérifiable ; les prix disparaissent derrière le tour. Invendable tel quel. Mais c'est de lui que vient la décision signature du territoire retenu.</p>
+      </div>
+    </div>
+  </div>
+  <table class="score">
+    <thead><tr><th>Territoire</th><th class="num">Différenciation</th><th class="num">Prix</th><th class="num">Cinq ans</th><th class="num">Exécution</th><th class="num">Extension</th><th class="num">Total</th></tr></thead>
+    <tbody>
+      <tr><td>La maison du port</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">4</td><td class="num">18</td></tr>
+      <tr class="pick"><td>La carte d'invitation</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">22</td></tr>
+      <tr><td>Le ciel à l'heure</td><td class="num">5</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">14</td></tr>
+    </tbody>
+  </table>
+  <h3>La décision signature</h3>
+  <p>Le site vit à l'heure de Carnon. Sa page d'accueil tient le jour et la nuit côte à côte, et se ferme du côté où en est le soleil : le jour avant le couchant, la nuit après. Elle dit l'heure exacte du couchant de ce soir. Un concurrent qui ne vend que l'un ou l'autre ne peut pas faire ce geste.</p>
+</section>
+
+<section>
+  <span class="k">05 · Couleurs</span>
+  <h2>La couleur du bateau.</h2>
+  <p class="lede">Le sol du jour est le blanc de la coque, celui de la nuit est l'eau du port. Le laiton du logo est la seule couleur. Toute la chaleur est dans les photographies.</p>
+  <div class="swatches">
+    <div class="sw sw--wide" style="background:#f3f1eb;color:#12151a"><b>Voile</b><span class="num">#F3F1EB · sol du jour</span><span>Le fond de toutes les pages de jour. Jamais de blanc pur à sa place.</span></div>
+    <div class="sw sw--wide" style="background:#0a0e12;color:#efebe2"><b>Eau du port</b><span class="num">#0A0E12 · sol de la nuit</span><span>Le fond de toutes les pages de nuit. Jamais de noir pur.</span></div>
+    <div class="sw" style="background:#12151a;color:#efebe2"><b>Encre de bord</b><span class="num">#12151A · encre du jour</span><span>Texte et boutons pleins. 16,2 : 1 sur Voile.</span></div>
+    <div class="sw" style="background:#efebe2;color:#12151a"><b>Os</b><span class="num">#EFEBE2 · encre de la nuit</span><span>Texte sur Eau du port et sur photo. 16,3 : 1.</span></div>
+    <div class="sw" style="background:#e8e5dd;color:#12151a"><b>Écume</b><span class="num">#E8E5DD · second sol du jour</span><span>Blocs, champs, zones en retrait.</span></div>
+    <div class="sw" style="background:#141a20;color:#efebe2"><b>Fond de cale</b><span class="num">#141A20 · second sol de la nuit</span><span>Blocs et champs sur la nuit.</span></div>
+    <div class="sw" style="background:#9c7435;color:#12151a"><b>Laiton</b><span class="num">#9C7435 · signature, surfaces</span><span>Filets, blason, aplat de bouton. Pas en texte courant sur Voile (3,8 : 1).</span></div>
+    <div class="sw" style="background:#7a5a24;color:#f3f1eb"><b>Laiton profond</b><span class="num">#7A5A24 · signature, texte</span><span>Liens et petits textes sur Voile. 5,6 : 1.</span></div>
+    <div class="sw" style="background:#d6b67c;color:#0a0e12"><b>Laiton de nuit</b><span class="num">#D6B67C · signature sur la nuit</span><span>Tout usage laiton sur Eau du port. 9,9 : 1.</span></div>
+  </div>
+  <div class="ratio" aria-hidden="true">
+    <span style="width:60%;background:#f3f1eb;border:1px solid var(--rule)"></span>
+    <span style="width:30%;background:#12151a"></span>
+    <span style="width:10%;background:#9c7435"></span>
+  </div>
+  <p class="muted">Répartition : 60 % de sol, 30 % d'encre, moins de 10 % de laiton. Au-delà, le laiton cesse d'être un signal et devient un fond. Trois couleurs fonctionnelles seulement pour le site : accord <span class="num">#2F6B50</span>, refus <span class="num">#A3372E</span>, attention = laiton.</p>
+</section>
+
+<section>
+  <span class="k">06 · Typographie</span>
+  <h2>Ce que le logo dictait.</h2>
+  <p class="lede">Le nom est gravé en capitales romaines à empattements fins. Bodoni Moda prolonge ce dessin à toutes les tailles : pleins épais, déliés en cheveu, le contraste de trait le plus fort du répertoire libre. Instrument Sans porte le texte et disparaît. Deux familles, licence OFL, auto-hébergées.</p>
+  <div class="spec"><span class="k">Affiche · 144 · −0,03 em</span><div class="s s--144">À vous seuls.</div></div>
+  <div class="spec"><span class="k">Titre 1 · 96 · −0,025 em</span><div class="s s--96">La nuit <span style="font-style:italic">à bord</span></div></div>
+  <div class="spec"><span class="k">Titre 2 · 64 · −0,02 em</span><div class="s s--64">Quatre façons de prendre le large</div></div>
+  <div class="spec"><span class="k">Titre 3 · 44 · −0,015 em</span><div class="s s--44">Le petit-déjeuner est servi jusqu'à 10 h</div></div>
+  <div class="spec"><span class="k">Mot-marque · capitales 0,18 em</span><div class="s s--24 caps">Harmonie Yacht · Carnon</div></div>
+  <div class="spec"><span class="k">Texte grand · 19 · 1,55</span><p class="t t--19">Le yacht est à vous, le programme aussi. Sorties de 2 h à 8 h, entre 9 h et 21 h, carburant et mouillage compris. Vous n'avez rien à organiser.</p></div>
+  <div class="spec"><span class="k">Texte · 16 · 1,6</span><p class="t t--16">Amarré au calme dans le port de Carnon, il offre ce qu'aucune chambre d'hôtel ne peut offrir : le clapot contre la coque, le port qui s'endort, un réveil face à la mer. Formule réservée à deux personnes, de 18 h à 12 h.</p></div>
+  <div class="spec"><span class="k">Légende · 13,5</span><p class="t t--13">Le pont arrière, <span class="num">20 h 40</span>. Photographie non retouchée.</p></div>
+  <div class="spec"><span class="k">Repère · 11,5 · 0,22 em</span><p class="k" style="color:var(--ink)">Prochaines dates libres</p></div>
+  <p class="abc" aria-hidden="true">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz <span class="num">0123456789</span> &amp; à é ç</p>
+  <h3>Réglages</h3>
+  <p>Graisse 400 seule sur l'affichage : à 96 px, elle est déjà un trait. L'interlettrage se resserre en montant (−0,015 em à 44, −0,03 à 144). L'italique porte un mot d'émotion, jamais une phrase. Chiffres tabulaires sur toute heure et tout prix. Sur la nuit, un cran de graisse en plus sur les repères, un peu plus d'air entre les lignes. Sous 700 px, le héro descend d'un cran.</p>
+</section>
+
+<section>
+  <span class="k">07 · Logo</span>
+  <h2>Gardé tel quel.</h2>
+  <p class="lede">Le blason en laiton et le nom en capitales sont le capital de la marque : ils ne sont pas redessinés. Deux versions, une par sol, et des règles.</p>
+  <div class="logo-box">
+    <div class="logo-cell" style="background:#f3f1eb;color:#9c7435">
+      <div>
+        <svg class="crest" viewBox="0 0 64 64" aria-hidden="true"><path fill="#9c7435" d="M32 4c1.6 6 3.2 9 6 12-2 1-4 1.4-6 1.4S28 17 26 16c2.8-3 4.4-6 6-12Zm0 16.4c2.4 0 4.6-.4 7-1.4 4 3.6 9.6 5.2 17 3.6-4.8 5.4-10.6 8.4-16.4 8.6 1.2 2.4 1 5-.6 7.6 4.6-.6 10-3.6 15.6-9.4-1.2 9.2-8.2 15.2-18 16.4L32 60l-4.6-13.8c-9.8-1.2-16.8-7.2-18-16.4 5.6 5.8 11 8.8 15.6 9.4-1.6-2.6-1.8-5.2-.6-7.6-5.8-.2-11.6-3.2-16.4-8.6 7.4 1.6 13-.1 17-3.6 2.4 1 4.6 1.4 7 1.4Z"/></svg>
+        <div class="wordmark">Harmonie<small>Yacht</small></div>
+      </div>
+      <span class="k" style="color:rgba(18,21,26,.7)">Laiton sur Voile</span>
+    </div>
+    <div class="logo-cell" style="background:#0a0e12;color:#efebe2">
+      <div>
+        <svg class="crest" viewBox="0 0 64 64" aria-hidden="true"><path fill="#efebe2" d="M32 4c1.6 6 3.2 9 6 12-2 1-4 1.4-6 1.4S28 17 26 16c2.8-3 4.4-6 6-12Zm0 16.4c2.4 0 4.6-.4 7-1.4 4 3.6 9.6 5.2 17 3.6-4.8 5.4-10.6 8.4-16.4 8.6 1.2 2.4 1 5-.6 7.6 4.6-.6 10-3.6 15.6-9.4-1.2 9.2-8.2 15.2-18 16.4L32 60l-4.6-13.8c-9.8-1.2-16.8-7.2-18-16.4 5.6 5.8 11 8.8 15.6 9.4-1.6-2.6-1.8-5.2-.6-7.6-5.8-.2-11.6-3.2-16.4-8.6 7.4 1.6 13-.1 17-3.6 2.4 1 4.6 1.4 7 1.4Z"/></svg>
+        <div class="wordmark">Harmonie<small>Yacht</small></div>
+      </div>
+      <span class="k" style="color:rgba(239,235,226,.72)">Os sur Eau du port</span>
+    </div>
+    <div class="logo-cell" style="background:var(--ground-2);color:var(--ink)">
+      <div class="clear" aria-hidden="true"></div>
+      <div class="wordmark" style="font-size:22px">Harmonie<small>Yacht</small></div>
+      <span class="k">Zone de protection : la hauteur du H</span>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:20px;font-size:13.5px">Le blason est schématisé ici en CSS ; le fichier de référence reste le PNG d'origine (une vectorisation est à commander si l'impression le demande).</p>
+  <ul class="checks" style="margin-top:40px">
+    <li><strong>Taille minimale</strong><span>120 px de large avec le nom. 28 px pour le blason seul, en monogramme de navigation.</span></li>
+    <li><strong>Sur une photo</strong><span>Uniquement la version Os, sur une zone où le contraste mesuré dépasse 4,5 : 1. Sinon, pas de logo.</span></li>
+    <li><strong>Jamais</strong><span>Déformé. En navy. Avec une ombre. En dégradé. À côté d'un badge de place de marché. Redessiné pour « moderniser ».</span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="k">08 · Imagerie</span>
+  <h2>Depuis le pont, à hauteur d'œil.</h2>
+  <div class="grid-2">
+    <div>
+      <p>Photographies réelles uniquement : ce bateau, ce port, ces tables. Aucune image générée, aucune banque. La lumière est celle de la fin de journée et des lampes ; le midi n'existe pas sur ce site. Le cadrage est celui du visiteur, sur le pont, horizon droit. Le bateau vu de l'extérieur n'apparaît qu'une fois par page, en entier.</p>
+      <p style="margin-top:16px">Les gens sont de dos ou de profil, dans l'action : nager, servir, lire. Aucun filtre, aucun duotone, aucun grain, des angles vifs. Chaque image posée dans une colonne porte une légende en petites capitales qui dit le lieu et l'heure.</p>
+    </div>
+    <ul class="checks">
+      <li><strong>Jamais</strong><span>Les verres levés vers l'objectif.</span></li>
+      <li><strong>Jamais</strong><span>Le bateau depuis un drone à midi.</span></li>
+      <li><strong>Jamais</strong><span>Une table dressée sans personne autour.</span></li>
+      <li><strong>Texte sur photo</strong><span>Toujours Os, sur un voile posé sous le texte seulement, mesuré à 4,5 : 1 sur l'image la plus claire.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <span class="k">09 · Ton de voix</span>
+  <h2>Un lieu, une heure, un montant.</h2>
+  <div class="grid-2">
+    <div>
+      <div class="slider"><span>Formel</span><div class="bar"><i style="left:30%"></i></div><span style="text-align:right">Direct</span></div>
+      <div class="slider"><span>Sobre</span><div class="bar"><i style="left:20%"></i></div><span style="text-align:right">Expressif</span></div>
+      <div class="slider"><span>Expert</span><div class="bar"><i style="left:60%"></i></div><span style="text-align:right">Complice</span></div>
+      <p style="margin-top:24px">Un chiffre plutôt qu'un superlatif. Une phrase survit à la suppression de ses adjectifs. Les prix et les heures sont écrits. Le « vous » à un seul moment par page, là où ça compte. « Aux petits soins » entre guillemets : ce sont leurs mots, pas les nôtres.</p>
+      <p class="quote" style="margin-top:32px">Le jour en mer, la nuit à bord.<small>Signature. Alternatives : « Un seul yacht. À vous. » · « Carnon, 18 h. Le bateau est à vous. »</small></p>
+    </div>
+    <div class="words">
+      <div><span class="k">On utilise</span><ul><li>à bord</li><li>à quai</li><li>le ponton</li><li>le couchant</li><li>à vous seuls</li><li>le petit-déjeuner</li><li>la cabine</li><li>l'heure dite</li><li>la date libre</li><li>Carnon</li><li>Robin et Ludivine</li></ul></div>
+      <div><span class="k">On bannit</span><ul class="ban"><li>inoubliable</li><li>insolite</li><li>unique</li><li>embarquez</li><li>évasion</li><li>haut de gamme</li><li>luxe</li><li>premium</li><li>magique</li><li>découvrez</li><li>expérience (seul)</li><li>sur-mesure</li></ul></div>
+    </div>
+  </div>
+  <h3>Trois exemples, dans le ton</h3>
+  <ul class="checks">
+    <li><strong>Accueil</strong><span>Le jour en mer, la nuit à bord. Un seul yacht à Carnon, à vous seuls : pour dix le temps d'une sortie, pour deux le temps d'une nuit.</span></li>
+    <li><strong>Confirmation</strong><span>C'est réservé. Samedi 12 septembre, 18 h, ponton de l'Hôtel Neptune, Carnon. Le yacht et la cabine seront prêts ; le petit-déjeuner est servi jusqu'à 10 h. Robin et Ludivine.</span></li>
+    <li><strong>Légende de post</strong><span>20 h 41, le couchant de ce soir vu du pont arrière. Demain il tombe à 20 h 39. Les dates libres sont sur le site.</span></li>
+  </ul>
+</section>
+
+<section>
+  <span class="k">10 · Applications</span>
+  <h2>La marque en situation.</h2>
+  <div class="apps">
+    <div class="app">
+      <div class="app__label k">L'accueil du site : le jour et la nuit côte à côte, le blason sur la couture</div>
+      <div class="site" aria-label="Maquette de l'accueil">
+        <div class="site__day">
+          <div class="k" style="color:rgba(18,21,26,.7)">Le jour · Sorties en mer</div>
+          <h4>Le large,<br>à vous seuls.</h4>
+          <div>
+            <div class="facts"><span>2 h à 8 h</span><span>10 invités</span><span>dès 380 €</span></div>
+            <span class="cta" style="margin-top:16px">Voir les sorties</span>
+          </div>
+        </div>
+        <div class="site__night">
+          <div class="k" style="color:rgba(239,235,226,.72)">La nuit · Nuits à bord</div>
+          <h4>La suite<br>qui s'endort au port.</h4>
+          <div>
+            <div class="facts"><span>18 h → 12 h</span><span>à deux</span><span>dès 250 €</span></div>
+            <span class="cta" style="margin-top:16px">Voir les nuits</span>
+          </div>
+        </div>
+        <div class="site__seam" aria-hidden="true"></div>
+        <div class="site__crest" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 4c1.6 6 3.2 9 6 12-2 1-4 1.4-6 1.4S28 17 26 16c2.8-3 4.4-6 6-12Zm0 16.4c2.4 0 4.6-.4 7-1.4 4 3.6 9.6 5.2 17 3.6-4.8 5.4-10.6 8.4-16.4 8.6 1.2 2.4 1 5-.6 7.6 4.6-.6 10-3.6 15.6-9.4-1.2 9.2-8.2 15.2-18 16.4L32 60l-4.6-13.8c-9.8-1.2-16.8-7.2-18-16.4 5.6 5.8 11 8.8 15.6 9.4-1.6-2.6-1.8-5.2-.6-7.6-5.8-.2-11.6-3.2-16.4-8.6 7.4 1.6 13-.1 17-3.6 2.4 1 4.6 1.4 7 1.4Z"/></svg></div>
+        <div class="site__prog num" aria-hidden="true">Couchant 20 h 09</div>
+      </div>
+    </div>
+    <div class="app">
+      <div class="app__label k">L'e-mail de confirmation</div>
+      <div class="mail">
+        <span class="k">Harmonie Yacht · Carnon</span>
+        <h4>C'est réservé.</h4>
+        <div class="line"><span>Date</span><span>Samedi 12 septembre 2026</span></div>
+        <div class="line"><span>Heure</span><span>18 h, embarquement au ponton</span></div>
+        <div class="line"><span>Lieu</span><span>Port de Carnon, à côté de l'Hôtel Neptune</span></div>
+        <div class="line"><span>Formule</span><span>Nuit Prestige · sortie au couchant, tapas Una Mas, petit-déjeuner jusqu'à 10 h</span></div>
+        <div class="line"><span>Acompte</span><span>114 € réglés · solde 266 € à bord</span></div>
+        <p class="sig">Robin et Ludivine</p>
+      </div>
+    </div>
+    <div class="app">
+      <div class="app__label k">Un post Instagram</div>
+      <div class="post">
+        <div class="post__img" aria-label="Photographie du couchant, schématisée"><span class="k">Le pont arrière · 20 h 41</span></div>
+        <div class="post__txt">
+          <span class="name">Harmonie Yacht</span>
+          <p>20 h 41, le couchant de ce soir vu du pont arrière. Demain il tombe à 20 h 39.</p>
+          <p>Les dates libres sont sur le site.</p>
+          <p style="color:rgba(239,235,226,.5);font-size:13px">Carnon, Hérault</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="k">11 · Validation</span>
+  <h2>Six contrôles passés, un à mener.</h2>
+  <ul class="checks">
+    <li><strong>Le concurrent</strong><span>Remplacer le nom par Infinity Yacht ou Captain Méditerranée : le jour et la nuit sur le même bateau, les deux hôtes nommés, l'heure du couchant, le port à côté du Neptune. Rien ne tient. Différenciant.</span></li>
+    <li><strong>L'effet</strong><span>Devant la palette et les spécimens sans lire : blanc de coque, un cheveu de laiton, une Didone en grand. Rare, exact. Le « à vous » vient des mots, pas des couleurs, et c'est voulu.</span></li>
+    <li><strong>Le plissement</strong><span>À 25 % : une masse claire, une masse noire, un fil de laiton entre les deux, un nom en capitales. Identifiable en tache.</span></li>
+    <li><strong>Le noir et blanc</strong><span>Sans le laiton, la Didone et la couture jour / nuit tiennent seules. La marque ne repose pas sur sa couleur.</span></li>
+    <li><strong>La justification</strong><span>Chaque choix renvoie à un fait de ce projet : le logo, les vingt avis, le Neptune, l'heure du couchant à Carnon. Aucune ne se transpose à un autre bateau.</span></li>
+    <li><strong>Les interdits</strong><span>Concrets et vérifiables : pas de bleu, pas d'ombre, pas de rayon, pas de chiffre inventé, pas de mot banni, y compris dans les balises meta.</span></li>
+    <li><strong>À mener</strong><span>Cinq personnes du segment, le brand book sans explication, trois questions : « Que vend cette marque ? », « Cher ou pas cher ? », « Décris-la en trois mots. » Puis le rappel à 24 h. Si les trois mots sont loin de rare, exact, à vous, on revient à l'étape 4.</span></li>
+  </ul>
+  <h3>Ce que ce livrable ne contient pas</h3>
+  <p>Le logo vectorisé (le fichier source est un PNG). Les fichiers d'impression (carte de visite, flyer au port), décrits mais pas produits. Le test externe, à mener par le client ; il ne bloque pas la mise en ligne. Vers le site : <code>brand.md</code> et son bloc de tokens sont l'entrée du travail d'interface, et les décisions d'identité n'y sont pas rediscutées.</p>
+</section>
+
+<section class="colophon">
+  <span>Harmonie Yacht · Port de Carnon, Hérault</span>
+  <span>Brand book, édition de septembre 2026</span>
+  <span>Composé en Bodoni Moda et Instrument Sans, sur Voile et Eau du port.</span>
+</section>
+</body>
+</html>

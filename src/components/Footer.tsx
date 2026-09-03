@@ -54,8 +54,8 @@ export default function Footer() {
           </ul>
         </div>
         <div className="footer__legal">
-          <span>© {new Date().getFullYear()} Harmonie Group — tous droits réservés</span>
-          <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
+          <span>© {new Date().getFullYear()} Harmonie Group · tous droits réservés</span>
+          <span>Port de Carnon, Hérault · à côté de l’Hôtel Neptune</span>
         </div>
         <div className="footer__legal">
           <span>Nos partenaires : Hôtel Neptune · Champagne Maison Perla · Una Mas</span>

@@ -290,7 +290,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               <option value="2h">2 heures</option>
               <option value="3h">3 heures</option>
               <option value="4h">4 heures</option>
-              <option value="8h">8 heures — Ultra Premium (1 250 €, tout compris)</option>
+              <option value="8h">8 heures · Ultra Premium (1 250 €, tout compris)</option>
             </select>
           </div>
           {!isUltraPremium ? (
@@ -313,7 +313,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             </div>
           ) : (
             <p className="field__note field--full">
-              Journée aux Aresquiers, capitaine et tout inclus — efoil et BBQ à bord.
+              Journée aux Aresquiers, capitaine et tout inclus, efoil et BBQ à bord.
             </p>
           )}
         </>
@@ -325,8 +325,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             value={nightFormule}
             onChange={(e) => setNightFormule(e.target.value as NightFormule)}
           >
-            <option value="prestige">Nuit Prestige — avec sortie en mer & tapas (380 €)</option>
-            <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (250 €)</option>
+            <option value="prestige">Nuit Prestige · avec sortie en mer & tapas (380 €)</option>
+            <option value="sans-sortie">Nuit à quai · petit-déjeuner seul (250 €)</option>
           </select>
           {nightFormule === 'sans-sortie' ? (
             <p className="field__note">Disponible à partir du 1er septembre.</p>

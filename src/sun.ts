@@ -45,6 +45,25 @@ function declination(L: number) {
 
 /* Date/heure UTC du coucher de soleil pour un jour et un lieu donnés. */
 export function sunsetAt(date: Date, lat = CARNON.lat, lng = CARNON.lng): Date | null {
+  return sunEvent(date, 'set', lat, lng)
+}
+
+/* Le lever, par la même route : le midi solaire moins le demi-arc. */
+export function sunriseAt(date: Date, lat = CARNON.lat, lng = CARNON.lng): Date | null {
+  return sunEvent(date, 'rise', lat, lng)
+}
+
+/* Est-ce le jour à Carnon, à cet instant ? Entre le lever et le coucher
+   du jour civil courant. Si le calcul échoue (impossible ici), on répond
+   « jour » : c'est le côté qui vend le plus. */
+export function isDayAt(now: Date): boolean {
+  const rise = sunriseAt(now)
+  const set = sunsetAt(now)
+  if (!rise || !set) return true
+  return now >= rise && now <= set
+}
+
+function sunEvent(date: Date, which: 'rise' | 'set', lat: number, lng: number): Date | null {
   const lw = RAD * -lng
   const phi = RAD * lat
 
@@ -65,8 +84,8 @@ export function sunsetAt(date: Date, lat = CARNON.lat, lng = CARNON.lng): Date |
   if (cosH > 1 || cosH < -1) return null
 
   const H = Math.acos(cosH)
-  const Jset = Jnoon + H / (2 * Math.PI)
-  return fromJulian(Jset)
+  const J = which === 'set' ? Jnoon + H / (2 * Math.PI) : Jnoon - H / (2 * Math.PI)
+  return fromJulian(J)
 }
 
 /* « 20 h 14 », à l'heure de Carnon quel que soit le fuseau du visiteur. */

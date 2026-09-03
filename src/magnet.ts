@@ -25,7 +25,10 @@ export function useMagnet() {
     let active: HTMLElement | null = null
 
     const onMove = (e: PointerEvent) => {
-      const el = (e.target as HTMLElement | null)?.closest<HTMLElement>(SEL)
+      /* Pas d'aimant sur l'accueil : la scène partagée l'interdit, et c'est
+         la couture qui répond au pointeur, pas les boutons. */
+      if (location.pathname === '/') return
+      const el = (e.target as HTMLElement | null)?.closest<HTMLElement>(SEL) ?? null
       if (el !== active) {
         if (active) release(active)
         active = el
