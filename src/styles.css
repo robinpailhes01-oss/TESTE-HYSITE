@@ -2723,4 +2723,7 @@ html[data-ground='night'] .field select {
     transition-duration: 0.01ms !important;
   }
   .btn,
+  .wa-fab {
+    transform: none !important;
+  }
 }
