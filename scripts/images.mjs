@@ -5,6 +5,16 @@
 import { readdirSync, statSync, existsSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 const DIR = 'public/images'
+
+// Les variantes et le manifeste sont versionnés : sur une machine sans Python
+// ou sans Pillow (la machine de build Vercel), le script n'a rien à faire et
+// ne doit surtout pas faire échouer le build.
+try {
+  execFileSync('python3', ['-c', 'import PIL'], { stdio: 'pipe' })
+} catch {
+  console.log('images : Pillow absent, variantes versionnées utilisées telles quelles')
+  process.exit(0)
+}
 const WIDTHS = [480, 800, 1200, 1600]
 const skip = /^(logo-|og-)|-\d{3,4}\.webp$/
 const files = readdirSync(DIR).filter((f) => /\.(jpe?g|webp|png)$/i.test(f) && !skip.test(f))
@@ -28,5 +38,14 @@ for (const f of files) {
   }
 }
 console.log(`variantes : ${made} générées, ${kept} déjà à jour`)
-// Le manifeste des largeurs réelles (src/images.json) est produit par le même
-// passage : voir la commande « npm run images ».
+
+// Le manifeste des largeurs réelles, lu par src/pic.ts.
+import { writeFileSync } from 'node:fs'
+const manifest = {}
+for (const f of files) {
+  const base = f.replace(/\.(jpe?g|webp|png)$/i, '')
+  const w = +execFileSync('python3', ['-c', 'import sys;from PIL import Image;print(Image.open(sys.argv[1]).width)', `${DIR}/${f}`]).toString()
+  manifest[`/images/${f}`] = { w, v: WIDTHS.filter((v) => existsSync(`${DIR}/${base}-${v}.webp`)) }
+}
+writeFileSync('src/images.json', JSON.stringify(manifest, null, 0) + '\n')
+console.log(`manifeste : ${Object.keys(manifest).length} images`)
