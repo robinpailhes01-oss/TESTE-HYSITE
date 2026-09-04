@@ -18,9 +18,8 @@ export default function Booking() {
             Dites-nous la date, <span className="it">nous préparons le reste</span>
           </h2>
           <p className="booking__text">
-            Choisissez votre formule et votre date, réglez l’acompte de 30&nbsp;% en ligne — votre
-            place est bloquée immédiatement. Nous revenons vers vous sous 24&nbsp;heures pour
-            finaliser les détails.
+            Choisissez votre formule et votre date, envoyez-nous la demande — aucun paiement en
+            ligne. Nous confirmons sous 24&nbsp;heures, et le règlement se fait à bord.
           </p>
           <div className="booking__direct">
             <span className="kicker">Directement</span>

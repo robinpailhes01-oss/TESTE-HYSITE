@@ -25,7 +25,7 @@ export function meta() {
     {
       name: 'description',
       content:
-        "Location privée d'un yacht avec skipper à Carnon (Hérault) : sorties en mer à la demi-journée et nuits à bord. Réservation en ligne, acompte de 30 %.",
+        "Location privée d'un yacht avec skipper à Carnon (Hérault) : sorties en mer à la demi-journée et nuits à bord. Réservation sur demande, règlement à bord.",
     },
     { property: 'og:site_name', content: SITE_NAME },
     { property: 'og:type', content: 'website' },

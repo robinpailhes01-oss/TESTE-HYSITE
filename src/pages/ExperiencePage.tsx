@@ -200,8 +200,8 @@ export default function ExperiencePage({ slug }: Props) {
               Réserver votre <span className="it">{exp.value.toLowerCase()}</span>
             </h2>
             <p className="booking__text">
-              Choisissez votre date, réglez l’acompte de 30&nbsp;% en ligne — c’est réservé.
-              Nous revenons vers vous sous 24&nbsp;heures pour finaliser les détails.
+              Choisissez votre date, envoyez-nous la demande — aucun paiement en ligne. Nous
+              confirmons sous 24&nbsp;heures, et le règlement se fait à bord.
             </p>
             <div className="booking__direct">
               <span className="kicker">Directement</span>

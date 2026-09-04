@@ -83,12 +83,12 @@ export function CGV() {
         privée du yacht Harmonie avec ou sans skipper.
       </p>
 
-      <h2>1. Réservation et acompte</h2>
+      <h2>1. Réservation et règlement</h2>
       <p>
-        Toute réservation est confirmée après le règlement en ligne, par carte bancaire via
-        Stripe (en lien avec notre prestataire technique Nexos Digital LLC), d’un acompte de
-        30&nbsp;% du montant total de la prestation choisie. Le solde
-        restant est réglé directement (carte ou espèces) avant l’embarquement.
+        La demande de réservation est envoyée depuis le site (WhatsApp ou e-mail) avec la
+        formule, la date et le nombre de personnes. La réservation est confirmée par Harmonie
+        Yacht en retour, par le même canal. Aucun paiement n’est demandé en ligne : le montant
+        total de la prestation est réglé directement (carte ou espèces) avant l’embarquement.
       </p>
 
       <h2>2. Politique d’annulation et de remboursement</h2>
@@ -96,19 +96,19 @@ export function CGV() {
       <ul>
         <li>
           <strong>Annulation à l’initiative d’Harmonie Yacht</strong> (indisponibilité du
-          bateau, du capitaine, ou tout autre motif qui nous est imputable) : l’acompte est
-          intégralement remboursé.
+          bateau, du capitaine, ou tout autre motif qui nous est imputable) : rien n’est dû, et
+          une nouvelle date est proposée.
         </li>
         <li>
           <strong>Conditions météorologiques dangereuses</strong> (vent fort, mer agitée, forte
           houle) rendant la sortie impossible en toute sécurité — décision prise par le
-          capitaine le jour même : au choix du client, remboursement intégral de l’acompte ou
-          report de la date sans frais.
+          capitaine le jour même : rien n’est dû, et au choix du client la date est reportée
+          sans frais.
         </li>
         <li>
-          <strong>Annulation à l’initiative du client</strong> : l’acompte n’est pas
-          remboursable. L’équipe reste à disposition pour étudier un report de date, accordé
-          selon les disponibilités du calendrier.
+          <strong>Annulation à l’initiative du client</strong> : merci de nous prévenir au plus
+          tôt. L’équipe reste à disposition pour étudier un report de date, accordé selon les
+          disponibilités du calendrier.
         </li>
       </ul>
 
@@ -153,9 +153,8 @@ export function Confidentialite() {
 
       <h2>Données collectées</h2>
       <p>Lors d’une réservation, nous collectons : nom, adresse email, nombre d’invités, date
-        souhaitée, et le contenu du message éventuellement laissé dans le formulaire. Les
-        informations de paiement (carte bancaire) sont saisies directement sur les pages
-        sécurisées de Stripe et ne transitent jamais par nos serveurs.</p>
+        souhaitée, et le contenu du message éventuellement laissé dans le formulaire. Aucune
+        information de paiement n’est collectée sur le site.</p>
 
       <h2>Finalités</h2>
       <ul>
@@ -167,7 +166,7 @@ export function Confidentialite() {
       <h2>Destinataires</h2>
       <p>
         Les données sont traitées par Harmonie Group et par ses prestataires techniques :
-        Stripe (paiement), Supabase (hébergement des réservations), et notre outil d’envoi
+        Supabase (hébergement des réservations), WhatsApp (messagerie) et notre outil d’envoi
         d’emails. Aucune donnée n’est vendue à des tiers.
       </p>
 
