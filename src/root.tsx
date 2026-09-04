@@ -12,7 +12,6 @@ import Nav from './components/Nav'
 import Footer from './components/Footer'
 import ReviewToast from './components/ReviewToast'
 import WhatsAppButton from './components/WhatsAppButton'
-import LeadMagnet from './components/LeadMagnet'
 
 export const SITE_URL = 'https://harmonie-yacht.fr'
 export const SITE_NAME = 'Harmonie Yacht'
@@ -112,7 +111,6 @@ export default function Root() {
       <Footer />
       <ReviewToast />
       <WhatsAppButton />
-      <LeadMagnet />
     </>
   )
 }
