@@ -34,8 +34,10 @@ export default function TarifsRoute() {
         <div className="container legal-body" style={{ maxWidth: 720 }}>
           <p className="legal-intro">
             Un acompte de 30&nbsp;% est réglé en ligne à la réservation, le solde à bord (carte
-            ou espèces). Sans capitaine, il faut un permis bateau depuis au moins 5 ans et 50
-            heures de navigation justifiables sur un bateau de ce type.
+            ou espèces) — cela vaut pour les sorties en mer. Les nuits à bord, elles, se règlent
+            en totalité en ligne à la réservation : il n’y a rien à payer à bord. Sans capitaine,
+            il faut un permis bateau depuis au moins 5 ans et 50 heures de navigation
+            justifiables sur un bateau de ce type.
           </p>
 
           <h2>Sorties en mer</h2>

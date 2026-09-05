@@ -34,8 +34,20 @@ projet Vercel et d'avoir `SUMUP_API_KEY`, `SUMUP_MERCHANT_CODE` et
 
 ## Configurer SumUp (paiement de l'acompte)
 
-Le site encaisse un **acompte de 30 %** à la réservation, sur le compte SumUp d'Harmonie
-Group ; le solde se règle directement à bord. Deux fonctions serveur gèrent ça :
+Le site encaisse à la réservation, sur le compte SumUp d'Harmonie Group. Ce qui est
+encaissé dépend de la formule, via `paymentMode` dans `src/pricing.ts` :
+
+| Formule | Réglé en ligne | Solde à bord |
+|---|---|---|
+| Sorties en mer (toutes durées) | acompte de 30 % | oui |
+| Nuit Prestige | la totalité | non |
+| Nuit à quai | la totalité | non |
+
+Pour changer la règle d'une formule, il suffit d'ajouter ou de retirer
+`paymentMode: 'full'` sur sa ligne du catalogue — le formulaire, la page de paiement, la
+page de confirmation et l'email de confirmation s'adaptent seuls.
+
+Deux fonctions serveur gèrent le paiement :
 
 - `api/create-checkout.ts` — écrit l'intention de réservation dans
   `pending_checkouts`, puis crée le checkout SumUp et renvoie l'URL de la page de paiement

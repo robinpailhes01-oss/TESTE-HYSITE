@@ -58,6 +58,8 @@ export default function Confirmation() {
     result?.montantTotal && result.deposit !== null
       ? Number(result.montantTotal) - result.deposit
       : null
+  /* Nuits insolites : tout est réglé en ligne, il n'y a pas de solde à bord. */
+  const payFull = balance !== null && balance <= 0
 
   return (
     <main className="section on-ocean-deep on-ocean confirm">
@@ -79,7 +81,7 @@ export default function Confirmation() {
             </svg>
             <p className="kicker">Réservation confirmée</p>
             <h1 className="mixed confirm__title">
-              Votre acompte est <span className="it">bien reçu</span>
+              Votre {payFull ? 'paiement' : 'acompte'} est <span className="it">bien reçu</span>
             </h1>
             <p className="confirm__text">
               Merci{result?.nom ? `, ${result.nom}` : ''} — votre place est bloquée. Nous revenons
@@ -99,10 +101,10 @@ export default function Confirmation() {
                   </div>
                 ) : null}
                 <div className="confirm__row">
-                  <span>Acompte réglé</span>
+                  <span>{payFull ? 'Réglé en ligne' : 'Acompte réglé'}</span>
                   <span>{result.deposit} €</span>
                 </div>
-                {balance !== null ? (
+                {balance !== null && !payFull ? (
                   <div className="confirm__row">
                     <span>Solde à l’embarquement</span>
                     <span>{balance} €</span>

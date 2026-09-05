@@ -10,6 +10,12 @@
 
 export const DEPOSIT_RATE = 0.3 // acompte de 30 %, réglé en ligne à la réservation
 
+/* Ce qui est encaissé en ligne au moment de réserver :
+   - 'deposit' : l'acompte de 30 %, le solde se règle à bord (sorties en mer) ;
+   - 'full'    : la totalité, il n'y a pas de solde à bord (nuits à bord).
+   Le choix est porté par la formule, jamais par le navigateur. */
+export type PaymentMode = 'deposit' | 'full'
+
 /* Créneau des sorties : entre 9 h et 21 h, 1 h de battement laissée entre
    deux sorties (cf. src/availability.ts). */
 export const SORTIE_WINDOW = { openHour: 9, closeHour: 21, bufferHours: 1 }
@@ -31,6 +37,8 @@ export type PriceItem = {
   /* Première date réservable (YYYY-MM-DD) — ex. Nuit à quai à 250 €,
      ouverte à partir du 1er septembre. */
   availableFrom?: string
+  /* Par défaut 'deposit'. */
+  paymentMode?: PaymentMode
 }
 
 function deposit(amount: number) {
@@ -60,6 +68,7 @@ export const PRICES: PriceItem[] = [
     label: 'Nuit Prestige — avec sortie en mer',
     detail: 'Sortie en mer au coucher de soleil, tapas (Una Mas) et petit-déjeuner sur plateau (Hôtel Neptune) inclus, servi jusqu’à 10 h — 18 h à 12 h le lendemain',
     amount: 380,
+    paymentMode: 'full',
   },
   {
     id: 'nuit-sans-sortie',
@@ -69,6 +78,7 @@ export const PRICES: PriceItem[] = [
     detail: 'Amarré au calme, petit-déjeuner sur plateau (Hôtel Neptune) inclus le lendemain matin, servi jusqu’à 10 h — 18 h à 12 h le lendemain. Disponible à partir du 1er septembre.',
     amount: 250,
     availableFrom: '2026-09-01',
+    paymentMode: 'full',
   },
 ]
 
@@ -76,9 +86,19 @@ export function findPrice(id: string) {
   return PRICES.find((p) => p.id === id) ?? null
 }
 
+export function paymentModeFor(price: PriceItem | null): PaymentMode {
+  return price?.paymentMode ?? 'deposit'
+}
+
+/* Montant réellement encaissé en ligne pour cette formule, à partir du
+   montant total (remise promo déjà appliquée). */
+export function amountDueOnline(price: PriceItem | null, total: number): number {
+  return paymentModeFor(price) === 'full' ? total : deposit(total)
+}
+
 export function depositFor(id: string) {
   const price = findPrice(id)
-  return price ? deposit(price.amount) : null
+  return price ? amountDueOnline(price, price.amount) : null
 }
 
 /* Codes promo — remise sur le montant total (donc sur l'acompte ET le

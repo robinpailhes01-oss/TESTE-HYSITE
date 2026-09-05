@@ -1,9 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { randomUUID } from 'node:crypto'
-import { findPrice, applyPromo, promoDiscountRate, DEPOSIT_RATE } from '../src/pricing.js'
+import { findPrice, applyPromo, promoDiscountRate, amountDueOnline, paymentModeFor } from '../src/pricing.js'
 
-/* Paiement en ligne SumUp (Harmonie Group) — acompte de 30 % réglé par carte
-   sur la page hébergée par SumUp, puis retour sur /merci.
+/* Paiement en ligne SumUp (Harmonie Group) — réglé par carte sur la page
+   hébergée par SumUp, puis retour sur /merci. Ce qui est encaissé dépend de la
+   formule : l'acompte de 30 % dans le cas général, la totalité pour les nuits
+   insolites (cf. paymentMode dans src/pricing.ts).
 
    Contrairement à Stripe, un checkout SumUp ne transporte aucune métadonnée
    libre : ce que le client a choisi est écrit AVANT le paiement dans la table
@@ -72,7 +74,7 @@ async function isSlotTaken(dateOnly: string, group: string, startTime: string, d
   }
 }
 
-/* Crée le checkout SumUp pour l'acompte de 30 % d'une formule.
+/* Crée le checkout SumUp pour le montant dû en ligne sur une formule.
    Le montant n'est JAMAIS accepté depuis le navigateur : on ne recalcule
    qu'à partir du catalogue serveur (src/pricing.ts), via l'id envoyé. */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -117,7 +119,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const promoCodeStr = typeof promoCode === 'string' ? promoCode.trim() : ''
   const discountRate = promoDiscountRate(promoCodeStr)
   const montantTotal = applyPromo(price.amount, promoCodeStr)
-  const deposit = Math.round(montantTotal * DEPOSIT_RATE)
+  const payFull = paymentModeFor(price) === 'full'
+  const amountOnline = amountDueOnline(price, montantTotal)
 
   const dateStr = typeof date === 'string' ? date : ''
 
@@ -187,7 +190,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: typeof message === 'string' && message.trim() ? message.slice(0, 400) : null,
       promo_code: discountRate ? promoCodeStr.toUpperCase() : null,
       total_amount: montantTotal,
-      deposit_amount: deposit,
+      deposit_amount: amountOnline,
     }),
   })
 
@@ -196,7 +199,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Impossible de préparer le paiement.' })
   }
 
-  const description = `Acompte 30 % — ${price.label}${dateLabel ? ` — ${dateLabel}` : ''}`.slice(0, 100)
+  const description = `${payFull ? 'Réservation' : 'Acompte 30 %'} — ${price.label}${
+    dateLabel ? ` — ${dateLabel}` : ''
+  }`.slice(0, 100)
 
   try {
     const sumup = await fetch(SUMUP_CHECKOUTS_URL, {
@@ -204,7 +209,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         checkout_reference: reference,
-        amount: deposit,
+        amount: amountOnline,
         currency: 'EUR',
         merchant_code: merchantCode,
         description,

@@ -83,36 +83,46 @@ export function CGV() {
         privée du yacht Harmonie avec ou sans skipper.
       </p>
 
-      <h2>1. Réservation et acompte</h2>
+      <h2>1. Réservation et règlement</h2>
       <p>
-        Toute réservation est confirmée après le règlement en ligne, par carte bancaire via
-        SumUp, prestataire de paiement d’Harmonie Group, d’un acompte de 30&nbsp;% du montant
-        total de la prestation choisie. Le paiement est encaissé sur le compte d’Harmonie
-        Group, seule vendeuse de la prestation. Le solde restant est réglé directement (carte
-        ou espèces) avant l’embarquement.
+        Toute réservation est confirmée après un règlement en ligne, par carte bancaire via
+        SumUp, prestataire de paiement d’Harmonie Group. Le paiement est encaissé sur le compte
+        d’Harmonie Group, seule vendeuse de la prestation. Le montant réglé à la réservation
+        dépend de la formule choisie et est affiché avant le paiement :
       </p>
+      <ul>
+        <li>
+          <strong>Sorties en mer</strong> : un acompte de 30&nbsp;% du montant total. Le solde
+          restant est réglé directement (carte ou espèces) avant l’embarquement.
+        </li>
+        <li>
+          <strong>Nuits à bord</strong> (Nuit Prestige et Nuit à quai) : la totalité du montant,
+          réglée à la réservation. Aucun solde n’est dû à bord.
+        </li>
+      </ul>
 
       <h2>2. Politique d’annulation et de remboursement</h2>
       <p>Trois situations sont possibles :</p>
       <ul>
         <li>
           <strong>Annulation à l’initiative d’Harmonie Yacht</strong> (indisponibilité du
-          bateau, du capitaine, ou tout autre motif qui nous est imputable) : l’acompte est
-          intégralement remboursé.
+          bateau, du capitaine, ou tout autre motif qui nous est imputable) : la somme réglée
+          à la réservation est intégralement remboursée.
         </li>
         <li>
           <strong>Conditions météorologiques dangereuses</strong> (vent fort, mer agitée, forte
           houle) rendant la sortie impossible en toute sécurité — décision prise par le
-          capitaine le jour même : au choix du client, remboursement intégral de l’acompte ou
-          report de la date sans frais.
+          capitaine le jour même : au choix du client, remboursement intégral de la somme
+          réglée ou report de la date sans frais.
         </li>
         <li>
           <strong>Annulation à l’initiative du client</strong>, quel qu’en soit le motif et
-          quel que soit le délai : l’acompte n’est pas remboursable. Il est conservé sous forme
+          quel que soit le délai : la somme réglée à la réservation (acompte ou paiement
+          intégral selon la formule) n’est pas remboursable. Elle est conservée sous forme
           d’<strong>avoir</strong> du même montant, nominatif, non remboursable en espèces,
           valable douze mois à compter de la date d’annulation sur toute prestation Harmonie
-          Yacht, selon les disponibilités du calendrier. Le solde de la prestation annulée n’est
-          pas dû.
+          Yacht, selon les disponibilités du calendrier. Le solde éventuel de la prestation
+          annulée n’est pas dû.
         </li>
       </ul>
 

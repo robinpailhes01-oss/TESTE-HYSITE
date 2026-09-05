@@ -9,9 +9,9 @@
 //     création du checkout, avec notre référence en query string (?ref=...).
 //   - Le corps envoyé par SumUp n'est jamais cru sur parole : on relit le
 //     checkout via l'API SumUp avec notre clé secrète, et on n'enregistre la
-//     réservation que si son statut est PAID et son montant égal à l'acompte
-//     calculé côté serveur (api/create-checkout.ts, à partir de src/pricing.ts).
-//     Cette vérification remplace la signature que Stripe fournissait.
+//     réservation que si son statut est PAID et son montant égal au montant dû
+//     en ligne calculé côté serveur (api/create-checkout.ts, à partir de
+//     src/pricing.ts). Cette vérification remplace la signature de Stripe.
 //   - Idempotence : bookings.payment_ref est UNIQUE — un rejeu du même
 //     callback ne crée pas de doublon (conflit → 200 sans rien recréer).
 //
@@ -63,17 +63,22 @@ function confirmationEmailText(opts: {
   balance: number;
 }): string {
   const { firstName, bookingTypeLabel, group, dateLabel, total, deposit, balance } = opts;
+  // Les nuits à quai sont réglées en totalité en ligne : il n'y a pas de solde
+  // à annoncer, et le mot « acompte » n'aurait aucun sens.
+  const payFull = balance <= 0;
   const lines = [
     `Bonjour ${firstName},`,
     "",
-    `Votre acompte est bien reçu — votre ${bookingTypeLabel} est réservée pour le ${dateLabel}.`,
+    `Votre ${payFull ? "paiement" : "acompte"} est bien reçu — votre ${bookingTypeLabel} est réservée pour le ${dateLabel}.`,
     "",
     "Récapitulatif :",
     `- Prestation : ${bookingTypeLabel}`,
     `- Date souhaitée : ${dateLabel}`,
     `- Montant total : ${total} €`,
-    `- Acompte réglé en ligne : ${deposit} €`,
-    `- Solde restant : ${balance} € — à régler à bord (CB ou espèces) avant l'embarquement`,
+    payFull
+      ? `- Réglé en ligne : ${deposit} € — rien à régler à bord`
+      : `- Acompte réglé en ligne : ${deposit} €`,
+    ...(payFull ? [] : [`- Solde restant : ${balance} € — à régler à bord (CB ou espèces) avant l'embarquement`]),
     "",
     "Rendez-vous : Port de Carnon (Hérault), à côté de l'Hôtel Neptune. Le yacht Harmonie vous attend au ponton — nous revenons vers vous sous peu pour préciser l'heure exacte et le numéro de ponton.",
   ];
@@ -193,13 +198,13 @@ Deno.serve(async (req) => {
     return ok({ received: true, unpaid: true, status: checkout.status });
   }
 
-  const depositExpected = Number(pending.deposit_amount);
-  const depositPaid = Number(checkout.amount ?? 0);
-  if (Math.abs(depositPaid - depositExpected) > 0.01) {
-    console.error("[sumup-webhook] montant encaissé différent de l'acompte attendu", {
+  const amountExpected = Number(pending.deposit_amount);
+  const amountPaid = Number(checkout.amount ?? 0);
+  if (Math.abs(amountPaid - amountExpected) > 0.01) {
+    console.error("[sumup-webhook] montant encaissé différent du montant attendu", {
       reference,
-      depositPaid,
-      depositExpected,
+      amountPaid,
+      amountExpected,
     });
     return ok({ received: true, error: "montant inattendu" });
   }
@@ -241,7 +246,7 @@ Deno.serve(async (req) => {
   // Réservation — l'insertion déclenche automatiquement (triggers existants) :
   //  - trg_link_booking_to_lead   : rattache le lead correspondant (email/tél)
   //  - trg_bookings_sync_gcal     : crée l'événement Google Calendar
-  //  - trg_bookings_to_revenues   : enregistre l'acompte encaissé en compta
+  //  - trg_bookings_to_revenues   : enregistre l'encaissement en compta
   const { data: booking, error: bookingError } = await supabase
     .from("bookings")
     .insert({
@@ -253,9 +258,9 @@ Deno.serve(async (req) => {
       offer_name: formule,
       party_size: pending.party_size,
       total_amount: montantTotal,
-      deposit_amount: depositPaid,
+      deposit_amount: amountPaid,
       deposit_paid: true,
-      balance_due: montantTotal - depositPaid,
+      balance_due: montantTotal - amountPaid,
       payment_method: "sumup",
       status: "confirmed",
       source_channel: "website",
@@ -301,8 +306,8 @@ Deno.serve(async (req) => {
     group,
     dateLabel,
     total: montantTotal,
-    deposit: depositPaid,
-    balance: montantTotal - depositPaid,
+    deposit: amountPaid,
+    balance: montantTotal - amountPaid,
   });
 
   const emailSent = email ? await sendConfirmationEmail(email, subject, text) : false;

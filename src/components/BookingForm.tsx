@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { applyPromo, DEPOSIT_RATE, findPrice, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
+import { amountDueOnline, applyPromo, findPrice, paymentModeFor, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
 import { PROMO_STORAGE_KEY } from '../leadMagnet'
 import {
   fetchBookedSlots,
@@ -122,7 +122,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const price = findPrice(priceId)
   const discountRate = promoDiscountRate(promoCode)
   const montantTotal = price ? applyPromo(price.amount, promoCode) : null
-  const deposit = montantTotal !== null ? Math.round(montantTotal * DEPOSIT_RATE) : null
+  /* Les nuits à bord se règlent intégralement en ligne ; les sorties en mer
+     partent sur l'acompte de 30 % avec le solde à bord. */
+  const payFull = paymentModeFor(price) === 'full'
+  const deposit = montantTotal !== null ? amountDueOnline(price, montantTotal) : null
   const balance = montantTotal !== null && deposit !== null ? montantTotal - deposit : null
 
   const dateISO = date ? toDateOnly(date) : null
@@ -459,14 +462,23 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             )}
           </div>
           <div className="price-recap__row is-deposit">
-            <span>Acompte réglé en ligne (30 %)</span>
+            <span>{payFull ? 'Réglé en ligne (total)' : 'Acompte réglé en ligne (30 %)'}</span>
             <span>{deposit} €</span>
           </div>
+          {payFull ? (
+            <p className="price-recap__note">
+              Les nuits à bord se règlent en totalité à la réservation. Rien à payer à bord.
+            </p>
+          ) : (
+            <p className="price-recap__note">
+              Solde de {balance} € à régler directement avant l’embarquement.
+            </p>
+          )}
           <p className="price-recap__note">
-            Solde de {balance} € à régler directement avant l’embarquement.
-          </p>
-          <p className="price-recap__note">
-            En cas d’annulation de votre part, l’acompte n’est pas remboursé : il est conservé
+            En cas d’annulation de votre part,{' '}
+            {payFull
+              ? 'la somme réglée n’est pas remboursée : elle est conservée'
+              : 'l’acompte n’est pas remboursé : il est conservé'}{' '}
             sous forme d’avoir, valable douze mois.
           </p>
         </div>
@@ -506,7 +518,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
 
       <div className="form__footer">
         <button type="submit" className="btn btn--light" disabled={loading}>
-          {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
+          {loading ? 'Redirection vers le paiement…' : payFull ? 'Payer et réserver' : 'Payer l’acompte et réserver'}
         </button>
         <span className="form__hint">Paiement sécurisé · SumUp</span>
       </div>
