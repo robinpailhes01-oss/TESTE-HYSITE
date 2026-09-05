@@ -45,7 +45,8 @@ function toDateOnly(d: Date) {
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
 
-/* Formulaire de réservation — encaisse un acompte de 30 % via Stripe Checkout.
+/* Formulaire de réservation — encaisse un acompte de 30 % par carte sur la
+   page de paiement hébergée par SumUp (compte Harmonie Group).
    Le solde restant se règle directement (à bord ou par virement). */
 export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
@@ -199,7 +200,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     const startTime = groupChoice === 'nuit' ? '18:00' : startHour !== null ? `${String(startHour).padStart(2, '0')}:00` : ''
     setLoading(true)
     try {
-      const res = await fetch('/api/create-checkout-session', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -507,7 +508,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
         <button type="submit" className="btn btn--light" disabled={loading}>
           {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
         </button>
-        <span className="form__hint">Paiement sécurisé · Stripe</span>
+        <span className="form__hint">Paiement sécurisé · SumUp</span>
       </div>
     </motion.form>
   )

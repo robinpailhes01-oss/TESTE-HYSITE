@@ -1,10 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import Stripe from 'stripe'
+import { randomUUID } from 'node:crypto'
 import { findPrice, applyPromo, promoDiscountRate, DEPOSIT_RATE } from '../src/pricing.js'
+
+/* Paiement en ligne SumUp (Harmonie Group) — acompte de 30 % réglé par carte
+   sur la page hébergée par SumUp, puis retour sur /merci.
+
+   Contrairement à Stripe, un checkout SumUp ne transporte aucune métadonnée
+   libre : ce que le client a choisi est écrit AVANT le paiement dans la table
+   pending_checkouts (clé = notre référence), et le webhook relit cette ligne
+   quand SumUp confirme l'encaissement.
+
+   Variables d'environnement (Vercel) :
+     SUMUP_API_KEY              clé secrète SumUp (sup_sk_...)
+     SUMUP_MERCHANT_CODE        code marchand Harmonie Group (MCxxxxxx)
+     SUPABASE_SERVICE_ROLE_KEY  pour écrire l'intention de réservation */
 
 const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
 const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZGZwanl5dHdlZGhvY2h2emZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzExMDEsImV4cCI6MjA5NTM0NzEwMX0.LKISYgm1CBPYP4VfvH_S6C7meSQb1H57LxkldF9UhC0'
+const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
+const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
 
 type BookedSlot = { date: string; start_time: string | null; end_time: string | null; booking_type: string }
 
@@ -15,7 +30,7 @@ function toMinutes(t: string) {
 
 /* Re-vérifie côté serveur que le créneau demandé est toujours libre (deux
    navigateurs peuvent avoir chargé la même disponibilité avant que l'un des
-   deux ne paie) — dernière barrière avant de créer la session Stripe. */
+   deux ne paie) — dernière barrière avant de créer le checkout. */
 async function isSlotTaken(dateOnly: string, group: string, startTime: string, durationHours: number) {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_booked_slots`, {
@@ -57,7 +72,7 @@ async function isSlotTaken(dateOnly: string, group: string, startTime: string, d
   }
 }
 
-/* Crée une session Stripe Checkout pour l'acompte de 30 % d'une formule.
+/* Crée le checkout SumUp pour l'acompte de 30 % d'une formule.
    Le montant n'est JAMAIS accepté depuis le navigateur : on ne recalcule
    qu'à partir du catalogue serveur (src/pricing.ts), via l'id envoyé. */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -66,11 +81,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Méthode non autorisée.' })
   }
 
-  const secretKey = process.env.STRIPE_SECRET_KEY
-  if (!secretKey) {
-    return res
-      .status(500)
-      .json({ error: 'Le paiement en ligne n’est pas encore configuré (clé Stripe manquante).' })
+  const apiKey = process.env.SUMUP_API_KEY
+  const merchantCode = process.env.SUMUP_MERCHANT_CODE
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!apiKey || !merchantCode || !serviceKey) {
+    console.error('create-checkout: configuration incomplète', {
+      apiKey: Boolean(apiKey),
+      merchantCode: Boolean(merchantCode),
+      serviceKey: Boolean(serviceKey),
+    })
+    return res.status(500).json({ error: 'Le paiement en ligne n’est pas encore configuré.' })
   }
 
   const body = (req.body ?? {}) as Record<string, unknown>
@@ -102,7 +122,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const dateStr = typeof date === 'string' ? date : ''
 
   if (price.availableFrom && dateStr && dateStr < price.availableFrom) {
-    return res.status(400).json({ error: `Cette formule est disponible à partir du ${price.availableFrom.split('-').reverse().join('/')}.` })
+    return res
+      .status(400)
+      .json({ error: `Cette formule est disponible à partir du ${price.availableFrom.split('-').reverse().join('/')}.` })
   }
   const startTimeStr = typeof startTime === 'string' && /^\d{2}:\d{2}$/.test(startTime) ? startTime : ''
   const endTimeStr = (() => {
@@ -123,7 +145,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  const stripe = new Stripe(secretKey)
   const origin = (req.headers.origin as string) || `https://${req.headers.host}`
   /* date arrive en YYYY-MM-DD (sans heure) — new Date() la lit en UTC minuit ;
      on formate explicitement en UTC pour ne jamais la décaler d'un jour selon
@@ -138,56 +159,93 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     : ''
 
+  const reference = randomUUID()
+
+  /* L'intention de réservation est écrite AVANT l'appel à SumUp : si le client
+     paie, le webhook doit pouvoir la retrouver, même si notre réponse HTTP
+     s'est perdue en route. */
+  const insert = await fetch(`${SUPABASE_URL}/rest/v1/pending_checkouts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: serviceKey,
+      Authorization: `Bearer ${serviceKey}`,
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify({
+      reference,
+      price_id: priceId,
+      booking_type: price.bookingType,
+      price_group: price.group,
+      formule: price.label,
+      customer_name: name.trim(),
+      customer_email: email.trim(),
+      booking_date: dateStr || null,
+      start_time: startTimeStr || null,
+      end_time: endTimeStr || null,
+      party_size: typeof guests === 'string' && guests.trim() ? Number.parseInt(guests, 10) : null,
+      message: typeof message === 'string' && message.trim() ? message.slice(0, 400) : null,
+      promo_code: discountRate ? promoCodeStr.toUpperCase() : null,
+      total_amount: montantTotal,
+      deposit_amount: deposit,
+    }),
+  })
+
+  if (!insert.ok) {
+    console.error('create-checkout: écriture pending_checkouts échouée', insert.status, await insert.text())
+    return res.status(500).json({ error: 'Impossible de préparer le paiement.' })
+  }
+
+  const description = `Acompte 30 % — ${price.label}${dateLabel ? ` — ${dateLabel}` : ''}`.slice(0, 100)
+
   try {
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      payment_method_types: ['card'],
-      customer_email: email,
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            unit_amount: deposit * 100,
-            product_data: {
-              name: `Acompte — ${price.label}`,
-              description: `Acompte de 30 % (${deposit} € sur ${montantTotal} €)${
-                discountRate ? ` — code ${promoCodeStr.toUpperCase()} (-${Math.round(discountRate * 100)} %)` : ''
-              }${dateLabel ? ` — ${dateLabel}` : ''}`,
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      metadata: {
-        priceId,
-        bookingType: price.bookingType,
-        group: price.group,
-        formule: price.label,
-        montantTotal: String(montantTotal),
-        acompte: String(deposit),
-        promoCode: discountRate ? promoCodeStr.toUpperCase() : '',
-        nom: name,
-        email,
-        date: dateStr,
-        startTime: startTimeStr,
-        endTime: endTimeStr,
-        invites: typeof guests === 'string' ? guests : '',
-        message: typeof message === 'string' ? message.slice(0, 400) : '',
-      },
-      payment_intent_data: {
-        metadata: {
-          formule: price.label,
-          nom: name,
-          date: dateStr,
-        },
-      },
-      success_url: `${origin}/merci?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/${price.group === 'sortie' ? 'sortie-en-mer-carnon' : 'nuit-a-bord-yacht-carnon'}#reservation`,
+    const sumup = await fetch(SUMUP_CHECKOUTS_URL, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        checkout_reference: reference,
+        amount: deposit,
+        currency: 'EUR',
+        merchant_code: merchantCode,
+        description,
+        /* Callback serveur : SumUp appelle cette URL quand le paiement atteint
+           son état final. La référence est dans l'URL, le webhook n'a donc pas
+           besoin de comprendre le format exact du corps envoyé par SumUp. */
+        return_url: `${WEBHOOK_URL}?ref=${reference}`,
+        /* Retour du client dans le navigateur après le paiement. */
+        redirect_url: `${origin}/merci?ref=${reference}`,
+        hosted_checkout: { enabled: true },
+      }),
     })
 
-    return res.status(200).json({ url: session.url })
+    const checkout = (await sumup.json()) as {
+      id?: string
+      hosted_checkout_url?: string
+      message?: string
+      error_message?: string
+    }
+
+    if (!sumup.ok || !checkout.hosted_checkout_url) {
+      console.error('create-checkout: SumUp a refusé la création', sumup.status, checkout)
+      return res.status(502).json({ error: 'Impossible de créer le paiement. Réessayez dans un instant.' })
+    }
+
+    /* On retient l'id SumUp en face de notre référence : le webhook s'en sert
+       pour relire le checkout et vérifier le montant réellement encaissé. */
+    await fetch(`${SUPABASE_URL}/rest/v1/pending_checkouts?reference=eq.${reference}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify({ sumup_checkout_id: checkout.id ?? null }),
+    })
+
+    return res.status(200).json({ url: checkout.hosted_checkout_url })
   } catch (err) {
-    console.error('Stripe checkout error', err)
-    return res.status(500).json({ error: 'Impossible de créer la session de paiement.' })
+    console.error('create-checkout: appel SumUp échoué', err)
+    return res.status(500).json({ error: 'Impossible de créer le paiement.' })
   }
 }

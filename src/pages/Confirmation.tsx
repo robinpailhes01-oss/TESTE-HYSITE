@@ -26,20 +26,20 @@ function formatDate(iso: string) {
   })
 }
 
-/* Page de retour après paiement Stripe — on ne fait jamais confiance à
-   l'URL seule : le statut est revérifié côté serveur via /api/verify-session. */
+/* Page de retour après le paiement SumUp — on ne fait jamais confiance à
+   l'URL seule : le statut est revérifié côté serveur via /api/verify-checkout. */
 export default function Confirmation() {
   const [params] = useSearchParams()
-  const sessionId = params.get('session_id')
+  const reference = params.get('ref')
   const [state, setState] = useState<'loading' | 'ok' | 'unpaid' | 'error'>(
-    sessionId ? 'loading' : 'error',
+    reference ? 'loading' : 'error',
   )
   const [result, setResult] = useState<Result | null>(null)
 
   useEffect(() => {
-    if (!sessionId) return
+    if (!reference) return
     let cancelled = false
-    fetch(`/api/verify-session?session_id=${encodeURIComponent(sessionId)}`)
+    fetch(`/api/verify-checkout?ref=${encodeURIComponent(reference)}`)
       .then((res) => res.json())
       .then((data: Result & { error?: string }) => {
         if (cancelled) return
@@ -51,7 +51,7 @@ export default function Confirmation() {
     return () => {
       cancelled = true
     }
-  }, [sessionId])
+  }, [reference])
 
   const dateLabel = result?.date ? formatDate(result.date) : null
   const balance =

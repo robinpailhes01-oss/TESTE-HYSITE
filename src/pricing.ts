@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
    Catalogue des tarifs — source unique de vérité.
    Utilisé par le site (affichage, formulaire) ET par la fonction serveur
-   Stripe (Supabase Edge Function stripe-webhook) pour calculer le montant et
+   SumUp (Supabase Edge Function sumup-webhook) pour calculer le montant et
    le type de réservation : on ne fait jamais confiance à un montant envoyé
    par le navigateur, on ne recalcule qu'à partir de ce fichier, via l'id.
 

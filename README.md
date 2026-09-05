@@ -2,7 +2,7 @@
 
 Site pour **Harmonie Yacht** : location privée d'un yacht avec skipper — sorties en mer
 (2 h / 3 h / 4 h, avec ou sans capitaine) et nuits insolites à quai. Réservation en ligne
-avec acompte de 30 % réglé par carte via Stripe.
+avec acompte de 30 % réglé par carte via SumUp.
 
 Direction artistique v2 : « annuaire de régate contemporain + Méditerranée vue du ciel » —
 océan bleu profond, typographie mixte (Instrument Sans + Instrument Serif italique dans les
@@ -13,8 +13,8 @@ les sections. Spec complète dans [`DESIGN.md`](./DESIGN.md).
 
 - [Vite](https://vitejs.dev) + React 19 + TypeScript + [React Router](https://reactrouter.com)
 - [Motion](https://motion.dev) (`motion/react`) pour les animations
-- [Stripe Checkout](https://stripe.com/docs/payments/checkout) via des fonctions serveur
-  Vercel (`/api`), pour l'acompte de réservation
+- [SumUp Online Payments](https://developer.sumup.com/online-payments) via des fonctions
+  serveur Vercel (`/api`), pour l'acompte de réservation
 - Polices auto-hébergées via Fontsource : Instrument Sans + Instrument Serif
 - CSS vanilla piloté par tokens (`src/styles.css`) — responsive mobile soigné
 
@@ -29,49 +29,61 @@ npm run preview    # prévisualiser le build (front seul, idem)
 
 Pour tester le paiement en local avec les fonctions `/api`, utiliser la
 [Vercel CLI](https://vercel.com/docs/cli) : `vercel dev` (nécessite d'être connecté au
-projet Vercel et d'avoir `STRIPE_SECRET_KEY` dans `.env.local`).
+projet Vercel et d'avoir `SUMUP_API_KEY`, `SUMUP_MERCHANT_CODE` et
+`SUPABASE_SERVICE_ROLE_KEY` dans `.env.local`).
 
-## Configurer Stripe (paiement de l'acompte)
+## Configurer SumUp (paiement de l'acompte)
 
-Le site encaisse un **acompte de 30 %** à la réservation ; le solde se règle directement
-(à bord ou par virement). Deux fonctions serveur gèrent ça :
+Le site encaisse un **acompte de 30 %** à la réservation, sur le compte SumUp d'Harmonie
+Group ; le solde se règle directement à bord. Deux fonctions serveur gèrent ça :
 
-- `api/create-checkout-session.ts` — crée la session de paiement Stripe Checkout à partir
-  d'un `priceId` (le montant n'est jamais accepté depuis le navigateur : il est recalculé
-  côté serveur depuis `src/pricing.ts`, seule source de vérité des tarifs).
-- `api/verify-session.ts` — revérifie côté serveur, au retour de Stripe, que le paiement a
-  bien abouti avant d'afficher la confirmation sur `/merci`.
+- `api/create-checkout.ts` — écrit l'intention de réservation dans
+  `pending_checkouts`, puis crée le checkout SumUp et renvoie l'URL de la page de paiement
+  hébergée. Le montant n'est jamais accepté depuis le navigateur : il est recalculé côté
+  serveur depuis `src/pricing.ts`, seule source de vérité des tarifs.
+- `api/verify-checkout.ts` — au retour sur `/merci`, relit le statut du checkout chez SumUp
+  avant d'afficher la confirmation.
+
+SumUp ne transporte aucune métadonnée libre (contrairement à Stripe auparavant) : ce que le
+client a choisi est écrit **avant** le paiement dans `public.pending_checkouts`, et relu par
+le webhook une fois l'encaissement confirmé. Cette table est en RLS sans aucune policy :
+seul le `service_role` y accède.
 
 **Pour l'activer :**
 
-1. Récupérer la clé secrète sur [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys)
-   (`sk_test_...` pour tester, `sk_live_...` en production).
-2. Dans le projet Vercel → **Settings → Environment Variables**, ajouter
-   `STRIPE_SECRET_KEY` avec cette valeur. Ne jamais la mettre dans le code ni dans un
-   fichier commité — voir `.env.example`.
-3. Redéployer. Le bouton « Payer l'acompte et réserver » devient fonctionnel ; tant que la
-   clé n'est pas configurée, il affiche un message d'erreur propre avec un lien mailto de
-   secours (aucune casse visible pour le visiteur).
+1. Créer une clé API SumUp : [me.sumup.com](https://me.sumup.com) → profil → **Settings →
+   For Developers → Toolkit → API Keys**. La clé commence par `sup_sk_`.
+2. Relever le **code marchand** (`MCxxxxxx`) dans les paramètres du profil SumUp.
+3. Dans le projet Vercel → **Settings → Environment Variables**, ajouter :
+   - `SUMUP_API_KEY` — la clé `sup_sk_...`.
+   - `SUMUP_MERCHANT_CODE` — le code marchand.
+   - `SUPABASE_SERVICE_ROLE_KEY` — clé `service_role` du projet Supabase, pour écrire
+     l'intention de réservation.
+   Ne jamais les mettre dans le code ni dans un fichier commité — voir `.env.example`.
+4. Redéployer. Tant que ces variables manquent, le bouton « Payer l'acompte et réserver »
+   affiche un message d'erreur propre avec un lien mailto de secours (aucune casse visible
+   pour le visiteur).
 
-Aucun produit/prix n'a besoin d'être créé dans le dashboard Stripe : les sessions sont
-générées à la volée (`price_data`) à partir du catalogue `src/pricing.ts`. Chaque
-réservation apparaît dans Stripe avec en métadonnées : formule, nom, email, date souhaitée,
-nombre d'invités et message.
+Le compte SumUp doit être **entièrement validé** et les paiements en ligne activés : ils ne
+le sont pas par défaut sur un compte neuf.
 
 ## Coordination avec le tableau de bord (Supabase) — après paiement
 
-Dès qu'un acompte est payé, `supabase-functions/stripe-webhook/index.ts` (déployée sur le
-projet Supabase `harmonie-yacht`, function `stripe-webhook`) prend le relais :
+Dès qu'un acompte est payé, `supabase-functions/sumup-webhook/index.ts` (déployée sur le
+projet Supabase `harmonie-yacht`, function `sumup-webhook`) prend le relais :
 
-1. Retrouve ou crée le client dans `customers`.
-2. Insère la réservation dans `bookings` — **exactement la même table que le tableau de
+1. Relit le checkout **chez SumUp** avec la clé secrète et vérifie que son statut est `PAID`
+   et que le montant encaissé correspond à l'acompte attendu. C'est cette relecture, et non
+   le corps du callback, qui fait foi — elle remplace la signature que Stripe fournissait.
+2. Retrouve ou crée le client dans `customers`.
+3. Insère la réservation dans `bookings` — **exactement la même table que le tableau de
    bord**, donc elle apparaît immédiatement, éditable comme n'importe quelle réservation
    créée manuellement.
-3. Cette insertion déclenche automatiquement (triggers déjà en place, rien à faire) :
+4. Cette insertion déclenche automatiquement (triggers déjà en place, rien à faire) :
    - la création de l'événement **Google Calendar** ;
    - l'enregistrement de l'acompte encaissé dans la compta (`revenues`) ;
    - le rattachement au `lead` correspondant, marqué `booked`.
-4. Envoie l'**email de confirmation** au client (montant payé, solde restant, lieu de
+5. Envoie l'**email de confirmation** au client (montant payé, solde restant, lieu de
    rendez-vous, politique de retard) via Resend — même expéditeur que le reste du système.
 
 Le **solde restant** (`balance_due`) se règle comme aujourd'hui, directement à bord —
@@ -80,20 +92,17 @@ rien ne change de ce côté.
 
 **Pour activer cette coordination :**
 
-1. Dans **Stripe → Developers → Webhooks → Add endpoint**, renseigner :
-   - URL : `https://szdfpjyytwedhochvzfd.supabase.co/functions/v1/stripe-webhook`
-   - Événement à écouter : `checkout.session.completed`
-   - Copier le secret de signature généré (`whsec_...`).
-2. Dans **Supabase → Project Settings → Edge Functions → Secrets**, ajouter :
-   - `STRIPE_SECRET_KEY` — la même valeur que dans Vercel.
-   - `STRIPE_WEBHOOK_SECRET` — le `whsec_...` de l'étape 1.
-   - (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM` sont déjà
-     configurés — partagés avec les autres fonctions du projet.)
-3. Tester en mode test Stripe (carte `4242 4242 4242 4242`) avant de passer en clé live.
+1. Dans **Supabase → Project Settings → Edge Functions → Secrets**, ajouter
+   `SUMUP_API_KEY` — la même valeur que dans Vercel. (`SUPABASE_URL`,
+   `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM` sont déjà configurés,
+   partagés avec les autres fonctions du projet.)
+2. Rien à déclarer côté SumUp : l'URL de callback est passée à chaque checkout
+   (`return_url`), il n'y a pas d'endpoint à enregistrer dans un tableau de bord.
+3. La fonction est déployée avec `verify_jwt = false` — SumUp ne peut pas présenter de JWT
+   Supabase. L'appel est authentifié par la relecture du paiement, pas par un en-tête.
 
-La fonction est idempotente (colonne `bookings.stripe_session_id`, unique) : si Stripe
-renvoie deux fois le même événement, la deuxième tentative est ignorée sans dupliquer la
-réservation.
+La fonction est idempotente (colonne `bookings.payment_ref`, unique) : si le callback est
+rejoué, la deuxième tentative est ignorée sans dupliquer la réservation.
 
 ## À personnaliser avant mise en ligne
 

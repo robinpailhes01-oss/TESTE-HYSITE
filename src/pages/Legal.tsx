@@ -86,9 +86,10 @@ export function CGV() {
       <h2>1. Réservation et acompte</h2>
       <p>
         Toute réservation est confirmée après le règlement en ligne, par carte bancaire via
-        Stripe (en lien avec notre prestataire technique Nexos Digital LLC), d’un acompte de
-        30&nbsp;% du montant total de la prestation choisie. Le solde
-        restant est réglé directement (carte ou espèces) avant l’embarquement.
+        SumUp, prestataire de paiement d’Harmonie Group, d’un acompte de 30&nbsp;% du montant
+        total de la prestation choisie. Le paiement est encaissé sur le compte d’Harmonie
+        Group, seule vendeuse de la prestation. Le solde restant est réglé directement (carte
+        ou espèces) avant l’embarquement.
       </p>
 
       <h2>2. Politique d’annulation et de remboursement</h2>
@@ -158,7 +159,7 @@ export function Confidentialite() {
       <p>Lors d’une réservation, nous collectons : nom, adresse email, nombre d’invités, date
         souhaitée, et le contenu du message éventuellement laissé dans le formulaire. Les
         informations de paiement (carte bancaire) sont saisies directement sur les pages
-        sécurisées de Stripe et ne transitent jamais par nos serveurs.</p>
+        sécurisées de SumUp et ne transitent jamais par nos serveurs.</p>
 
       <h2>Finalités</h2>
       <ul>
@@ -170,7 +171,7 @@ export function Confidentialite() {
       <h2>Destinataires</h2>
       <p>
         Les données sont traitées par Harmonie Group et par ses prestataires techniques :
-        Stripe (paiement), Supabase (hébergement des réservations), et notre outil d’envoi
+        SumUp (paiement), Supabase (hébergement des réservations), et notre outil d’envoi
         d’emails. Aucune donnée n’est vendue à des tiers.
       </p>
 
