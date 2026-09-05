@@ -1,14 +1,21 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 /* Lue par la page /merci au retour de la page de paiement SumUp — confirme
-   côté serveur que l'acompte a bien été encaissé avant d'afficher quoi que ce
+   côté serveur que le paiement a bien été encaissé avant d'afficher quoi que ce
    soit (on ne fait jamais confiance à l'URL seule).
 
    Le récapitulatif affiché vient de notre propre ligne pending_checkouts ;
-   le statut « payé », lui, vient toujours de SumUp. */
+   le statut « payé », lui, vient toujours de SumUp.
+
+   Deuxième filet : si SumUp dit PAID alors que la réservation n'a pas encore
+   été enregistrée (callback perdu, retardé, ou refusé), on déclenche ici le
+   même webhook. Le premier des deux qui passe crée la réservation et envoie
+   l'email ; le second est ignoré (payment_ref est unique). Un client qui
+   revient sur /merci suffit donc à débloquer sa propre confirmation. */
 
 const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
 const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
+const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
 
 type PendingCheckout = {
   sumup_checkout_id: string | null
@@ -59,9 +66,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
     const payload = (await sumupRes.json()) as SumUpCheckout | SumUpCheckout[]
     const checkout = Array.isArray(payload) ? payload[0] : payload
+    const paid = checkout?.status === 'PAID'
+
+    /* Payé mais pas encore enregistré : on rejoue le webhook nous-mêmes plutôt
+       que d'attendre un callback qui n'arrivera peut-être jamais. */
+    if (paid && pending.status !== 'paid') {
+      try {
+        const replay = await fetch(`${WEBHOOK_URL}?ref=${encodeURIComponent(reference)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}',
+        })
+        if (!replay.ok) {
+          console.error('verify-checkout: relance du webhook en échec', replay.status, await replay.text())
+        }
+      } catch (err) {
+        console.error('verify-checkout: relance du webhook impossible', err)
+      }
+    }
 
     return res.status(200).json({
-      paid: checkout?.status === 'PAID',
+      paid,
       deposit: Number(pending.deposit_amount),
       email: pending.customer_email,
       formule: pending.formule,
