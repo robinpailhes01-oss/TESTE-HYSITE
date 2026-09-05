@@ -6,7 +6,7 @@ export function meta() {
   return pageMeta({
     title: "Harmonie Yacht — Location de yacht avec skipper à Carnon",
     description:
-      "Sorties en mer dès 320 € et nuits à bord dès 250 € sur un yacht privatisé à Carnon (Hérault), à 15 min de Montpellier. Réservation sur demande, règlement à bord.",
+      "Sorties en mer dès 320 € et nuits à bord dès 250 € sur un yacht privatisé à Carnon (Hérault), à 15 min de Montpellier. Réservation en ligne, acompte de 30 %.",
     path: '/',
   })
 }

@@ -1996,6 +1996,10 @@ section {
   color: var(--white-muted);
 }
 
+.price-recap__note + .price-recap__note {
+  margin-top: 6px;
+}
+
 .form__error {
   font-size: 13.5px;
   color: #f6c9a6;
@@ -2403,29 +2407,4 @@ section {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* --- Demande envoyée (sans paiement en ligne) ------------------------------- */
-
-.form--sent {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  align-content: start;
-  max-width: 60ch;
-}
-
-.form__recap {
-  margin: 0;
-  padding: 18px 20px;
-  font: 14px/1.6 var(--font-sans);
-  white-space: pre-wrap;
-  color: var(--white);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--white-faint);
-  border-radius: var(--r-card);
-}
-
-.form--sent .form__footer {
-  margin-top: 6px;
 }

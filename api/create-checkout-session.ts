@@ -61,13 +61,6 @@ async function isSlotTaken(dateOnly: string, group: string, startTime: string, d
    Le montant n'est JAMAIS accepté depuis le navigateur : on ne recalcule
    qu'à partir du catalogue serveur (src/pricing.ts), via l'id envoyé. */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  /* Le paiement en ligne est retiré du site (décision du client, septembre
-     2026) : le point de terminaison reste déployé mais ne crée plus de
-     session. Les réservations passent par WhatsApp ou e-mail. */
-  res.setHeader('Allow', 'POST')
-  return res.status(410).json({ error: 'Le paiement en ligne n’est plus proposé. Réservez sur WhatsApp ou par e-mail.' })
-
-  // eslint-disable-next-line no-unreachable
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Méthode non autorisée.' })

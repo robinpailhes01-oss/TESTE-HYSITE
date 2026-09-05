@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { applyPromo, findPrice, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
+import { applyPromo, DEPOSIT_RATE, findPrice, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
 import { PROMO_STORAGE_KEY } from '../leadMagnet'
 import {
   fetchBookedSlots,
@@ -44,13 +44,9 @@ function toDateOnly(d: Date) {
 }
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
-/* Le numéro WhatsApp d'Harmonie Yacht, au format international sans « + ». */
-const WHATSAPP_NUMBER = '33753481263'
 
-/* Formulaire de demande de réservation — sans paiement en ligne. Le client
-   choisit sa formule et sa date, la demande part sur WhatsApp (ou par e-mail)
-   avec tout le récapitulatif ; Harmonie Yacht confirme, et le règlement se
-   fait à bord. */
+/* Formulaire de réservation — encaisse un acompte de 30 % via Stripe Checkout.
+   Le solde restant se règle directement (à bord ou par virement). */
 export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
   const [duration, setDuration] = useState<Duration>('3h')
@@ -63,8 +59,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [cgvAccepted, setCgvAccepted] = useState(false)
   const [cgvHint, setCgvHint] = useState(false)
   const [promoCode, setPromoCode] = useState('')
+  const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  const [sent, setSent] = useState<{ wa: string; mail: string; text: string } | null>(null)
   const [slots, setSlots] = useState<BookedSlot[]>([])
 
   /* Disponibilité réelle : lue une fois dans Supabase (réservations déjà
@@ -125,6 +121,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const price = findPrice(priceId)
   const discountRate = promoDiscountRate(promoCode)
   const montantTotal = price ? applyPromo(price.amount, promoCode) : null
+  const deposit = montantTotal !== null ? Math.round(montantTotal * DEPOSIT_RATE) : null
+  const balance = montantTotal !== null && deposit !== null ? montantTotal - deposit : null
 
   const dateISO = date ? toDateOnly(date) : null
 
@@ -178,7 +176,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
 
   const needsSortieHour = groupChoice === 'sortie'
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setErrorMsg(null)
 
@@ -187,7 +185,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       setDateHint(true)
       return
     }
-    if (!price || montantTotal === null) return
+    if (!price || deposit === null) return
     if (needsSortieHour && startHour === null) {
       setErrorMsg('Choisissez une heure de départ disponible.')
       return
@@ -198,54 +196,36 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     }
 
     const data = new FormData(e.currentTarget)
-    const name = String(data.get('name') ?? '').trim()
-    const email = String(data.get('email') ?? '').trim()
-    const guests = String(data.get('guests') ?? '')
-    const message = String(data.get('message') ?? '').trim()
-    const when = `${formatDate(date)}${needsSortieHour && startHour !== null ? ` à ${formatHour(startHour)}` : ' (embarquement 18 h)'}`
-
-    /* Le récapitulatif, tel qu'il part : lisible par Robin et Ludivine
-       d'un coup d'œil, sans rien à ressaisir. */
-    const lines = [
-      'Bonjour, je souhaite réserver :',
-      `• ${price.label}`,
-      `• ${when}`,
-      `• ${guests} ${Number(guests) > 1 ? 'personnes' : 'personne'}`,
-      `• Montant : ${montantTotal} €${discountRate ? ` (code ${promoCode.trim().toUpperCase()} appliqué)` : ''}`,
-      `• Nom : ${name}`,
-      `• E-mail : ${email}`,
-    ]
-    if (message) lines.push(`• Message : ${message}`)
-    const text = lines.join('\n')
-
-    const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
-    const mail = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Demande de réservation · ${price.label}`)}&body=${encodeURIComponent(text)}`
-    setSent({ wa, mail, text })
-    window.open(wa, '_blank', 'noopener')
-  }
-
-  if (sent) {
-    return (
-      <div className="form form--sent" role="status" aria-live="polite">
-        <p className="kicker">Demande prête</p>
-        <h3 className="mixed" style={{ fontSize: 'clamp(24px, 2.4vw, 32px)' }}>
-          Votre demande s’ouvre dans WhatsApp.
-        </h3>
-        <p className="booking__text">
-          Envoyez le message tel quel, nous confirmons la date sous 24 heures. Aucun paiement
-          en ligne : le règlement se fait à bord, le jour même.
-        </p>
-        <pre className="form__recap">{sent.text}</pre>
-        <div className="form__footer">
-          <a className="btn btn--light" href={sent.wa} target="_blank" rel="noopener noreferrer">
-            Ouvrir WhatsApp
-          </a>
-          <a className="form__hint" href={sent.mail}>
-            Ou envoyer par e-mail
-          </a>
-        </div>
-      </div>
-    )
+    const startTime = groupChoice === 'nuit' ? '18:00' : startHour !== null ? `${String(startHour).padStart(2, '0')}:00` : ''
+    setLoading(true)
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId,
+          name: String(data.get('name') ?? ''),
+          email: String(data.get('email') ?? ''),
+          guests: String(data.get('guests') ?? ''),
+          message: String(data.get('message') ?? ''),
+          date: toDateOnly(date),
+          startTime,
+          promoCode,
+        }),
+      })
+      const payload = await res.json().catch(() => ({}))
+      if (!res.ok || !payload.url) {
+        throw new Error(payload.error || 'Une erreur est survenue.')
+      }
+      window.location.href = payload.url
+    } catch (err) {
+      setLoading(false)
+      setErrorMsg(
+        err instanceof Error
+          ? err.message
+          : 'Le paiement en ligne est momentanément indisponible.',
+      )
+    }
   }
 
   return (
@@ -464,8 +444,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
         ) : null}
       </div>
 
-      {/* Récapitulatif tarifaire — rien n'est réglé en ligne */}
-      {price && montantTotal !== null ? (
+      {/* Récapitulatif tarifaire — l'acompte est ce qui est réglé maintenant */}
+      {price && montantTotal !== null && deposit !== null && balance !== null ? (
         <div className="price-recap field--full" aria-live="polite">
           <div className="price-recap__row is-total">
             <span>{price.label}</span>
@@ -477,8 +457,16 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               <span>{montantTotal} €</span>
             )}
           </div>
+          <div className="price-recap__row is-deposit">
+            <span>Acompte réglé en ligne (30 %)</span>
+            <span>{deposit} €</span>
+          </div>
           <p className="price-recap__note">
-            Aucun paiement en ligne. Règlement à bord (carte ou espèces) le jour de la prestation.
+            Solde de {balance} € à régler directement avant l’embarquement.
+          </p>
+          <p className="price-recap__note">
+            En cas d’annulation de votre part, l’acompte n’est pas remboursé : il est conservé
+            sous forme d’avoir, valable douze mois.
           </p>
         </div>
       ) : null}
@@ -505,7 +493,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <Link to="/cgv" target="_blank" rel="noopener noreferrer">
               conditions générales de vente
             </Link>
-            , notamment la politique d’annulation.
+            , notamment la politique d’annulation (acompte non remboursable, conservé en avoir).
           </span>
         </label>
         {cgvHint ? (
@@ -516,10 +504,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       </div>
 
       <div className="form__footer">
-        <button type="submit" className="btn btn--light">
-          Envoyer ma demande
+        <button type="submit" className="btn btn--light" disabled={loading}>
+          {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
         </button>
-        <span className="form__hint">Sur WhatsApp ou par e-mail · réponse sous 24 h</span>
+        <span className="form__hint">Paiement sécurisé · Stripe</span>
       </div>
     </motion.form>
   )

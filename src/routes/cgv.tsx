@@ -6,7 +6,7 @@ const PATH = '/cgv'
 export function meta() {
   return pageMeta({
     title: 'Conditions générales de vente | Harmonie Yacht',
-    description: 'Conditions de réservation, règlement et politique d’annulation pour les sorties en mer et nuits à bord chez Harmonie Yacht.',
+    description: 'Conditions de réservation, acompte et politique d’annulation pour les sorties en mer et nuits à bord chez Harmonie Yacht.',
     path: PATH,
   })
 }

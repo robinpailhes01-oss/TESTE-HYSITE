@@ -9,7 +9,7 @@ export function meta() {
   return pageMeta({
     title: 'Tarifs — location de yacht à Carnon | Harmonie Yacht',
     description:
-      'Tous les tarifs Harmonie Yacht en un coup d’œil : sorties en mer de 320 € à 1 250 €, nuits à bord de 250 € à 380 €. Aucun paiement en ligne, règlement à bord.',
+      'Tous les tarifs Harmonie Yacht en un coup d’œil : sorties en mer de 320 € à 1 250 €, nuits à bord de 250 € à 380 €. Acompte de 30 %, solde à bord.',
     path: PATH,
   })
 }
@@ -33,8 +33,8 @@ export default function TarifsRoute() {
       <section className="section" style={{ background: 'var(--white)' }}>
         <div className="container legal-body" style={{ maxWidth: 720 }}>
           <p className="legal-intro">
-            Aucun paiement en ligne : la réservation est confirmée sur demande, et le règlement
-            se fait à bord (carte ou espèces). Sans capitaine, il faut un permis bateau depuis au moins 5 ans et 50
+            Un acompte de 30&nbsp;% est réglé en ligne à la réservation, le solde à bord (carte
+            ou espèces). Sans capitaine, il faut un permis bateau depuis au moins 5 ans et 50
             heures de navigation justifiables sur un bateau de ce type.
           </p>
 

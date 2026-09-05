@@ -32,12 +32,12 @@ const FAQ = [
   {
     question: 'Peut-on annuler une réservation ?',
     answer:
-      'Oui. Si l’annulation vient d’Harmonie Yacht ou d’une météo dangereuse, rien n’est dû et une nouvelle date vous est proposée. Si l’annulation vient du client, merci de nous prévenir au plus tôt ; un report de date reste possible selon les disponibilités.',
+      'Si l’annulation vient d’Harmonie Yacht ou d’une météo dangereuse, l’acompte est intégralement remboursé. Si l’annulation vient du client, l’acompte n’est pas remboursé : il est conservé sous forme d’avoir du même montant, valable douze mois sur une prochaine sortie ou nuit à bord, selon les disponibilités.',
   },
   {
     question: 'Comment se passe le paiement ?',
     answer:
-      'Aucun paiement en ligne. Vous nous envoyez votre demande (WhatsApp ou e-mail), nous confirmons la date, et le règlement se fait à bord, par carte ou en espèces, avant l’embarquement.',
+      'Un acompte de 30 % est réglé en ligne par carte bancaire à la réservation. Le solde se règle directement à bord, par carte ou en espèces, avant l’embarquement.',
   },
   {
     question: 'Y a-t-il des toilettes à bord ?',
