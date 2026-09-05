@@ -72,9 +72,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     fetchBookedSlots(toDateOnly(from), toDateOnly(to)).then(setSlots)
   }, [])
 
-  /* Code promo reçu par les inscrits de l'ancien pop-up (-5 %, retiré
-     du site) — pré-rempli s'il est encore dans le navigateur, jamais
-     écrasé si le client tape le sien. */
+  /* Code promo obtenu via le pop-up de capture email (LeadMagnet) —
+     pré-rempli automatiquement s'il est présent, jamais écrasé si le
+     client tape le sien. */
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(PROMO_STORAGE_KEY)
