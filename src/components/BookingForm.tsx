@@ -506,7 +506,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <Link to="/cgv" target="_blank" rel="noopener noreferrer">
               conditions générales de vente
             </Link>
-            , notamment la politique d’annulation (acompte non remboursable, conservé en avoir).
+            , notamment la politique d’annulation ({payFull ? 'paiement' : 'acompte'} non
+            remboursable, conservé en avoir).
           </span>
         </label>
         {cgvHint ? (
