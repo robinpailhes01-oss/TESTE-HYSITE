@@ -197,3 +197,23 @@ en héro voisine de `harmonie-calme` ; l'heure voisine de `harmonie-home`).
 
 **Pris par ce build :** le récit heure par heure, la carte des tarifs en
 clôture, le fil de laiton.
+
+## harmonie-tour — 2026-09-07
+| Dimension | Valeur |
+|---|---|
+| Grammaire | **Le tour du propriétaire** (nommée ici) : une visite guidée par les deux hôtes, en stations, du dehors vers le dedans et du jour vers la nuit, qui se termine par les dates |
+| Nav | **Le plan du bord** : pas de barre de site ; un plan du bateau au trait, fixe dans la marge (en barre basse au téléphone), quatre stations qui s'allument et se cliquent, qui s'efface en clôture au profit du grand plan |
+| Héro | Scrub d'un tour de caméra autour du vrai yacht au mouillage, piloté aussi par un glissé horizontal |
+| Forme de séquence | scrub 3,4 → flow 0,7 → pan 3,0 → pin 1,4 (silence) → scrub 2,2 → flow+reveal 1,1 → pin tenu 1,5 ; 7 actes, 13,1 vh mesurés (12 118 px / 900), un seul basculement de sol, au couchant |
+| Clôture | **Le plan se déploie en calendrier** : le plan du bord se trace en grand, s'efface derrière 21 vraies dates avec « Jour » et « Nuit » libres ou barrés (Supabase), deux portes vers les pages de réservation, la date cliquée est retenue dans le formulaire |
+| Signature | **« Le tour sous la main »** : sur le héro, un glissé horizontal fait tourner le bateau et continue en inertie quand on lâche ; le geste déplace le défilement, le moteur reste seul maître du clip |
+| Monde | Photographique : photos réelles du client, un clip de caméra généré depuis la vraie photo du yacht (KIE), un clip du salon récupéré du build précédent |
+| Port | React Router SSG, moteur scrollcraft chargé au montage sans modification, Lenis au pointeur fin seulement |
+
+Écarte `harmonie-histoire` 5/6 (monde et port voisins, tout le reste diffère),
+`harmonie-home` 5/6 (héro scrub partagé), les autres 6/6 : le plan du bord,
+le glissé qui tourne le bateau et le calendrier de vraies dates n'existent
+dans aucun rang.
+
+**Pris par ce build :** le plan du bord en chrome, le clip que l'on tourne à
+la main, le calendrier des dates libres en clôture.
