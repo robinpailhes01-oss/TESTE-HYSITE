@@ -76,6 +76,22 @@
   font-weight: 300;
 }
 
+/* Le bandeau sous l'accroche : la planchette des heures du port. */
+.hi__hero-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(239, 235, 226, 0.24);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--over-2);
+}
+
 /* --- Le récit et son fil ---------------------------------------------------- */
 
 .hi__recit {
@@ -216,8 +232,19 @@
   max-height: 72vh;
 }
 
+/* La légende : le lieu et l'heure, en petites capitales sous la photo. */
+.hi__cap {
+  margin: 14px var(--gutter) 0 calc(var(--hi-fil) + 40px);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
 .hi__note {
-  margin: 20px var(--gutter) 0 calc(var(--hi-fil) + 40px);
+  margin: 6px var(--gutter) 0 calc(var(--hi-fil) + 40px);
   font-size: 14px;
   line-height: 1.55;
   color: var(--ink-2);
@@ -420,6 +447,7 @@
 
   .hi__mot-in,
   .hi__ch-head,
+  .hi__cap,
   .hi__note,
   .hi__ch--inset .hi__media,
   .hi__ch--pair .hi__media {
@@ -441,6 +469,13 @@
 
   .hi__h1 {
     font-size: clamp(40px, 12vw, 52px);
+  }
+
+  .hi__hero-strip {
+    gap: 6px 20px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    line-height: 1.8;
   }
 
   .hi__ch {

@@ -945,7 +945,7 @@ html[data-ground='night'] .monogram .monogram__night,
   padding: 10px 24px;
   font-size: 13px;
   font-weight: 500;
-  border-radius: 5px;
+  border-radius: 0;
   color: var(--white-muted);
   transition: color var(--t-std), background var(--t-std);
 }
@@ -986,7 +986,7 @@ html[data-ground='night'] .monogram .monogram__night,
   left: 0;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--foam);
   box-shadow: 0 0 0 4px rgba(245, 248, 250, 0.18);
 }
@@ -1440,7 +1440,7 @@ html[data-ground='night'] .field select {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--ocean);
   color: var(--white);
   font-size: 12px;
@@ -1830,7 +1830,7 @@ html:active-view-transition .page-in {
   justify-content: center;
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 1px solid var(--white-faint);
   color: var(--white);
   font-size: 20px;
@@ -2118,22 +2118,23 @@ html:active-view-transition .page-in {
   width: 100%;
   text-align: left;
   font: inherit;
-  color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--white-faint);
-  border-radius: var(--r-btn);
-  padding: 12px 14px;
+  color: var(--ink-3);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 13px 14px;
+  cursor: pointer;
   transition: border-color var(--t-std) var(--ease), background var(--t-std) var(--ease);
 }
 
 .cal-trigger.has-value {
-  color: var(--white);
+  color: var(--ink);
 }
 
 .cal-trigger:hover,
 .cal-trigger[aria-expanded='true'] {
-  border-color: var(--white);
-  background: rgba(255, 255, 255, 0.11);
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
 }
 
 .cal-trigger svg {
@@ -2149,7 +2150,7 @@ html:active-view-transition .page-in {
 
 .cal-hint {
   font-size: 12.5px;
-  color: #f0c9a0;
+  color: var(--error);
 }
 
 .form__consent {
@@ -2189,12 +2190,12 @@ html:active-view-transition .page-in {
    dans le même panneau, pour un parcours « jour → heure » en une étape. */
 .calendar-panel {
   margin-top: 10px;
-  background: var(--white);
+  background: var(--ground-2);
   color: var(--ink);
-  border-radius: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 0;
   padding: 18px;
   max-width: 400px;
-  box-shadow: 0 18px 54px rgba(8, 24, 38, 0.35);
 }
 
 .calendar {
@@ -2227,7 +2228,7 @@ html:active-view-transition .page-in {
   font-size: 13.5px;
   font-weight: 500;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--foam);
   color: var(--ink);
   transition: background var(--t-micro), color var(--t-micro);
@@ -2238,12 +2239,12 @@ html:active-view-transition .page-in {
 }
 
 .hour-chip.is-selected {
-  background: var(--ocean);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--ground);
 }
 
 .cal-hint--dark {
-  color: #b4562e;
+  color: var(--error);
 }
 
 .calendar__head {
@@ -2270,7 +2271,7 @@ html:active-view-transition .page-in {
   justify-content: center;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 1px solid var(--ink-faint);
   font-size: 15px;
   transition: border-color var(--t-micro), background var(--t-micro);
@@ -2312,7 +2313,7 @@ html:active-view-transition .page-in {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 0;
   font-size: 14px;
   transition: background var(--t-micro), color var(--t-micro);
 }
@@ -2331,8 +2332,8 @@ html:active-view-transition .page-in {
 }
 
 .calendar__day.is-selected {
-  background: var(--ocean);
-  color: var(--white);
+  background: var(--ink);
+  color: var(--ground);
   box-shadow: none;
 }
 
@@ -2440,7 +2441,7 @@ html:active-view-transition .page-in {
   padding: 10px 22px;
   font-size: 13px;
   font-weight: 500;
-  border-radius: 5px;
+  border-radius: 0;
   color: var(--white-muted);
   transition: background var(--t-std) var(--ease), color var(--t-std) var(--ease);
 }
@@ -2912,4 +2913,53 @@ html:active-view-transition .page-in {
   .nav--seam:not(.nav--open) {
     color: var(--ink);
   }
+}
+
+/* --- Les formules en lignes, comme la carte des tarifs de l'accueil ----------
+   Plus de cartes côte à côte : une liste, le nom à gauche, le prix à droite,
+   un filet entre chaque. La même grammaire que #tarifs sur l'accueil.      */
+
+.formules {
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 760px;
+}
+
+.formule {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'top price'
+    'name price'
+    'duration price'
+    'season price'
+    'desc desc'
+    'link link';
+  column-gap: 32px;
+  row-gap: 6px;
+  align-items: baseline;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--ink-faint);
+}
+
+.formule__top { grid-area: top; }
+.formule__name { grid-area: name; }
+.formule__duration { grid-area: duration; }
+.formule__season { grid-area: season; }
+.formule__price { grid-area: price; justify-self: end; align-self: start; margin-top: 0; }
+.formule__desc { grid-area: desc; max-width: 56ch; }
+.formule .link-arrow { grid-area: link; justify-self: start; }
+
+/* La case d'acceptation est une phrase, pas une étiquette : bas de casse. */
+.field .consent-check {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.field .consent-check input {
+  accent-color: var(--ink);
 }

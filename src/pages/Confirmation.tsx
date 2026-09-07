@@ -31,13 +31,17 @@ function formatDate(iso: string) {
 export default function Confirmation() {
   const [params] = useSearchParams()
   const reference = params.get('ref')
-  const [state, setState] = useState<'loading' | 'ok' | 'unpaid' | 'error'>(
-    reference ? 'loading' : 'error',
-  )
+  /* Toujours « loading » au premier rendu : la page est prérendue sans
+     référence, le client en a une. Un état initial qui en dépendrait ferait
+     diverger le HTML du serveur et celui du client. */
+  const [state, setState] = useState<'loading' | 'ok' | 'unpaid' | 'error'>('loading')
   const [result, setResult] = useState<Result | null>(null)
 
   useEffect(() => {
-    if (!reference) return
+    if (!reference) {
+      setState('error')
+      return
+    }
     let cancelled = false
     fetch(`/api/verify-checkout?ref=${encodeURIComponent(reference)}`)
       .then((res) => res.json())
@@ -60,6 +64,8 @@ export default function Confirmation() {
       : null
   /* Nuits insolites : tout est réglé en ligne, il n'y a pas de solde à bord. */
   const payFull = balance !== null && balance <= 0
+  /* Le prénom seul : « C'est réservé, Marie. » */
+  const prenom = result?.nom ? result.nom.trim().split(/\s+/)[0] : null
 
   return (
     <main className="section on-ocean-deep on-ocean confirm">
@@ -76,16 +82,17 @@ export default function Confirmation() {
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 18 }}
           >
             <svg width="52" height="52" viewBox="0 0 44 44" fill="none" aria-hidden="true" className="confirm__icon">
-              <circle cx="22" cy="22" r="21" stroke="currentColor" strokeOpacity="0.4" />
-              <path d="M14 22.5l5.5 5.5L30 17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="0.5" y="0.5" width="43" height="43" stroke="currentColor" strokeOpacity="0.4" />
+              <path d="M14 22.5l5.5 5.5L30 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p className="kicker">Réservation confirmée</p>
             <h1 className="mixed confirm__title">
-              Votre {payFull ? 'paiement' : 'acompte'} est <span className="it">bien reçu</span>
+              C’est réservé{prenom ? <>, <span className="it">{prenom}.</span></> : '.'}
             </h1>
             <p className="confirm__text">
-              Merci{result?.nom ? `, ${result.nom}` : ''} — votre place est bloquée. Nous revenons
-              vers vous sous 24&nbsp;heures pour finaliser les derniers détails.
+              Votre {payFull ? 'paiement' : 'acompte'} est bien reçu et votre place est bloquée. Un e-mail de
+              confirmation vient de partir. Nous revenons vers vous sous 24&nbsp;heures pour l’heure exacte et
+              le numéro de ponton.
             </p>
 
             {result?.formule ? (
@@ -110,6 +117,10 @@ export default function Confirmation() {
                     <span>{balance} €</span>
                   </div>
                 ) : null}
+                <div className="confirm__row">
+                  <span>Rendez-vous</span>
+                  <span>Ponton de l’Hôtel Neptune, Carnon</span>
+                </div>
               </div>
             ) : null}
 

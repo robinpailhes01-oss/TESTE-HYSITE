@@ -32,13 +32,16 @@ const VOIX = ['Alpack', 'Min Jung Hong', 'Christophe Bourgin']
 type ChapitreProps = {
   time: string
   line: ReactNode
+  /* La légende de la photo : le lieu et l'heure, en petites capitales
+     (« Le pont arrière, 20 h 40 »), comme le veut la charte. */
+  cap: string
   note: string
   children: ReactNode
   layout?: 'bleed' | 'inset' | 'pair' | 'portrait'
 }
 
-/* Un chapitre : l'heure sur le fil, une ligne, la photo, une légende. */
-function Chapitre({ time, line, note, children, layout = 'bleed' }: ChapitreProps) {
+/* Un chapitre : l'heure sur le fil, une ligne, la photo, sa légende, une note. */
+function Chapitre({ time, line, cap, note, children, layout = 'bleed' }: ChapitreProps) {
   return (
     <section className={`hi__ch hi__ch--${layout}`}>
       <header className="hi__ch-head" data-in>
@@ -46,6 +49,9 @@ function Chapitre({ time, line, note, children, layout = 'bleed' }: ChapitreProp
         <h2 className="mixed hi__line">{line}</h2>
       </header>
       <div className="hi__media">{children}</div>
+      <p className="hi__cap num" data-in>
+        {cap}
+      </p>
       <p className="hi__note" data-in>
         {note}
       </p>
@@ -181,6 +187,11 @@ export default function Histoire() {
             <br />
             <em>À vous seuls.</em>
           </h1>
+          <p className="hi__hero-strip num" data-in>
+            <span>Le jour · jusqu’à dix invités</span>
+            <span>La nuit · pour deux</span>
+            {sunset ? <span>Ce soir, le soleil se couche à {sunset}</span> : null}
+          </p>
         </div>
       </section>
 
@@ -205,7 +216,7 @@ export default function Histoire() {
         </section>
 
         {/* Le jour. */}
-        <Chapitre time="9 h" line={<>Le large.</>} note="Le yacht, privatisé. Personne d’autre à bord que vous.">
+        <Chapitre time="9 h" line={<>Le large.</>} cap="Au mouillage, 9 h 40" note="Le yacht, privatisé. Personne d’autre à bord que vous.">
           <Photo
             src="/images/sortie-bateau.jpg"
             alt="Le yacht Harmonie au mouillage sur une eau turquoise"
@@ -216,6 +227,7 @@ export default function Histoire() {
         <Chapitre
           time="11 h"
           line={<>L’eau.</>}
+          cap="La plateforme de bain, 11 h · l’efoil, 12 h"
           note="Paddle, plateforme flottante, masque et tuba. À bord, en libre usage."
           layout="pair"
         >
@@ -226,6 +238,7 @@ export default function Histoire() {
         <Chapitre
           time="13 h"
           line={<>La table.</>}
+          cap="Le carré, 13 h 15"
           note="Barbecue à disposition dès trois heures. Plateau sur demande."
           layout="inset"
         >
@@ -236,7 +249,7 @@ export default function Histoire() {
           />
         </Chapitre>
 
-        <Chapitre time="19 h" line={<>Les amis.</>} note="Jusqu’à dix invités. Anniversaires, EVJF, familles.">
+        <Chapitre time="19 h" line={<>Les amis.</>} cap="La proue, 19 h 50" note="Jusqu’à dix invités. Anniversaires, EVJF, familles.">
           <Photo src="/images/sortie-amis-coucher-soleil.jpg" alt="Entre amis à la proue du yacht, face au soleil couchant" />
         </Chapitre>
 
@@ -265,17 +278,18 @@ export default function Histoire() {
         </section>
 
         {/* La nuit. */}
-        <Chapitre time="21 h" line={<>La table, à deux.</>} note="Tapas Una Mas, en Nuit Prestige." layout="inset">
+        <Chapitre time="21 h" line={<>La table, à deux.</>} cap="Le salon, 21 h 20" note="Tapas Una Mas, en Nuit Prestige." layout="inset">
           <Photo src="/images/soir-3-bougies.webp" alt="La table du salon le soir, bougies et pétales, sous la lampe" sizes={SIZES.column} />
         </Chapitre>
 
-        <Chapitre time="23 h" line={<>La cabine.</>} note="Le port s’endort autour. Le clapot contre la coque.">
+        <Chapitre time="23 h" line={<>La cabine.</>} cap="La cabine avant, 23 h" note="Le port s’endort autour. Le clapot contre la coque.">
           <Photo src="/images/descente-6-cabine.webp" alt="La cabine du yacht, le lit fait, en lumière de fin de journée" />
         </Chapitre>
 
         <Chapitre
           time="10 h"
           line={<>Le réveil.</>}
+          cap="Le plateau, 9 h 30 · le pont arrière, 10 h"
           note="Petit-déjeuner de l’Hôtel Neptune, servi jusqu’à 10 h. Checkout à midi."
           layout="pair"
         >
@@ -307,8 +321,8 @@ export default function Histoire() {
               <p className="kicker">Tout compris</p>
               <h2 className="mixed">Le yacht, le capitaine, le carburant, le mouillage.</h2>
               <p className="hi__tarifs-p">
-                Un acompte de 30 % en ligne, le solde à bord. Sans capitaine, avec permis et 50 heures de
-                navigation : −15 %.
+                Un acompte de 30 % en ligne pour les sorties, la totalité pour les nuits. Sans capitaine,
+                avec permis et 50 heures de navigation : −15 %.
               </p>
             </header>
 
