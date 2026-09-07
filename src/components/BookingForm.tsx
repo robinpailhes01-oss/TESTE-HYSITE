@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { applyPromo, DEPOSIT_RATE, findPrice, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
+import { amountDueOnline, applyPromo, findPrice, paymentModeFor, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
 import { PROMO_STORAGE_KEY } from '../leadMagnet'
 import {
   fetchBookedSlots,
@@ -45,7 +45,8 @@ function toDateOnly(d: Date) {
 
 const CONTACT_EMAIL = 'harmonieyacht@gmail.com'
 
-/* Formulaire de réservation — encaisse un acompte de 30 % via Stripe Checkout.
+/* Formulaire de réservation — encaisse un acompte de 30 % par carte sur la
+   page de paiement hébergée par SumUp (compte Harmonie Group).
    Le solde restant se règle directement (à bord ou par virement). */
 export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
@@ -133,7 +134,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const price = findPrice(priceId)
   const discountRate = promoDiscountRate(promoCode)
   const montantTotal = price ? applyPromo(price.amount, promoCode) : null
-  const deposit = montantTotal !== null ? Math.round(montantTotal * DEPOSIT_RATE) : null
+  /* Les nuits à bord se règlent intégralement en ligne ; les sorties en mer
+     partent sur l'acompte de 30 % avec le solde à bord. */
+  const payFull = paymentModeFor(price) === 'full'
+  const deposit = montantTotal !== null ? amountDueOnline(price, montantTotal) : null
   const balance = montantTotal !== null && deposit !== null ? montantTotal - deposit : null
 
   const dateISO = date ? toDateOnly(date) : null
@@ -211,7 +215,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     const startTime = groupChoice === 'nuit' ? '18:00' : startHour !== null ? `${String(startHour).padStart(2, '0')}:00` : ''
     setLoading(true)
     try {
-      const res = await fetch('/api/create-checkout-session', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -470,11 +474,24 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             )}
           </div>
           <div className="price-recap__row is-deposit">
-            <span>Acompte réglé en ligne (30 %)</span>
+            <span>{payFull ? 'Réglé en ligne (total)' : 'Acompte réglé en ligne (30 %)'}</span>
             <span>{deposit} €</span>
           </div>
+          {payFull ? (
+            <p className="price-recap__note">
+              Les nuits à bord se règlent en totalité à la réservation. Rien à payer à bord.
+            </p>
+          ) : (
+            <p className="price-recap__note">
+              Solde de {balance} € à régler directement avant l’embarquement.
+            </p>
+          )}
           <p className="price-recap__note">
-            Solde de {balance} € à régler directement avant l’embarquement.
+            En cas d’annulation de votre part,{' '}
+            {payFull
+              ? 'la somme réglée n’est pas remboursée : elle est conservée'
+              : 'l’acompte n’est pas remboursé : il est conservé'}{' '}
+            sous forme d’avoir, valable douze mois.
           </p>
         </div>
       ) : null}
@@ -501,7 +518,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <Link to="/cgv" target="_blank" rel="noopener noreferrer">
               conditions générales de vente
             </Link>
-            , notamment la politique d’annulation.
+            , notamment la politique d’annulation ({payFull ? 'paiement' : 'acompte'} non
+            remboursable, conservé en avoir).
           </span>
         </label>
         {cgvHint ? (
@@ -513,9 +531,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
 
       <div className="form__footer">
         <button type="submit" className="btn" disabled={loading}>
-          {loading ? 'Redirection vers le paiement…' : 'Payer l’acompte et réserver'}
+          {loading ? 'Redirection vers le paiement…' : payFull ? 'Payer et réserver' : 'Payer l’acompte et réserver'}
         </button>
-        <span className="form__hint">Paiement sécurisé · Stripe</span>
+        <span className="form__hint">Paiement sécurisé · SumUp</span>
       </div>
     </motion.form>
   )

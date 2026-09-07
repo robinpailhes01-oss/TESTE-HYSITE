@@ -11,7 +11,8 @@ const SUPABASE_ANON_KEY =
 
 const ARM_DELAY = 2500
 
-/* Pop-up de capture email — un code -5 % contre un prénom et un email.
+/* Pop-up de capture email — un code -5 % (et la promesse de cadeaux et
+   d'événements exclusifs par e-mail) contre un prénom et un email.
    Ne se déclenche qu'après un vrai signal d'intérêt (la galerie de la
    page, juste avant la réservation) sans que le client ait encore ouvert
    le formulaire, et une seule fois par visiteur. */
@@ -112,7 +113,7 @@ export default function LeadMagnet() {
             className="lead-magnet"
             role="dialog"
             aria-modal="true"
-            aria-label="Recevoir un code de réduction"
+            aria-label="Recevoir un code de réduction et nos offres exclusives"
             initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -129,7 +130,8 @@ export default function LeadMagnet() {
                 <p className="lead-magnet__title">Votre code est prêt</p>
                 <p className="lead-magnet__code">{LEAD_MAGNET_CODE}</p>
                 <p className="lead-magnet__hint">
-                  Il est déjà pré-rempli dans le formulaire de réservation, en bas de page.
+                  Il est déjà pré-rempli dans le formulaire de réservation, en bas de page. Nos
+                  cadeaux et événements exclusifs arriveront par e-mail.
                 </p>
                 <button type="button" className="btn" onClick={dismiss}>
                   Continuer
@@ -142,8 +144,8 @@ export default function LeadMagnet() {
                   -{LEAD_MAGNET_PERCENT} % sur votre réservation
                 </p>
                 <p className="lead-magnet__text">
-                  Laissez-nous votre email, on vous envoie un code de réduction à utiliser quand
-                  vous serez prêt à réserver.
+                  Laissez-nous votre e-mail : votre code de réduction tout de suite, puis, en
+                  avant-première, nos cadeaux et nos événements exclusifs réservés à nos abonnés.
                 </p>
                 <div className="field">
                   <label htmlFor="lm-name">Prénom</label>
@@ -159,6 +161,10 @@ export default function LeadMagnet() {
                 <button type="submit" className="btn" disabled={status === 'sending'}>
                   {status === 'sending' ? 'Envoi…' : 'Recevoir mon code'}
                 </button>
+                <p className="lead-magnet__consent">
+                  En laissant votre e-mail, vous acceptez de recevoir nos offres et nos
+                  actualités. Désinscription à tout moment, en un clic.
+                </p>
               </form>
             )}
           </motion.div>

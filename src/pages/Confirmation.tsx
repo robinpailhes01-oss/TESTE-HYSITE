@@ -26,20 +26,20 @@ function formatDate(iso: string) {
   })
 }
 
-/* Page de retour après paiement Stripe — on ne fait jamais confiance à
-   l'URL seule : le statut est revérifié côté serveur via /api/verify-session. */
+/* Page de retour après le paiement SumUp — on ne fait jamais confiance à
+   l'URL seule : le statut est revérifié côté serveur via /api/verify-checkout. */
 export default function Confirmation() {
   const [params] = useSearchParams()
-  const sessionId = params.get('session_id')
+  const reference = params.get('ref')
   const [state, setState] = useState<'loading' | 'ok' | 'unpaid' | 'error'>(
-    sessionId ? 'loading' : 'error',
+    reference ? 'loading' : 'error',
   )
   const [result, setResult] = useState<Result | null>(null)
 
   useEffect(() => {
-    if (!sessionId) return
+    if (!reference) return
     let cancelled = false
-    fetch(`/api/verify-session?session_id=${encodeURIComponent(sessionId)}`)
+    fetch(`/api/verify-checkout?ref=${encodeURIComponent(reference)}`)
       .then((res) => res.json())
       .then((data: Result & { error?: string }) => {
         if (cancelled) return
@@ -51,13 +51,15 @@ export default function Confirmation() {
     return () => {
       cancelled = true
     }
-  }, [sessionId])
+  }, [reference])
 
   const dateLabel = result?.date ? formatDate(result.date) : null
   const balance =
     result?.montantTotal && result.deposit !== null
       ? Number(result.montantTotal) - result.deposit
       : null
+  /* Nuits insolites : tout est réglé en ligne, il n'y a pas de solde à bord. */
+  const payFull = balance !== null && balance <= 0
 
   return (
     <main className="section on-ocean-deep on-ocean confirm">
@@ -79,7 +81,7 @@ export default function Confirmation() {
             </svg>
             <p className="kicker">Réservation confirmée</p>
             <h1 className="mixed confirm__title">
-              Votre acompte est <span className="it">bien reçu</span>
+              Votre {payFull ? 'paiement' : 'acompte'} est <span className="it">bien reçu</span>
             </h1>
             <p className="confirm__text">
               Merci{result?.nom ? `, ${result.nom}` : ''} — votre place est bloquée. Nous revenons
@@ -99,10 +101,10 @@ export default function Confirmation() {
                   </div>
                 ) : null}
                 <div className="confirm__row">
-                  <span>Acompte réglé</span>
+                  <span>{payFull ? 'Réglé en ligne' : 'Acompte réglé'}</span>
                   <span>{result.deposit} €</span>
                 </div>
-                {balance !== null ? (
+                {balance !== null && !payFull ? (
                   <div className="confirm__row">
                     <span>Solde à l’embarquement</span>
                     <span>{balance} €</span>
