@@ -386,7 +386,7 @@ export default function Tour() {
             <div className="tour__frame">
               <picture>
                 <source media="(max-width: 860px)" srcSet="/tour/tour-poster-m.webp" />
-                <img className="sc-stage__poster" src="/tour/tour-poster.webp" alt="Le yacht Harmonie au mouillage, tour de la caméra dans la lumière du soir" width="1604" height="1080" fetchPriority="high" />
+                <img className="sc-stage__poster" src="/tour/tour-poster.webp" alt="Le yacht Harmonie au mouillage, tour de la caméra dans la lumière du soir" width="1345" height="1080" fetchPriority="high" />
               </picture>
               <video data-sc-scrub data-sc-src="/tour/tour.mp4" data-sc-src-mobile="/tour/tour-m.mp4" muted playsInline preload="none" />
               <div className="sc-scrim sc-scrim--lead tour__scrim" aria-hidden="true" />
@@ -489,10 +489,10 @@ export default function Tour() {
         <section id="descente" data-sc-act="scrub" data-sc-span="2.2" data-sc-dwell="0.3" data-sc-drift="#0a0e12" aria-label="La nuit à bord">
           <div data-sc-stage className="tour__nuit on-photo">
             <picture>
-              <source media="(max-width: 860px)" srcSet="/tour/salon-poster-m.webp" />
-              <img className="sc-stage__poster" src="/tour/salon-poster.webp" alt="Le salon du yacht le soir, la table dressée pour deux" width="1920" height="1080" loading="lazy" />
+              <source media="(max-width: 860px)" srcSet="/tour/descente-poster-m.webp" />
+              <img className="sc-stage__poster" src="/tour/descente-poster.webp" alt="Le couloir du yacht la nuit, du carré vers la cabine avant" width="1920" height="1080" loading="lazy" />
             </picture>
-            <video data-sc-scrub data-sc-src="/tour/salon.mp4" data-sc-src-mobile="/tour/salon-m.mp4" muted playsInline preload="none" />
+            <video data-sc-scrub data-sc-src="/tour/descente.mp4" data-sc-src-mobile="/tour/descente-m.mp4" muted playsInline preload="none" />
             <div className="sc-scrim sc-scrim--trail tour__scrim" aria-hidden="true" />
             <div className="sc-copy sc-copy--trail tour__nuit-copy">
               <p className="kicker" data-sc-cue="0.12 0.9 0.25 0.3">
