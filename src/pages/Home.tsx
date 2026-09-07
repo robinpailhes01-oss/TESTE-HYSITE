@@ -1,7 +1,8 @@
-import Histoire from '../components/Histoire'
+import Tour from '../components/Tour'
 
-/* L'accueil : une histoire qui se lit en défilant, du large au réveil, les
-   prix en dernier. On réserve sur la page choisie. */
+/* L'accueil : le tour du propriétaire. Une visite guidée qui se défile, du
+   yacht qui tourne sous la main jusqu'aux dates libres. On réserve sur la
+   page de l'expérience choisie. */
 export default function Home() {
-  return <Histoire />
+  return <Tour />
 }

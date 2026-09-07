@@ -73,6 +73,20 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     fetchBookedSlots(toDateOnly(from), toDateOnly(to)).then(setSlots)
   }, [])
 
+  /* Une date arrivée par l'adresse (`?date=AAAA-MM-JJ`, depuis le calendrier
+     des dates libres de l'accueil) est retenue d'office : le visiteur a déjà
+     choisi son jour, on ne le lui redemande pas. */
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get('date')
+    if (!raw || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) return
+    const [y, m, d] = raw.split('-').map(Number)
+    const candidate = new Date(y, m - 1, d)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    if (Number.isNaN(candidate.getTime()) || candidate < today) return
+    setDate(candidate)
+  }, [])
+
   /* Code promo obtenu via le pop-up de capture email (LeadMagnet) —
      pré-rempli automatiquement s'il est présent, jamais écrasé si le
      client tape le sien. */

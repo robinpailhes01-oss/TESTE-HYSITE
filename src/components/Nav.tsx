@@ -51,7 +51,11 @@ export default function Nav() {
   /* On réserve sur la page de l'expérience choisie ; ailleurs, « Réserver »
      ramène au choix, c'est-à-dire à l'accueil. */
   const onExperience = /^\/(sortie-en-mer-carnon|nuit-a-bord-yacht-carnon)\/?$/.test(pathname)
-  const reserveHref = onExperience ? '#reservation' : onHome ? '#tarifs' : '/#tarifs'
+  const reserveHref = onExperience ? '#reservation' : onHome ? '#dates' : '/#dates'
+
+  /* Pas de barre de site sur l'accueil : le plan du bord (Tour.tsx) tient
+     lieu de navigation, et les pages se rejoignent depuis le pied de page. */
+  if (onHome) return null
 
   return (
     <header
