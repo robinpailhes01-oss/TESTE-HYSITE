@@ -10,6 +10,8 @@ const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZGZwanl5dHdlZGhvY2h2emZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzExMDEsImV4cCI6MjA5NTM0NzEwMX0.LKISYgm1CBPYP4VfvH_S6C7meSQb1H57LxkldF9UhC0'
 
 const ARM_DELAY = 2500
+/* La bulle de Ludivine vient de parler : le pop-up attend son tour. */
+const AFTER_NUDGE_MS = 45000
 
 /* Pop-up de capture email — un code -5 % (et la promesse de cadeaux et
    d'événements exclusifs par e-mail) contre un prénom et un email.
@@ -38,13 +40,34 @@ export default function LeadMagnet() {
     if (!target) return
 
     let armTimer: ReturnType<typeof setTimeout>
+    /* Deux voix ne parlent pas en même temps : si WhatsApp a été ouvert, le
+       pop-up n'a plus lieu d'être ; si la bulle vient d'apparaître, il attend
+       45 s après elle. */
+    const tryOpen = () => {
+      if (alreadyHandled.current) return
+      let waOpened = false
+      let sinceNudge = Infinity
+      try {
+        waOpened = window.localStorage.getItem('hy_wa_opened') === '1'
+        const at = Number(window.localStorage.getItem('hy_wa_nudge_at') || 0)
+        if (at > 0) sinceNudge = Date.now() - at
+      } catch {
+        // sans stockage, on ouvre comme avant.
+      }
+      if (waOpened) {
+        alreadyHandled.current = true
+        return
+      }
+      if (sinceNudge < AFTER_NUDGE_MS) {
+        armTimer = setTimeout(tryOpen, AFTER_NUDGE_MS - sinceNudge)
+        return
+      }
+      setOpen(true)
+    }
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting || alreadyHandled.current) return
-        armTimer = setTimeout(() => {
-          if (alreadyHandled.current) return
-          setOpen(true)
-        }, ARM_DELAY)
+        armTimer = setTimeout(tryOpen, ARM_DELAY)
         obs.disconnect()
       },
       { threshold: 0.3 },

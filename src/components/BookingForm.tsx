@@ -206,6 +206,16 @@ export default function BookingForm({ group: fixedGroup }: Props) {
 
   const needsSortieHour = groupChoice === 'sortie'
 
+  /* La date est choisie (et l'heure, pour une sortie) : on le dit à la page,
+     la bulle de Ludivine compte soixante secondes à partir de là. */
+  useEffect(() => {
+    if (!dateISO) return
+    if (groupChoice === 'sortie' && startHour === null) return
+    window.dispatchEvent(
+      new CustomEvent('hy:date-chosen', { detail: { iso: dateISO, group: groupChoice, guests: null } }),
+    )
+  }, [dateISO, startHour, groupChoice])
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setErrorMsg(null)
@@ -247,6 +257,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       if (!res.ok || !payload.url) {
         throw new Error(payload.error || 'Une erreur est survenue.')
       }
+      /* Le paiement part : plus aucune relance à l'écran. */
+      window.dispatchEvent(new CustomEvent('hy:checkout-started'))
       window.location.href = payload.url
     } catch (err) {
       setLoading(false)
