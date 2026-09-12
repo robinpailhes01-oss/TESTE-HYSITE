@@ -88,6 +88,9 @@ export default function WhatsAppNudge() {
       const y = window.scrollY
       maxY = Math.max(maxY, y)
       if (home) {
+        /* Au téléphone, la clôture tient tout l'écran (calendrier, portes) et
+           la pastille WhatsApp est déjà là : la bulle n'y a pas sa place. */
+        if (matchMedia('(max-width: 860px)').matches) return
         const closing = Boolean(document.querySelector('.tour--closing'))
         const backed = maxY - y > window.innerHeight
         if (closing || backed) show()
