@@ -32,3 +32,6 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+# Réglages locaux de l'agent (hooks impeccable, chemins propres à la machine)
+.claude/settings.local.json
