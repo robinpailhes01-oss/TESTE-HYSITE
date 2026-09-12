@@ -55,7 +55,7 @@ function loadEngine(): Promise<void> {
 const SORTIE = EXPERIENCES.find((e) => e.group === 'sortie')!
 const NUIT = EXPERIENCES.find((e) => e.group === 'nuit')!
 
-const VOIX = ['Alpack', 'Jess Ous', 'Min Jung Hong']
+const VOIX = ['Min Jung Hong', 'Sofia Capuozzi', 'Nathalie']
   .map((n) => REVIEWS.find((r) => r.name === n))
   .filter((r): r is NonNullable<typeof r> => Boolean(r))
 
@@ -84,7 +84,7 @@ function DeckPlan({ big }: { big?: boolean }) {
   )
 }
 
-type Day = { iso: string; dow: string; num: number; jour: boolean; nuit: boolean }
+type Day = { iso: string; dow: string; mon: string; num: number; jour: boolean; nuit: boolean }
 
 function isoOf(d: Date) {
   const y = d.getFullYear()
@@ -99,6 +99,7 @@ function buildDays(slots: BookedSlot[], count: number): Day[] {
   start.setHours(12, 0, 0, 0)
   start.setDate(start.getDate() + 1)
   const fmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short' })
+  const fmtMon = new Intl.DateTimeFormat('fr-FR', { month: 'short' })
   for (let i = 0; i < count; i++) {
     const d = new Date(start)
     d.setDate(start.getDate() + i)
@@ -106,6 +107,7 @@ function buildDays(slots: BookedSlot[], count: number): Day[] {
     out.push({
       iso,
       dow: fmt.format(d).replace('.', ''),
+      mon: fmtMon.format(d).replace('.', ''),
       num: d.getDate(),
       /* Le jour est libre s'il reste au moins un départ pour une sortie de 3 h. */
       jour: getSortieStartHours(iso, 3, slots).length > 0,
@@ -336,13 +338,21 @@ export default function Tour() {
      calendrier est là, entier, et non le plan qui commence à se tracer. */
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault()
-    e.stopPropagation()
+    /* Le gestionnaire global des ancres (root.tsx) écoute aussi sur document :
+       il relancerait un second défilement vers le haut de l'acte. */
+    e.nativeEvent.stopImmediatePropagation()
     const el = document.getElementById(id)
     if (!el) return
     const offset = id === 'dates' ? Math.max(0, el.offsetHeight - innerHeight) : 0
+    const top = el.getBoundingClientRect().top + scrollY + offset
     const lenis = getLenis()
-    if (lenis) lenis.scrollTo(el, { duration: 1.4, offset })
-    else scrollTo({ top: el.getBoundingClientRect().top + scrollY + offset, behavior: 'smooth' })
+    /* Lenis garde en mémoire une hauteur de page mesurée avant que les actes
+       n'aient pris la leur : on la lui fait relire, sinon il s'arrête court. */
+    if (lenis) {
+      lenis.resize()
+      lenis.scrollTo(top, { duration: 1.4, onComplete: () => dispatchEvent(new Event('scroll')) })
+    }
+    else scrollTo({ top, behavior: 'smooth' })
   }
 
   const f = (key: string, group = SORTIE) => group.formules!.find((x) => x.key === key)!
@@ -429,14 +439,13 @@ export default function Tour() {
         {/* 3 · LE JOUR À BORD : pan -------------------------------------- */}
         <section id="jour" data-sc-act="pan" data-sc-span="3.0" data-sc-drift="#e8e5dd" className="tour__jour" ref={jourRef} aria-label="Le jour à bord">
           <div data-sc-stage className="rail__stage tour__rail-stage">
+            <div className="tour__rail-lead">
+              <h2 className="mixed">
+                Une journée à bord, <span className="it">station par station.</span>
+              </h2>
+              <p className="tour__rail-p">De deux à huit heures, entre 9 h et 21 h. Le yacht, le capitaine, le carburant et le mouillage compris.</p>
+            </div>
             <div className="rail__track tour__rail" data-sc-pan="0.04">
-              <div className="tour__station tour__station--lead">
-                <p className="kicker">Le jour</p>
-                <h2 className="mixed">
-                  Une journée à bord, <span className="it">station par station.</span>
-                </h2>
-                <p className="tour__rail-p">De deux à huit heures, entre 9 h et 21 h. Le yacht, le capitaine, le carburant et le mouillage compris.</p>
-              </div>
               <figure className="tour__station">
                 <img {...pic('/images/sortie-bateau.jpg', SIZES.half)} alt="Le yacht Harmonie au mouillage sur une eau turquoise" loading="lazy" />
                 <figcaption className="num">Au mouillage, 9 h 40</figcaption>
@@ -520,7 +529,7 @@ export default function Tour() {
               <h2 className="mixed">
                 Le petit-déjeuner de l’Hôtel Neptune, <span className="it">servi sur le pont.</span>
               </h2>
-              <p className="tour__reveil-p">Jusqu’à 10 h. Checkout à midi. Le port s’éveille autour.</p>
+              <p className="tour__reveil-p">Jusqu’à 10 h. Départ à midi. Le port s’éveille autour.</p>
               <div className="tour__voix">
                 {VOIX.map((r) => (
                   <blockquote className="tour__voice" key={r.name}>
@@ -539,12 +548,12 @@ export default function Tour() {
         </section>
 
         {/* 7 · LES DATES : pin tenu, la clôture. Le plan se déploie. ----- */}
-        <section id="dates" data-sc-act="pin" data-sc-span="1.5" data-sc-drift="#0a0e12" ref={closeRef} className="tour__close" aria-label="Les dates libres">
+        <section id="dates" data-sc-act="pin" data-sc-span="1.3" data-sc-drift="#0a0e12" ref={closeRef} className="tour__close" aria-label="Les dates libres">
           <div data-sc-stage className="tour__close-stage">
             <div className="tour__close-plan" aria-hidden="true">
               <DeckPlan big />
             </div>
-            <div className="container tour__close-in" data-sc-cue="0.1" data-sc-rise="0.6">
+            <div className="container tour__close-in" data-sc-cue="0.06" data-sc-rise="0.6">
               <header className="tour__close-head">
                 <p className="kicker">Les trois prochaines semaines</p>
                 <h2 className="mixed">
@@ -557,18 +566,21 @@ export default function Tour() {
                   <li key={d ? d.iso : i} className={`tour__day ${d ? '' : 'is-blank'}`}>
                     {d ? (
                       <>
-                        <span className="tour__day-dow">{d.dow}</span>
+                        <span className="tour__day-dow">
+                          {d.dow}
+                          {i === 0 || d.num === 1 ? <span className="tour__day-mon"> {d.mon}</span> : null}
+                        </span>
                         <span className="tour__day-num num">{d.num}</span>
                         <span className="tour__day-marks">
                           {d.jour ? (
-                            <Link to={`/${SORTIE.slug}?date=${d.iso}#reservation`} className="tour__mark" aria-label={`Sortie en mer le ${d.iso}`}>
+                            <Link to={`/${SORTIE.slug}?date=${d.iso}#reservation`} className="tour__mark" aria-label={`Sortie en mer le ${d.dow} ${d.num} ${d.mon}`}>
                               Jour
                             </Link>
                           ) : (
                             <span className="tour__mark is-off">Jour</span>
                           )}
                           {d.nuit ? (
-                            <Link to={`/${NUIT.slug}?date=${d.iso}#reservation`} className="tour__mark" aria-label={`Nuit à bord le ${d.iso}`}>
+                            <Link to={`/${NUIT.slug}?date=${d.iso}#reservation`} className="tour__mark" aria-label={`Nuit à bord le ${d.dow} ${d.num} ${d.mon}`}>
                               Nuit
                             </Link>
                           ) : (

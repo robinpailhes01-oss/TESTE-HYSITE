@@ -3088,3 +3088,20 @@ html[data-ground='night'] .nudge__text {
     bottom: 74px;
   }
 }
+
+/* Une alerte du formulaire à l'écran : les avis se taisent (sur téléphone ils
+   recouvraient le message au moment de payer). */
+.has-form-alert .toast-zone {
+  display: none;
+}
+
+/* La date est arrivée depuis l'accueil : une ligne signée au-dessus du
+   formulaire, pas une fenêtre. */
+.form__arrived {
+  margin: 0 0 6px;
+  padding: 12px 0 14px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink);
+}

@@ -28,6 +28,7 @@ const READ_DELAY_MS = 8000
 const READ_SCROLL = 0.25
 const HESITATION_MS = 60000
 const REMEMBER_MS = 24 * 3600 * 1000
+const AUTO_HIDE_MS = 12000
 
 type Variant =
   | { kind: 'read' }
@@ -61,13 +62,19 @@ export default function WhatsAppNudge() {
   const [variant, setVariant] = useState<Variant | null>(null)
   const [open, setOpen] = useState(false)
   const reservable = /^\/(sortie-en-mer-carnon|nuit-a-bord-yacht-carnon)\/?$/.test(pathname)
+  const home = pathname === '/'
 
   /* --- la lecture ------------------------------------------------------- */
+  /* Sur les pages de réservation, seule l'hésitation parle : la personne a
+     déjà le formulaire sous les yeux. Sur l'accueil, la bulle attend la
+     clôture (les dates) ou un retour en arrière d'un écran, jamais pendant
+     les actes : elle recouvrait le titre, la descente et les avis. */
   useEffect(() => {
-    if (shownRecently()) return
+    if (reservable || shownRecently()) return
     let armed = false
     let shown = false
     let raf = 0
+    let maxY = 0
     const show = () => {
       if (shown) return
       shown = true
@@ -78,7 +85,15 @@ export default function WhatsAppNudge() {
       if (!armed || shown) return
       /* Une fenêtre déjà ouverte (le pop-up -5 %) garde la parole. */
       if (document.querySelector('.lead-magnet__backdrop')) return
-      if (window.scrollY > window.innerHeight * READ_SCROLL) show()
+      const y = window.scrollY
+      maxY = Math.max(maxY, y)
+      if (home) {
+        const closing = Boolean(document.querySelector('.tour--closing'))
+        const backed = maxY - y > window.innerHeight
+        if (closing || backed) show()
+        return
+      }
+      if (y > window.innerHeight * READ_SCROLL) show()
     }
     const onScroll = () => {
       cancelAnimationFrame(raf)
@@ -94,7 +109,7 @@ export default function WhatsAppNudge() {
       cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
     }
-  }, [])
+  }, [home, reservable])
 
   /* --- l'hésitation ----------------------------------------------------- */
   useEffect(() => {
@@ -104,12 +119,19 @@ export default function WhatsAppNudge() {
       const d = (e as CustomEvent<{ iso: string; group: 'sortie' | 'nuit'; guests: string | null }>).detail
       if (done || !d?.iso) return
       clearTimeout(timer)
-      timer = setTimeout(() => {
+      const fire = () => {
         if (done) return
+        /* Le calendrier est ouvert : la personne est en train de choisir, on
+           repasse dans dix secondes plutôt que de le recouvrir. */
+        if (document.querySelector('.calendar-panel')) {
+          timer = setTimeout(fire, 10000)
+          return
+        }
         done = true
         setVariant({ kind: 'date', iso: d.iso, label: longDate(d.iso), group: d.group, guests: d.guests })
         setOpen(true)
-      }, HESITATION_MS)
+      }
+      timer = setTimeout(fire, HESITATION_MS)
     }
     const onCheckout = () => {
       done = true
@@ -138,6 +160,29 @@ export default function WhatsAppNudge() {
     return () => document.body.classList.remove('has-nudge')
   }, [open])
 
+  /* Elle ne s'impose pas : douze secondes sans la main dessus, elle s'efface. */
+  useEffect(() => {
+    if (!open) return
+    let t = window.setTimeout(() => setOpen(false), AUTO_HIDE_MS)
+    const hold = () => window.clearTimeout(t)
+    const release = () => {
+      window.clearTimeout(t)
+      t = window.setTimeout(() => setOpen(false), AUTO_HIDE_MS)
+    }
+    const el = document.querySelector('.nudge')
+    el?.addEventListener('pointerenter', hold)
+    el?.addEventListener('focusin', hold)
+    el?.addEventListener('pointerleave', release)
+    el?.addEventListener('focusout', release)
+    return () => {
+      window.clearTimeout(t)
+      el?.removeEventListener('pointerenter', hold)
+      el?.removeEventListener('focusin', hold)
+      el?.removeEventListener('pointerleave', release)
+      el?.removeEventListener('focusout', release)
+    }
+  }, [open])
+
   /* Changer de page ferme la bulle : elle appartient au moment. */
   useEffect(() => {
     setOpen(false)
@@ -149,7 +194,7 @@ export default function WhatsAppNudge() {
   const text =
     variant.kind === 'date'
       ? `Bonjour Ludivine, je regarde ${what} le ${variant.label}${variant.guests ? ` pour ${variant.guests}` : ''}, est-ce disponible ?`
-      : 'Bonjour Ludivine, je regarde une sortie en mer ou une nuit à bord et j’aimerais savoir quelles dates sont disponibles.'
+      : 'Bonjour Ludivine, '
 
   const onWrite = () => {
     remember(WA_OPENED_KEY, '1')

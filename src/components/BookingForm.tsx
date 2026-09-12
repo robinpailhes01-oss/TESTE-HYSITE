@@ -6,6 +6,7 @@ import { ease } from '../motion'
 import Calendar from './Calendar'
 import { amountDueOnline, applyPromo, findPrice, paymentModeFor, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
 import { PROMO_STORAGE_KEY } from '../leadMagnet'
+import { getLenis } from '../lenisRef'
 import {
   fetchBookedSlots,
   formatHour,
@@ -57,6 +58,11 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [startHour, setStartHour] = useState<number | null>(null)
   const [calOpen, setCalOpen] = useState(false)
   const [dateHint, setDateHint] = useState(false)
+  /* L'heure manque : on le dit sous le champ de date, pas sous le récapitulatif. */
+  const [hourHint, setHourHint] = useState(false)
+  /* La date est arrivée par l'adresse (calendrier de l'accueil) : on le confirme
+     en une ligne au-dessus du formulaire, et on amène la personne dessus. */
+  const [arrived, setArrived] = useState(false)
   const [cgvAccepted, setCgvAccepted] = useState(false)
   const [cgvHint, setCgvHint] = useState(false)
   const [promoCode, setPromoCode] = useState('')
@@ -85,7 +91,27 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     today.setHours(0, 0, 0, 0)
     if (Number.isNaN(candidate.getTime()) || candidate < today) return
     setDate(candidate)
+    setArrived(true)
+    setCalOpen(true)
+    /* La page arrive en haut (prérendu, restauration du défilement) : on
+       descend jusqu'au formulaire une fois la page posée. */
+    const t = window.setTimeout(() => {
+      const target = document.getElementById('reservation')
+      if (!target) return
+      const lenis = getLenis()
+      if (lenis) lenis.scrollTo(target, { offset: -24, duration: 1.1 })
+      else target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 350)
+    return () => window.clearTimeout(t)
   }, [])
+
+  /* Tant qu'une alerte du formulaire est à l'écran, les avis se taisent : sur
+     téléphone ils recouvraient le message au moment de payer. */
+  useEffect(() => {
+    const on = dateHint || hourHint || cgvHint || Boolean(errorMsg)
+    document.body.classList.toggle('has-form-alert', on)
+    return () => document.body.classList.remove('has-form-alert')
+  }, [dateHint, hourHint, cgvHint, errorMsg])
 
   /* Code promo obtenu via le pop-up de capture email (LeadMagnet) —
      pré-rempli automatiquement s'il est présent, jamais écrasé si le
@@ -227,7 +253,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
     }
     if (!price || deposit === null) return
     if (needsSortieHour && startHour === null) {
-      setErrorMsg('Choisissez une heure de départ disponible.')
+      setHourHint(true)
+      setCalOpen(true)
+      document.getElementById('bk-date')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
     if (!cgvAccepted) {
@@ -276,6 +304,14 @@ export default function BookingForm({ group: fixedGroup }: Props) {
       onSubmit={handleSubmit}
       transition={{ duration: 0.4, ease }}
     >
+      {arrived && date ? (
+        <p className="form__arrived field--full num" role="status">
+          {formatDate(date)} est retenu.{' '}
+          {needsSortieHour && startHour === null
+            ? 'Il reste l’heure de départ, juste en dessous.'
+            : 'Il reste vos coordonnées.'}
+        </p>
+      ) : null}
       {!fixedGroup ? (
         <div className="group-switch field--full" role="tablist" aria-label="Choisir la prestation">
           <button
@@ -359,7 +395,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <option value="sans-sortie">Nuit à quai · petit-déjeuner seul (250 €)</option>
           </select>
           {nightFormule === 'sans-sortie' ? (
-            <p className="field__note">Disponible à partir du 1er septembre.</p>
+            <p className="field__note">Nuit à quai, sans sortie en mer : petit-déjeuner compris.</p>
           ) : null}
         </div>
       )}
@@ -403,6 +439,11 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             Choisissez d’abord une date dans le calendrier.
           </span>
         ) : null}
+        {hourHint && date && needsSortieHour && startHour === null ? (
+          <span className="cal-hint" role="alert">
+            Il reste l’heure de départ : choisissez-la ci-dessous.
+          </span>
+        ) : null}
         <AnimatePresence>
           {calOpen ? (
             <motion.div
@@ -435,6 +476,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
                             aria-pressed={startHour === h}
                             onClick={() => {
                               setStartHour(h)
+                              setHourHint(false)
                               window.setTimeout(() => setCalOpen(false), 260)
                             }}
                           >
