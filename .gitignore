@@ -35,3 +35,6 @@ build
 
 # Réglages locaux de l'agent (hooks impeccable, chemins propres à la machine)
 .claude/settings.local.json
+
+# État d'exécution du serveur impeccable (fichier de session, pas un livrable)
+.impeccable/live/
