@@ -47,11 +47,11 @@ function deposit(amount: number) {
 
 export const PRICES: PriceItem[] = [
   { id: 'sortie-2h-capitaine', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 2 h · avec capitaine', detail: '2 heures, capitaine inclus', amount: 380, durationHours: 2 },
-  { id: 'sortie-2h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 2 h · sans capitaine', detail: '2 heures, permis côtier requis', amount: 320, durationHours: 2 },
+  { id: 'sortie-2h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 2 h · sans capitaine', detail: '2 heures, sans capitaine · permis côtier depuis 5 ans minimum et 5 ans de navigation justifiés sur ce type de bateau ; carburant non inclus ; caution obligatoire', amount: 320, durationHours: 2 },
   { id: 'sortie-3h-capitaine', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 3 h · avec capitaine', detail: '3 heures, capitaine inclus', amount: 550, durationHours: 3 },
-  { id: 'sortie-3h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 3 h · sans capitaine', detail: '3 heures, permis côtier requis', amount: 470, durationHours: 3 },
+  { id: 'sortie-3h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 3 h · sans capitaine', detail: '3 heures, sans capitaine · permis côtier depuis 5 ans minimum et 5 ans de navigation justifiés sur ce type de bateau ; carburant non inclus ; caution obligatoire', amount: 470, durationHours: 3 },
   { id: 'sortie-4h-capitaine', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 4 h · avec capitaine', detail: '4 heures, capitaine inclus', amount: 750, durationHours: 4 },
-  { id: 'sortie-4h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 4 h · sans capitaine', detail: '4 heures, permis côtier requis', amount: 640, durationHours: 4 },
+  { id: 'sortie-4h-solo', group: 'sortie', bookingType: 'sortie_privative', label: 'Sortie 4 h · sans capitaine', detail: '4 heures, sans capitaine · permis côtier depuis 5 ans minimum et 5 ans de navigation justifiés sur ce type de bateau ; carburant non inclus ; caution obligatoire', amount: 640, durationHours: 4 },
   {
     id: 'sortie-8h-ultra-premium',
     group: 'sortie',

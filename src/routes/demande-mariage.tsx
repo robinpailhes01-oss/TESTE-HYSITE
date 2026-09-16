@@ -58,7 +58,7 @@ export default function DemandeMariageRoute() {
         <ul>
           <li>
             Sortie en mer de 2 heures au coucher de soleil — 380 € avec capitaine, 320 € sans
-            capitaine (permis requis)
+            capitaine (permis côtier 5 ans, carburant non inclus, caution obligatoire)
           </li>
           <li>
             Nuit Prestige à bord — 380 € pour 2 personnes, sortie en mer d’1 h au coucher de

@@ -65,7 +65,7 @@ export default function EvjfRoute() {
 
         <h2>Tarifs</h2>
         <ul>
-          <li>2 heures — 380 € avec capitaine, 320 € sans capitaine (permis requis)</li>
+          <li>2 heures — 380 € avec capitaine, 320 € sans capitaine (permis côtier 5 ans, carburant non inclus, caution obligatoire)</li>
           <li>3 heures — 550 € avec capitaine, 470 € sans capitaine — BBQ inclus</li>
           <li>4 heures — 750 € avec capitaine, 640 € sans capitaine — BBQ inclus</li>
         </ul>

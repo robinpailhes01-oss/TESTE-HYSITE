@@ -69,9 +69,9 @@ export const EXPERIENCES: Experience[] = [
       'Le yacht est à vous, le programme aussi. Votre yacht privatif, avec sa plateforme géante sur l’eau et le paddle à disposition : profitez-en pour manger, vous amuser, nager, et vivre la sortie à votre rythme, jusqu’à l’apéritif face au soleil qui descend. Vous n’avez rien à organiser, tout est préparé avant votre arrivée.',
     includes: [
       { label: 'Yacht privatisé', detail: 'Le bateau est à vous, personne d’autre à bord' },
-      { label: 'Avec capitaine, ou sans', detail: 'Sans : permis ≥ 5 ans + 50 h de navigation justifiables, −15 %' },
+      { label: 'Avec capitaine, ou sans', detail: 'Sans capitaine (−15 %) : permis côtier depuis 5 ans minimum et 5 ans de navigation justifiés sur ce type de bateau. Carburant non inclus, caution obligatoire.' },
       { label: 'Sorties de 2 h à 8 h', detail: 'Au choix · entre 9 h et 21 h' },
-      { label: 'Carburant & mouillage compris', detail: 'Aucun supplément surprise' },
+      { label: 'Carburant & mouillage compris', detail: 'Avec capitaine. Sans capitaine, le carburant est en sus.' },
       { label: 'Paddle, plateforme flottante, masque & tuba', detail: 'À bord, en libre usage' },
       { label: 'Jusqu’à 10 invités', detail: 'Anniversaires, EVJF, familles' },
     ],
@@ -79,7 +79,7 @@ export const EXPERIENCES: Experience[] = [
     price: {
       amount: '380 €',
       unit: 'la sortie',
-      note: 'À partir de · sans capitaine dès 320 €. Sorties entre 9 h et 21 h.',
+      note: 'À partir de · sans capitaine dès 320 € (carburant non inclus, caution obligatoire). Sorties entre 9 h et 21 h.',
     },
     formulesKicker: 'Nos formules',
     formulesTitlePlain: 'Quatre façons de',

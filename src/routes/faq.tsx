@@ -17,7 +17,7 @@ const FAQ = [
   {
     question: 'Faut-il un permis pour louer le yacht sans capitaine ?',
     answer:
-      'Oui : un permis bateau détenu depuis au moins 5 ans et 50 heures de navigation justifiables sur un bateau de ce type. Sans ces conditions, la sortie se fait avec notre capitaine.',
+      'Oui : un permis côtier détenu depuis au moins 5 ans et 5 ans de navigation justifiés sur un bateau de ce type (justificatifs demandés à l’embarquement). Sans capitaine, le carburant n’est pas inclus et une caution est obligatoire. Sans ces conditions, la sortie se fait avec notre capitaine.',
   },
   {
     question: 'Combien de personnes peuvent monter à bord ?',
