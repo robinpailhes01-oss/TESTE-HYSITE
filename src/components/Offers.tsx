@@ -8,7 +8,7 @@ const OFFERS = [
     group: 'sortie',
     amount: '380 €',
     unit: 'les 2 heures',
-    desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. De 2 h à 8 h (Ultra Premium, 1 250 €) — sans capitaine dès 320 €. Jusqu’à 10 invités.',
+    desc: 'Yacht privatisé avec capitaine, carburant et mouillage compris. De 2 h à 8 h (Ultra Premium, 1 250 €) — sans capitaine dès 320 € (carburant non inclus, caution obligatoire). Jusqu’à 10 invités.',
   },
   {
     plain: 'Nuit',

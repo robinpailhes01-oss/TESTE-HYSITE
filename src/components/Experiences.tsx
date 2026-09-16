@@ -37,7 +37,7 @@ export default function Experiences() {
                 <span>Dès 380 €</span>
               </li>
               <li>
-                <span>Avec capitaine, ou sans (permis)</span>
+                <span>Avec capitaine, ou sans (permis côtier 5 ans, carburant et caution en sus)</span>
                 <span>−15 %</span>
               </li>
               <li>

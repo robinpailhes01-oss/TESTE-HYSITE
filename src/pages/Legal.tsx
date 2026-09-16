@@ -142,6 +142,18 @@ export function CGV() {
         ensuite (à confirmer avec le capitaine sur place).
       </p>
 
+      <h2>4 bis. Location sans capitaine</h2>
+      <p>
+        La location sans capitaine est réservée aux clients titulaires d’un permis côtier depuis
+        au moins cinq ans et pouvant justifier de cinq ans de navigation sur un bateau de ce
+        type. Les justificatifs (permis et expérience) sont présentés à l’embarquement ; à
+        défaut, la sortie se fait avec notre capitaine, au tarif correspondant. Le carburant
+        n’est pas inclus dans le prix de la location sans capitaine : il est facturé en sus,
+        selon la consommation constatée. Une caution est obligatoire ; son montant et ses
+        modalités sont communiqués avant l’embarquement, et elle est restituée après
+        vérification du bateau au retour.
+      </p>
+
       <h2>5. Responsabilité</h2>
       <p>
         Le nombre de passagers ne peut excéder la capacité légale du bateau. Les consignes de

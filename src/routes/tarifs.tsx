@@ -36,8 +36,9 @@ export default function TarifsRoute() {
             Un acompte de 30&nbsp;% est réglé en ligne à la réservation, le solde à bord (carte
             ou espèces) — cela vaut pour les sorties en mer. Les nuits à bord, elles, se règlent
             en totalité en ligne à la réservation : il n’y a rien à payer à bord. Sans capitaine,
-            il faut un permis bateau depuis au moins 5 ans et 50 heures de navigation
-            justifiables sur un bateau de ce type.
+            il faut un permis côtier depuis au moins 5 ans et 5 ans de navigation justifiés sur
+            un bateau de ce type ; le carburant n’est alors pas inclus et une caution est
+            obligatoire.
           </p>
 
           <h2>Sorties en mer</h2>
@@ -49,8 +50,9 @@ export default function TarifsRoute() {
             ))}
           </ul>
           <p>
-            Inclus : skipper professionnel, carburant, eau à bord, paddle, plateforme de bain.
-            Non inclus : nourriture et boissons.
+            Inclus avec capitaine : skipper professionnel, carburant, eau à bord, paddle,
+            plateforme de bain. Non inclus : nourriture et boissons. Sans capitaine : carburant
+            non inclus, caution obligatoire.
           </p>
 
           <h2>Nuits à bord</h2>

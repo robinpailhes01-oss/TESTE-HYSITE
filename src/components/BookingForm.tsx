@@ -298,8 +298,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               </select>
               {captain === 'sans' ? (
                 <p className="field__note">
-                  Permis bateau depuis au moins 5 ans et 50 h de navigation justifiables sur un
-                  bateau de ce type.
+                  Permis côtier depuis au moins 5 ans et 5 ans de navigation justifiés sur un
+                  bateau de ce type (justificatifs demandés à l’embarquement). Le carburant
+                  n’est pas inclus et une caution est obligatoire.
                 </p>
               ) : null}
             </div>
@@ -474,6 +475,12 @@ export default function BookingForm({ group: fixedGroup }: Props) {
               Solde de {balance} € à régler directement avant l’embarquement.
             </p>
           )}
+          {groupChoice === 'sortie' && captain === 'sans' && !isUltraPremium ? (
+            <p className="price-recap__note">
+              Sans capitaine : carburant non inclus (facturé selon la consommation) et caution
+              obligatoire, communiquée avant l’embarquement.
+            </p>
+          ) : null}
           <p className="price-recap__note">
             En cas d’annulation de votre part,{' '}
             {payFull
