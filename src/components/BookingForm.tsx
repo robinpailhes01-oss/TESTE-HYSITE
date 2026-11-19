@@ -52,7 +52,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
   const [groupChoice, setGroupChoice] = useState<Group>(fixedGroup ?? 'sortie')
   const [duration, setDuration] = useState<Duration>('3h')
   const [captain, setCaptain] = useState<'avec' | 'sans'>('avec')
-  const [nightFormule, setNightFormule] = useState<NightFormule>('prestige')
+  const [nightFormule, setNightFormule] = useState<NightFormule>('sans-sortie')
   const [date, setDate] = useState<Date | null>(null)
   const [startHour, setStartHour] = useState<number | null>(null)
   const [calOpen, setCalOpen] = useState(false)
@@ -321,8 +321,8 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             <option value="prestige">Nuit Prestige — avec sortie en mer & tapas (380 €)</option>
             <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (200 €)</option>
           </select>
-          {nightFormule === 'sans-sortie' ? (
-            <p className="field__note">Disponible à partir du 1er septembre.</p>
+          {nightFormule === 'prestige' ? (
+            <p className="field__note">Disponible à partir du 1er avril 2027.</p>
           ) : null}
         </div>
       )}

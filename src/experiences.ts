@@ -145,8 +145,8 @@ export const EXPERIENCES: Experience[] = [
     includes: [
       { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
-      { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
-      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
+      { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas — disponible à partir du 1er avril 2027' },
+      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer' },
       { label: 'Petit-déjeuner inclus', detail: 'Servi à bord, jusqu’à 10 h' },
     ],
     steps: NIGHT_STEPS,
@@ -166,7 +166,6 @@ export const EXPERIENCES: Experience[] = [
         it: 'à quai',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '200 €',
-        season: 'Disponible à partir du 1er septembre',
         desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner à bord inclus le lendemain matin, jusqu’à 10 h.',
       },
       {
@@ -176,6 +175,7 @@ export const EXPERIENCES: Experience[] = [
         it: 'Prestige',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
+        season: 'Disponible à partir du 1er avril 2027',
         desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner à bord inclus le lendemain matin, jusqu’à 10 h.',
         highlight: 'La plus demandée',
       },
