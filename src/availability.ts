@@ -13,11 +13,11 @@
 
 import { SORTIE_WINDOW } from './pricing'
 
-const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
+const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 /* Clé publique (anon) — protégée par RLS côté Supabase, conçue pour être
    exposée au navigateur. Ne donne accès qu'à la fonction get_booked_slots. */
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZGZwanl5dHdlZGhvY2h2emZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzExMDEsImV4cCI6MjA5NTM0NzEwMX0.LKISYgm1CBPYP4VfvH_S6C7meSQb1H57LxkldF9UhC0'
+  'sb_publishable_6sKyf8JVp2OcrEc-Ep8FaA_-Z2doSYo'
 
 export type BookedSlot = {
   date: string // YYYY-MM-DD
@@ -33,7 +33,6 @@ export async function fetchBookedSlots(fromISO: string, toISO: string): Promise<
       headers: {
         'Content-Type': 'application/json',
         apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({ p_from: fromISO, p_to: toISO }),
     })

@@ -17,9 +17,9 @@ import { findPrice, applyPromo, promoDiscountRate, amountDueOnline, paymentModeF
      SUMUP_MERCHANT_CODE        code marchand Harmonie Group (MCxxxxxx)
      SUPABASE_SERVICE_ROLE_KEY  pour écrire l'intention de réservation */
 
-const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
+const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZGZwanl5dHdlZGhvY2h2emZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzExMDEsImV4cCI6MjA5NTM0NzEwMX0.LKISYgm1CBPYP4VfvH_S6C7meSQb1H57LxkldF9UhC0'
+  'sb_publishable_6sKyf8JVp2OcrEc-Ep8FaA_-Z2doSYo'
 const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
 const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
 
@@ -40,7 +40,6 @@ async function isSlotTaken(dateOnly: string, group: string, startTime: string, d
       headers: {
         'Content-Type': 'application/json',
         apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({ p_from: dateOnly, p_to: dateOnly }),
     })
@@ -172,7 +171,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     headers: {
       'Content-Type': 'application/json',
       apikey: serviceKey,
-      Authorization: `Bearer ${serviceKey}`,
       Prefer: 'return=minimal',
     },
     body: JSON.stringify({
@@ -242,7 +240,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: {
         'Content-Type': 'application/json',
         apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
         Prefer: 'return=minimal',
       },
       body: JSON.stringify({ sumup_checkout_id: checkout.id ?? null }),

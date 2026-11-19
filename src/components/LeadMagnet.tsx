@@ -5,9 +5,9 @@ import { useLocation } from 'react-router'
 import { ease } from '../motion'
 import { LEAD_MAGNET_CODE, LEAD_MAGNET_PERCENT, LEAD_MAGNET_SEEN_KEY, PROMO_STORAGE_KEY } from '../leadMagnet'
 
-const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
+const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZGZwanl5dHdlZGhvY2h2emZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NzExMDEsImV4cCI6MjA5NTM0NzEwMX0.LKISYgm1CBPYP4VfvH_S6C7meSQb1H57LxkldF9UhC0'
+  'sb_publishable_6sKyf8JVp2OcrEc-Ep8FaA_-Z2doSYo'
 
 const ARM_DELAY = 2500
 
@@ -80,7 +80,6 @@ export default function LeadMagnet() {
         headers: {
           'Content-Type': 'application/json',
           apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({ first_name: firstName, email }),
       })
