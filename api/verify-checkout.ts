@@ -15,7 +15,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
-const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
+const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/hyper-endpoint`
 
 type PendingCheckout = {
   sumup_checkout_id: string | null
