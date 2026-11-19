@@ -13,7 +13,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
    l'email ; le second est ignoré (payment_ref est unique). Un client qui
    revient sur /merci suffit donc à débloquer sa propre confirmation. */
 
-const SUPABASE_URL = 'https://szdfpjyytwedhochvzfd.supabase.co'
+const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
 const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
 
@@ -45,7 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const pendingRes = await fetch(
       `${SUPABASE_URL}/rest/v1/pending_checkouts?reference=eq.${reference}&select=sumup_checkout_id,formule,customer_name,customer_email,booking_date,total_amount,deposit_amount,status`,
-      { headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` } },
+      { headers: { apikey: serviceKey } },
     )
     const rows = (await pendingRes.json()) as PendingCheckout[]
     const pending = Array.isArray(rows) ? rows[0] : undefined
