@@ -21,7 +21,7 @@ const SUPABASE_URL = 'https://fscrhzxpmxvejrhppftc.supabase.co'
 const SUPABASE_ANON_KEY =
   'sb_publishable_6sKyf8JVp2OcrEc-Ep8FaA_-Z2doSYo'
 const SUMUP_CHECKOUTS_URL = 'https://api.sumup.com/v0.1/checkouts'
-const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/sumup-webhook`
+const WEBHOOK_URL = `${SUPABASE_URL}/functions/v1/hyper-endpoint`
 
 type BookedSlot = { date: string; start_time: string | null; end_time: string | null; booking_type: string }
 
