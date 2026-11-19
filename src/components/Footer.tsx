@@ -55,7 +55,7 @@ export default function Footer() {
           <span>Port de Carnon, Hérault — à côté de l’Hôtel Neptune</span>
         </div>
         <div className="footer__legal">
-          <span>Nos partenaires : Hôtel Neptune · Champagne Maison Perla · Una Mas</span>
+          <span>Nos partenaires : Champagne Maison Perla · Una Mas</span>
         </div>
         <div className="footer__legal">
           <Link to="/mentions-legales">Mentions légales</Link>

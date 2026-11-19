@@ -319,7 +319,7 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             onChange={(e) => setNightFormule(e.target.value as NightFormule)}
           >
             <option value="prestige">Nuit Prestige — avec sortie en mer & tapas (380 €)</option>
-            <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (250 €)</option>
+            <option value="sans-sortie">Nuit à quai — petit-déjeuner seul (200 €)</option>
           </select>
           {nightFormule === 'sans-sortie' ? (
             <p className="field__note">Disponible à partir du 1er septembre.</p>
