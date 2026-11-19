@@ -75,8 +75,8 @@ export default function Experiences() {
                 <span>18 h — 12 h</span>
               </li>
               <li>
-                <span>Nuit à quai, petit-déjeuner inclus</span>
-                <span>250 €</span>
+                <span>Nuit seule, tapas et petit-déjeuner inclus</span>
+                <span>200 €</span>
               </li>
               <li>
                 <span>Nuit Prestige, sortie au coucher de soleil & tapas</span>
@@ -84,11 +84,11 @@ export default function Experiences() {
               </li>
               <li>
                 <span>Petit-déjeuner inclus</span>
-                <span>Hôtel Neptune</span>
+                <span>Servi à bord</span>
               </li>
             </ul>
             <Link to="/nuit-a-bord-yacht-carnon" className="link-arrow">
-              Découvrir la nuit à quai
+              Découvrir la nuit à bord
             </Link>
           </div>
         </motion.article>

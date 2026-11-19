@@ -12,11 +12,11 @@ const OFFERS = [
   },
   {
     plain: 'Nuit',
-    it: 'à quai',
+    it: 'seule',
     group: 'nuit',
-    amount: '250 €',
+    amount: '200 €',
     unit: 'la nuit',
-    desc: 'À partir de 250 € (petit-déjeuner sur plateau, jusqu’à 10 h), ou 380 € en Nuit Prestige avec sortie en mer au coucher de soleil et tapas Una Mas. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
+    desc: 'À partir de 200 € (planche de tapas et petit-déjeuner à bord, jusqu’à 10 h), ou 380 € en Nuit Prestige avec sortie en mer au coucher de soleil et tapas Una Mas. Le yacht pour vous seuls. Jusqu’à 2 personnes.',
   },
 ]
 

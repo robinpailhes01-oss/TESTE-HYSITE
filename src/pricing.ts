@@ -34,7 +34,7 @@ export type PriceItem = {
   detail: string
   amount: number // prix total en euros
   durationHours?: number // pour calculer l'heure de fin d'une sortie
-  /* Première date réservable (YYYY-MM-DD) — ex. Nuit à quai à 250 €,
+  /* Première date réservable (YYYY-MM-DD) — ex. Nuit seule à 200 €,
      ouverte à partir du 1er septembre. */
   availableFrom?: string
   /* Par défaut 'deposit'. */
@@ -66,7 +66,7 @@ export const PRICES: PriceItem[] = [
     group: 'nuit',
     bookingType: 'nuit_prestige',
     label: 'Nuit Prestige — avec sortie en mer',
-    detail: 'Sortie en mer au coucher de soleil, tapas (Una Mas) et petit-déjeuner sur plateau (Hôtel Neptune) inclus, servi jusqu’à 10 h — 18 h à 12 h le lendemain',
+    detail: 'Sortie en mer au coucher de soleil, tapas (Una Mas) et petit-déjeuner à bord inclus, servi jusqu’à 10 h — 18 h à 12 h le lendemain',
     amount: 380,
     paymentMode: 'full',
   },
@@ -74,9 +74,9 @@ export const PRICES: PriceItem[] = [
     id: 'nuit-sans-sortie',
     group: 'nuit',
     bookingType: 'nuit_insolite',
-    label: 'Nuit à quai — petit-déjeuner',
-    detail: 'Amarré au calme, petit-déjeuner sur plateau (Hôtel Neptune) inclus le lendemain matin, servi jusqu’à 10 h — 18 h à 12 h le lendemain. Disponible à partir du 1er septembre.',
-    amount: 250,
+    label: 'Nuit seule — tapas et petit-déjeuner',
+    detail: 'Amarré au calme, planche de tapas et petit-déjeuner à bord inclus le lendemain matin, servi jusqu’à 10 h — 18 h à 12 h le lendemain. Disponible à partir du 1er septembre.',
+    amount: 200,
     availableFrom: '2026-09-01',
     paymentMode: 'full',
   },

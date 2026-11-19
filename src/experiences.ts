@@ -9,7 +9,7 @@ export const NIGHT_STEPS: Step[] = [
   { time: '18 h 00', label: 'Embarquement', note: 'Accueil au ponton, le yacht et la cabine sont prêts.' },
   { time: 'Coucher de soleil', label: 'Sortie en mer', it: '& tapas', note: 'Une heure au large, plateau tapas de notre partenaire Una Mas.' },
   { time: '23 h 00', label: 'Nuit à bord', note: 'Bercés par le clapot, amarrés au calme du port.' },
-  { time: '10 h 00', label: 'Petit-déjeuner', it: 'sur plateau', note: 'Petit-déjeuner sur plateau (Hôtel Neptune), servi jusqu’à 10 h. Checkout à midi.' },
+  { time: '10 h 00', label: 'Petit-déjeuner', it: 'à bord', note: 'Petit-déjeuner servi à bord, sur place, jusqu’à 10 h. Checkout à midi.' },
 ]
 
 export type Formule = {
@@ -146,12 +146,12 @@ export const EXPERIENCES: Experience[] = [
       { label: 'Le yacht pour vous seuls', detail: '18 h → 12 h le lendemain' },
       { label: 'Jusqu’à 2 personnes', detail: 'Formule intimiste' },
       { label: 'Nuit Prestige : sortie en mer au coucher de soleil', detail: 'Avec tapas de notre partenaire Una Mas' },
-      { label: 'Nuit à quai : amarré au calme', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
-      { label: 'Petit-déjeuner inclus', detail: 'Sur plateau, servi jusqu’à 10 h (Hôtel Neptune)' },
+      { label: 'Nuit seule : amarré au calme, tapas et petit-déjeuner', detail: 'Sans sortie en mer — disponible à partir du 1er septembre' },
+      { label: 'Petit-déjeuner inclus', detail: 'Servi à bord, sur place, jusqu’à 10 h' },
     ],
     steps: NIGHT_STEPS,
     price: {
-      amount: '250 €',
+      amount: '200 €',
       unit: 'la nuit',
       note: 'À partir de — avec sortie en mer au coucher de soleil et tapas Una Mas dès 380 €.',
     },
@@ -163,11 +163,11 @@ export const EXPERIENCES: Experience[] = [
         key: 'sans-sortie',
         num: '01',
         name: 'Nuit',
-        it: 'à quai',
+        it: 'seule',
         duration: '18 h — jusqu’à 12 h le lendemain',
-        amount: '250 €',
+        amount: '200 €',
         season: 'Disponible à partir du 1er septembre',
-        desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
+        desc: 'Le cocooning à deux : le yacht amarré au calme dans le port, sans sortie en mer, planche de tapas le soir et petit-déjeuner à bord inclus le lendemain matin, jusqu’à 10 h.',
       },
       {
         key: 'prestige',
@@ -176,7 +176,7 @@ export const EXPERIENCES: Experience[] = [
         it: 'Prestige',
         duration: '18 h — jusqu’à 12 h le lendemain',
         amount: '380 €',
-        desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner sur plateau inclus le lendemain matin, jusqu’à 10 h (Hôtel Neptune).',
+        desc: 'La formule signature : sortie en mer au coucher de soleil, plateau tapas (Una Mas), nuit à bord, petit-déjeuner à bord inclus le lendemain matin, jusqu’à 10 h.',
         highlight: 'La plus demandée',
       },
     ],

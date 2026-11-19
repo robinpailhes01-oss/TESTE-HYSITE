@@ -96,7 +96,7 @@ export function CGV() {
           restant est réglé directement (carte ou espèces) avant l’embarquement.
         </li>
         <li>
-          <strong>Nuits à bord</strong> (Nuit Prestige et Nuit à quai) : la totalité du montant,
+          <strong>Nuits à bord</strong> (Nuit Prestige et Nuit seule) : la totalité du montant,
           réglée à la réservation. Aucun solde n’est dû à bord.
         </li>
       </ul>
