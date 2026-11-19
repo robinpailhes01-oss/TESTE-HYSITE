@@ -7,9 +7,9 @@ const PATH = '/nuit-a-bord-yacht-carnon'
 
 export function meta() {
   return pageMeta({
-    title: 'Nuit à bord d’un yacht à Carnon — dès 250 € | Harmonie Yacht',
+    title: 'Nuit à bord d’un yacht à Carnon — dès 200 € | Harmonie Yacht',
     description:
-      'Une nuit privée à bord, amarré au port de Carnon, de 18 h à 12 h le lendemain. Dès 250 € pour 2 personnes, ou 380 € avec sortie en mer au coucher de soleil.',
+      'Une nuit privée à bord, amarré au port de Carnon, de 18 h à 12 h le lendemain. Dès 200 € pour 2 personnes, ou 380 € avec sortie en mer au coucher de soleil.',
     path: PATH,
   })
 }

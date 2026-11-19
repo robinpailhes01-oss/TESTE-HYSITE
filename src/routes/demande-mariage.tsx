@@ -8,7 +8,7 @@ export function meta() {
   return pageMeta({
     title: 'Demande en mariage & anniversaire en bateau à Carnon | Harmonie Yacht',
     description:
-      'Privatisez le yacht Harmonie pour une demande en mariage ou un anniversaire au coucher de soleil à Carnon. Sortie dès 320 €, nuit à bord dès 250 €.',
+      'Privatisez le yacht Harmonie pour une demande en mariage ou un anniversaire au coucher de soleil à Carnon. Sortie dès 320 €, nuit à bord dès 200 €.',
     path: PATH,
   })
 }
@@ -62,7 +62,7 @@ export default function DemandeMariageRoute() {
           </li>
           <li>
             Nuit Prestige à bord — 380 € pour 2 personnes, sortie en mer d’1 h au coucher de
-            soleil incluse, plateau tapas (Una Mas) et petit-déjeuner sur plateau (Hôtel Neptune)
+            soleil incluse, plateau tapas (Una Mas) et petit-déjeuner à bord
             le lendemain matin jusqu’à 10 h, de 18 h à 12 h
           </li>
         </ul>
