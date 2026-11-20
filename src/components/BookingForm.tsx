@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Link } from 'react-router'
 import { ease } from '../motion'
 import Calendar from './Calendar'
-import { amountDueOnline, applyPromo, findPrice, paymentModeFor, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
+import { amountDueOnline, applyPromo, findPrice, isTooSoon, paymentModeFor, promoDiscountRate, SORTIE_WINDOW } from '../pricing'
 import { PROMO_STORAGE_KEY } from '../leadMagnet'
 import {
   fetchBookedSlots,
@@ -134,7 +134,9 @@ export default function BookingForm({ group: fixedGroup }: Props) {
      entre 9 h et 21 h, 1 h de battement avec les sorties déjà réservées. */
   const sortieHours = useMemo(() => {
     if (groupChoice !== 'sortie' || !dateISO || !price?.durationHours) return []
-    return getSortieStartHours(dateISO, price.durationHours, slots)
+    return getSortieStartHours(dateISO, price.durationHours, slots).filter(
+      (h) => !isTooSoon(dateISO, `${String(h).padStart(2, '0')}:00`),
+    )
   }, [groupChoice, dateISO, price, slots])
 
   useEffect(() => {
@@ -156,11 +158,17 @@ export default function BookingForm({ group: fixedGroup }: Props) {
         set.add(iso)
         continue
       }
-      if (groupChoice === 'nuit' && isNightBlocked(iso, slots)) {
+      if (groupChoice === 'nuit' && (isNightBlocked(iso, slots) || isTooSoon(iso, '18:00'))) {
         set.add(iso)
         continue
       }
-      if (groupChoice === 'sortie' && price?.durationHours && getSortieStartHours(iso, price.durationHours, slots).length === 0) {
+      if (
+        groupChoice === 'sortie' &&
+        price?.durationHours &&
+        getSortieStartHours(iso, price.durationHours, slots).filter(
+          (h) => !isTooSoon(iso, `${String(h).padStart(2, '0')}:00`),
+        ).length === 0
+      ) {
         set.add(iso)
       }
     }
@@ -361,6 +369,10 @@ export default function BookingForm({ group: fixedGroup }: Props) {
             {calOpen ? '▴' : '▾'}
           </span>
         </button>
+        <span className="field__note">
+          Réservation en ligne jusqu’à 24 h avant le départ. Au-delà, contactez-nous à{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </span>
         {dateHint && !date ? (
           <span className="cal-hint" role="alert">
             Choisissez d’abord une date dans le calendrier.

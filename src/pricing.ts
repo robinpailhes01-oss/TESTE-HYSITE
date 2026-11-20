@@ -20,6 +20,40 @@ export type PaymentMode = 'deposit' | 'full'
    deux sorties (cf. src/availability.ts). */
 export const SORTIE_WINDOW = { openHour: 9, closeHour: 21, bufferHours: 1 }
 
+/* Préavis minimum : pas de réservation en ligne à moins de 24 h du départ
+   (nuit : 18 h ; sortie : l'heure de départ choisie). En dessous, le client
+   doit nous contacter. Calculé à l'heure de Paris, côté navigateur comme côté
+   serveur, pour que les deux disent toujours la même chose. */
+export const MIN_NOTICE_HOURS = 24
+
+function parisWallClockMs(now: Date): number {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Paris',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    })
+      .formatToParts(now)
+      .map((x) => [x.type, x.value]),
+  )
+  return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute)
+}
+
+/* dateISO = YYYY-MM-DD, startTime = HH:MM (heure de Paris). */
+export function isTooSoon(dateISO: string, startTime: string, now: Date = new Date()): boolean {
+  const [y, m, d] = dateISO.split('-').map(Number)
+  const [h, min] = startTime.split(':').map(Number)
+  const start = Date.UTC(y, m - 1, d, h, min)
+  return start - parisWallClockMs(now) < MIN_NOTICE_HOURS * 3600_000
+}
+
+export const TOO_SOON_MESSAGE =
+  'Les réservations en ligne se font au moins 24 h avant le départ. Pour une date plus proche, contactez-nous directement.'
+
 /* Doit correspondre exactement aux valeurs acceptées par
    bookings.booking_type côté Supabase (contrainte CHECK). La formule
    « Nuit à quai — petit-déjeuner seul » réutilise 'nuit_insolite' côté base

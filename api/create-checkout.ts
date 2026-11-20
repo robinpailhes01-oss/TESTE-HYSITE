@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { randomUUID } from 'node:crypto'
-import { findPrice, applyPromo, promoDiscountRate, amountDueOnline, paymentModeFor } from '../src/pricing.js'
+import { findPrice, applyPromo, promoDiscountRate, amountDueOnline, paymentModeFor, isTooSoon, TOO_SOON_MESSAGE, SORTIE_WINDOW } from '../src/pricing.js'
 
 /* Paiement en ligne SumUp (Harmonie Group) — réglé par carte sur la page
    hébergée par SumUp, puis retour sur /merci. Ce qui est encaissé dépend de la
@@ -137,6 +137,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const endH = h + price.durationHours
     return `${String(endH).padStart(2, '0')}:${String(m).padStart(2, '0')}`
   })()
+
+  /* Préavis de 24 h : sans heure précise (sortie), on prend l'ouverture du
+     créneau comme départ le plus tôt possible. */
+  if (dateStr) {
+    const departure = price.group === 'nuit' ? '18:00' : startTimeStr || `${String(SORTIE_WINDOW.openHour).padStart(2, '0')}:00`
+    if (isTooSoon(dateStr, departure)) {
+      return res.status(400).json({ error: TOO_SOON_MESSAGE })
+    }
+  }
 
   if (dateStr && (price.group === 'nuit' || (startTimeStr && price.durationHours))) {
     const taken = await isSlotTaken(dateStr, price.group, startTimeStr, price.durationHours ?? 0)
